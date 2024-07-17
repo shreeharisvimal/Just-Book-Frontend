@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.Container {
+  position: relative;
+  height: 500px;
+  width: 80%;
+  top: 4rem;
+  left: 1rem;
+  background-color: #fff; /* Light background */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); /* Subtle shadow for depth */
+  padding: 20px; /* Padding for content spacing */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.LogOutBtn {
+  position: relative;
+  top: 28rem;
+  left: 90%;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #38A3A5;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}/*# sourceMappingURL=Profile.css.map */

@@ -1,0 +1,99 @@
+// BookingPage.scss
+
+body {
+    background-color: #fff;
+}
+.main{
+    overflow: hidden;
+
+.Card {
+    .image_background{
+        width: 100%;
+        opacity: 0.65;
+        pointer-events: none;
+    }
+    .checkout-page {
+        position: absolute;
+        top: 11rem;
+        left: 55rem;
+        width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .booking-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+
+            h4 {
+                margin-bottom: 10px;
+            }
+
+            p {
+                margin: 5px 0;
+            }
+        }
+
+        .payment-methods {
+            h4 {
+                margin-bottom: 15px;
+            }
+
+            .tabs {
+                display: flex;
+
+                button {
+                    flex: 1;
+                    padding: 8px;
+                    cursor: pointer;
+                    background: none;
+                    border: none;
+                    border-bottom: 2px solid transparent;
+
+                    &:hover,
+                    &.active {
+                        border-bottom: 2px solid #001f3f;
+                    }
+                }
+            }
+
+            .razorpay-details {
+                margin-top: 20px;
+                input {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+            }
+        }
+
+        .pay-now {
+            width: 90%;
+            padding: 15px;
+            background-color: #001f3f;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+
+            &:hover {
+                background-color: #38A3A5;
+            }
+        }
+    }
+}
+}

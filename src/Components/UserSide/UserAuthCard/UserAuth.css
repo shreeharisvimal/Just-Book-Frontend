@@ -1,0 +1,75 @@
+/* UserAuth.scss */
+.container {
+  position: absolute;
+  z-index: 99;
+  left: -11rem;
+  width: 350px; /* Set a fixed width for better responsiveness */
+  height: 320px;
+  padding: 2rem; /* Add some padding for visual spacing */
+  border: 1px solid #38A3A5; /* Use a lighter border color for better readability */
+  border-radius: 4px; /* Add subtle rounded corners */
+  background-color: #fff; /* Set a white background for contrast */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.container .Info {
+  position: relative;
+  top: 1.5rem;
+  left: 1rem;
+  color: black;
+  opacity: 50%;
+}
+.container .svg {
+  position: relative;
+  right: 17rem;
+}
+.container .Submit {
+  width: 100%; /* Make the button fill the container width */
+  padding: 1rem; /* Adjust padding for a comfortable click area */
+  border: none; /* Remove default button border */
+  border-radius: 4px; /* Maintain rounded corners */
+  font-size: 1rem; /* Set an appropriate font size */
+  font-weight: bold; /* Make the button text stand out */
+  color: #fff; /* Use white text for better contrast */
+  background-color: #001f3f; /* Use a primary blue color */
+  cursor: pointer; /* Indicate clickable element */
+  transition: background-color 0.2s ease-in-out; /* Add a smooth hover effect */
+}
+.container .Submit .Submit:hover {
+  background-color: #0069d9; /* Change button color on hover */
+}
+
+.container div {
+  /* Remove unnecessary margins for cleaner spacing */
+  margin: 0;
+}
+
+input[type=text],
+input[type=email] {
+  width: 90%; /* Make input fields fill the container width */
+  padding: 0.75rem 1rem; /* Adjust padding for better user input experience */
+  border: 1px solid #38A3A5; /* Use a slightly lighter border color for inputs */
+  border-radius: 4px; /* Maintain rounded corners for consistency */
+  font-size: 1rem; /* Set an appropriate font size */
+  margin-bottom: 1rem; /* Add some spacing between input fields */
+}
+
+.or {
+  text-align: center; /* Center align the "OR" text */
+  margin: 1.5rem 1.5rem; /* Add vertical spacing above and below "OR" */
+  font-weight: bold; /* Make "OR" stand out slightly */
+  color: black;
+}
+
+.google-auth { /* Assuming you have a class for Google auth */
+  /* Style Google auth button or link accordingly */
+  /* Example using button: */
+  display: flex; /* Allow for inline elements within Google auth */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd; /* Consistent border style */
+  border-radius: 4px;
+  background-color: #61c9ec; /* Lighter background for distinction */
+  cursor: pointer; /* Indicate clickable element */
+  /* Add Google logo or icon styles as needed */
+}/*# sourceMappingURL=UserAuth.css.map */

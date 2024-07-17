@@ -1,0 +1,60 @@
+.NavBar {
+  background-color: #001f3f;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7%;
+  width: 97.85%;
+  padding: 0 1rem;
+}
+.NavBar .logodiv {
+  width: 4%;
+  position: relative;
+  left: 2rem;
+}
+.NavBar .logodiv img {
+  width: 70%;
+}
+.NavBar .Searchdiv {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.NavBar .Searchdiv .SearchBar {
+  flex: 1;
+  height: 90%;
+  margin-top: 15px;
+  padding: 0.5rem;
+  border: 2px solid #38A3A5;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: black;
+  box-sizing: border-box;
+}
+.NavBar .Searchdiv .button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #38A3A5;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.NavBar .AuthBtn {
+  position: relative;
+  left: -6rem;
+}
+.NavBar .AuthBtn .login-or-signin-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.NavBar .AuthBtn .login-or-signin-button:hover {
+  color: #38A3A5;
+}/*# sourceMappingURL=Navbar.css.map */

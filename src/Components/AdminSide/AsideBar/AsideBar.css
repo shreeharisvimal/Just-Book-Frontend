@@ -1,0 +1,119 @@
+.aside-bar__navbar-aside {
+  background-color: #E0F2F1;
+  color: #001F3F;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 20px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+.aside-bar__navbar-aside.offcanvas-open {
+  transform: translateX(0);
+}
+.aside-bar__aside-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.aside-bar__aside-top .logo {
+  width: 20%;
+  position: relative;
+  left: 2rem;
+}
+.aside-bar__aside-top .logo img {
+  width: 70%;
+}
+.aside-bar__aside-top .Justbook {
+  position: relative;
+  left: 2.3rem;
+  top: -1rem;
+}
+.aside-bar__brand-wrap {
+  color: inherit;
+  text-decoration: none;
+}
+.aside-bar__btn-aside-minimize {
+  color: #001F3F;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.aside-bar__btn-aside-minimize:hover {
+  color: #38A3A5;
+}
+.aside-bar__nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.aside-bar__menu-aside {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.aside-bar__menu-aside .menu-item {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.aside-bar__menu-aside .menu-item.active, .aside-bar__menu-aside .menu-item:hover {
+  background-color: #001F3F;
+  color: #E0F2F1;
+}
+.aside-bar__menu-aside .menu-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.aside-bar__menu-aside .menu-item .menu-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease-in-out;
+}
+.aside-bar__menu-aside .menu-item .menu-link .icon {
+  font-size: 18px;
+  margin-right: 10px;
+}
+.aside-bar__menu-aside .menu-item .menu-link .text {
+  font-size: 14px;
+}
+.aside-bar__menu-aside .has-submenu {
+  position: relative;
+}
+.aside-bar__menu-aside .has-submenu .submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #E0F2F1;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+.aside-bar__menu-aside .has-submenu .submenu.active {
+  display: block;
+}
+.aside-bar__menu-aside .has-submenu .submenu a {
+  padding: 10px 15px;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+.aside-bar__menu-aside .has-submenu .submenu a:hover {
+  background-color: #001F3F;
+  color: #E0F2F1;
+}
+.aside-bar__hr {
+  border: none;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}/*# sourceMappingURL=AsideBar.css.map */

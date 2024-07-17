@@ -1,0 +1,211 @@
+$seat-size: 35px;
+$font-size: 12px;
+$border-radius: 4px;
+$border-width: 2px;
+$border-color: #ddd;
+$color-seat: #1ea83c;
+$color-blocked: #fff;
+$color-text: #0e1422;
+$background-color: #fff;
+$background-available: #38A3A5;
+$background-blocked: #001f3f;
+$hover-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+@use 'sass:color'; // Import Sass color module
+
+body{
+    background-color: #fff;
+
+  }
+  
+.main{
+    overflow: hidden;   
+
+    .seats {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  padding: 20px;
+  height:50rem ;
+
+  .normal-price {
+      position: fixed;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .seat-types {
+      position: fixed;
+      margin-top: 20px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    list-style-type: none;
+    
+    li {
+        margin-top: 10px;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+  }
+
+  &__header {
+    font-size: 24px;
+    color: $color-text;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__row {
+      margin-bottom: 0px;
+      
+      &-title {
+          color: $color-text;
+      position: relative;
+      width: 6rem;
+      left: 42rem;
+    }
+    
+    &-options {
+      margin-bottom: 0px;
+    }
+    
+    &-seats {
+        display: flex;
+        justify-content: center;
+      flex-wrap: wrap;
+      
+      &__seat {
+          width: $seat-size;
+          height: $seat-size;
+          margin: 3px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        border-top-left-radius: 11px;
+        border-top-right-radius: 11px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border: $border-width solid $border-color;
+        background: $background-color;
+        color: $color-text;
+        font-size: $font-size;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+          box-shadow: $hover-shadow;
+          transform: scale(1.05);
+        }
+        
+        &--booked {
+          background: $background-blocked;
+          color: $color-blocked;
+          cursor: not-allowed;
+          border-color: color.scale($background-blocked, $lightness: -20%);
+        }
+        
+        &--available {
+          border-color: $background-available;
+          color: $color-text;
+        }
+        
+        &--selected {
+          background: lighten($background-available, 20%);
+          border-color: $background-available;
+          color: $color-text;
+        }
+        
+        &--free-space {
+            background-color: #fff;
+          border: none;
+          cursor: default;
+          &:hover {
+            transform: none; 
+            box-shadow: none;
+          }
+        }
+    }
+}
+  }
+  
+  .total-amount {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: $color-text;
+    text-align: center;
+}
+
+  .Details{
+      display: flex;
+      position: fixed;
+      flex-direction: column;
+      left: 75rem;
+    
+      .Dummy {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-top: 20px;
+          margin-bottom: 20px;
+
+          
+          &-available, &-booked, &-selected {
+              width: $seat-size;
+              height: $seat-size;
+              margin: 0 10px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-top-left-radius: 11px;
+              border-top-right-radius: 11px;
+              border-bottom-left-radius: 3px;
+              border-bottom-right-radius: 3px;
+              border: $border-width solid $background-available;
+              color: $color-text;
+            }
+            
+            
+            
+            &-selected {
+                background: lighten($background-available, 20%);
+            }
+            
+            &-booked {
+                background: $background-blocked;
+                color: $color-blocked;
+            }
+            
+            label {
+      margin: 0 10px;
+      font-size: 14px;
+      color: $color-text;
+    }
+}
+}
+.book-button {
+    top: 40rem;
+    position: fixed;
+    align-self: center;
+    margin-top: 20px;
+    padding: 8px 40rem;
+    font-size: 16px;
+    color: $color-text;
+    background-color: $background-available;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    z-index: 100;
+    
+    &:hover {
+        background-color: lighten($background-available, 10%);
+    }
+}
+}
+
+}     

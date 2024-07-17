@@ -1,0 +1,100 @@
+// Variables
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+$background-light: #f9f9f9; // Light background color
+$shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box shadow
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.profileComponent {
+  &__container {
+    position: relative;
+    top: -6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 30rem;
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: $shadow;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $primary;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    .pic{
+        display: flex;
+    }
+  }
+
+  &__label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: $primary;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  &__image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  &__image {
+    position: absolute;
+    left: 36rem;
+    top: 1rem;
+    max-width: 20%;
+    height: auto;
+    border-radius: 5px;
+  }
+
+  &__submit {
+    position: relative;
+    top: -2rem;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text;
+    background-color: $primary;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary, 10%);
+    }
+  }
+}

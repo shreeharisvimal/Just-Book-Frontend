@@ -1,0 +1,74 @@
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$background-color: #f4f4f4;
+$text-color: #333;
+$border-radius: 5px;
+$padding: 1rem;
+$box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+.show-page__container {
+  min-height: 100vh;
+  background-color: $background-color;
+  position: relative;
+  height: 45rem;
+  width: 81%;
+  left: 19%;
+}
+
+.show-page__content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.show-page__toggle-btn {
+  background-color: $primary-color;
+  border: none;
+  border-radius: $border-radius;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 2rem;
+
+  &:hover {
+    background-color: $secondary-color;
+  }
+}
+
+.show-page__table-container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: $padding;
+}
+
+.show-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background-color: $primary-color;
+    color: white;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+}

@@ -1,0 +1,99 @@
+// Variables
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+$background-light: #f9f9f9; // Light background color
+$shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box shadow
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ticketComponent {
+  &__container {
+    position: relative;
+    top: -6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 30rem;
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    overflow-y: scroll;
+    
+}
+  .ticket {
+    background-color: #fff;   
+    border-radius: 10px;
+    box-shadow: $shadow;
+    width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 10px;
+
+    &__header {
+      background-color: $primary;
+      color: $text;
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 10px;
+      &.true{
+        background-color: #f44336;
+      }
+      
+    }
+
+    &__movie-title {
+      font-size: 1.2rem;
+    }
+
+    &__body {
+      padding: 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__Used{
+        position: relative;
+        top:4.5rem;
+    }
+
+    &__qr-code {
+        width: 100px;
+        height: 100px;
+        margin: 10px 0;
+        position: relative;
+
+        &.true {
+            opacity: .1;
+        }
+    }
+
+
+    &__details {
+      text-align: left;
+      width: 100%;
+      
+      p {
+        margin: 5px 0;
+      }
+
+      strong {
+        color: $primary;
+      }
+    }
+}
+
+
+}

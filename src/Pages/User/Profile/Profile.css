@@ -1,0 +1,12 @@
+.Homespn {
+  position: absolute;
+  top: 20%;
+  left: 11%;
+  z-index: 99;
+  color: #38A3A5;
+  padding: 0.6rem;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #38A3A5;
+}/*# sourceMappingURL=Profile.css.map */

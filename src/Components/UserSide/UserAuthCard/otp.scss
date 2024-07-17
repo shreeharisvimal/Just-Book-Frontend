@@ -1,0 +1,43 @@
+
+.containerotp{
+    position: absolute;
+    z-index: 99;
+    right: 0rem;
+    top: 0rem;
+    width: 350px; /* Set a fixed width for better responsiveness */
+    height: 320px;
+    padding: 2rem; /* Add some padding for visual spacing */
+    border: 1px solid #38A3A5; /* Use a lighter border color for better readability */
+    border-radius: 4px; /* Add subtle rounded corners */
+    background-color: #fff; /* Set a white background for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    h1 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        position: relative;
+      }
+      button{
+        width: 100%; /* Make the button fill the container width */
+                padding: 1rem; /* Adjust padding for a comfortable click area */
+                border: none; /* Remove default button border */
+                border-radius: 4px; /* Maintain rounded corners */
+                font-size: 1rem; /* Set an appropriate font size */
+                font-weight: bold; /* Make the button text stand out */
+                color: #fff; /* Use white text for better contrast */
+                background-color: #001f3f; /* Use a primary blue color */
+                cursor: pointer; /* Indicate clickable element */
+                transition: background-color 0.2s ease-in-out; /* Add a smooth hover effect */
+              
+              button:hover {
+                background-color: #0069d9; /* Change button color on hover */
+              }
+      }
+      input[type="text"]{
+        border: 1px solid #38A3A5; /* Use a slightly lighter border color for inputs */
+        border-radius: 4px; /* Maintain rounded corners for consistency */
+        font-size: 1rem; /* Set an appropriate font size */
+      }
+    
+}

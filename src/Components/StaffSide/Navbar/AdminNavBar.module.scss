@@ -1,0 +1,79 @@
+$background: #001f3f; // Dark background color
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+
+.adminNavBar {
+  background-color: $background;
+  color: $text;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7%;
+  width: 100%;
+  padding: 0 1rem;
+
+  &__search {
+    display: flex;
+    align-items: center;
+    width: 50%;
+
+    &_bar {
+      flex: 1;
+      height: 90%;
+      margin-left: 2rem;
+      padding: 0.5rem;
+      border: 2px solid $primary;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: black;
+      box-sizing: border-box;
+    }
+
+    &_button {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: $primary;
+      color: $text;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: lighten($primary, 10%);
+      }
+    }
+  }
+
+  &__authButton {
+    position: relative;
+    left: -6rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: transparent;
+    color: $text;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .adminNavBar {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__search {
+      width: 100%;
+      margin-bottom: 1rem;
+
+      &-bar {
+        width: calc(100% - 3rem);
+      }
+    }
+  }
+}

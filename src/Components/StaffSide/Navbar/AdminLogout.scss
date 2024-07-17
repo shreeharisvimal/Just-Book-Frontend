@@ -1,0 +1,39 @@
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-logout {
+  &__container {
+    position: absolute;
+    height: 100px;
+    width: 10%;
+    top: 3rem;
+    left: 60rem;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid $primary;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  &__button {
+    position: relative;
+    top: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: $primary;
+    color: $text;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: lighten($primary, 10%);
+    }
+  }
+}

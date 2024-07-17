@@ -1,0 +1,101 @@
+$background: #001f3f; // Dark background color
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+
+.navbar {
+  background-color: #001f3f;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7%;
+  width: 100%;
+  padding: 0 1rem;
+
+  &__logo {
+    width: 4%;
+    img {
+      width: 70%; // Ensure image fills the logo container
+    }
+  }
+
+  &__search {
+    margin-left: 10rem;
+    display: flex; // Allow for side-by-side elements
+    align-items: center;
+    width: 50%; // Allocate more space for Search bar
+
+    &_bar {
+      flex: 1;
+      height: 90%;
+      margin-top: 15px;
+      padding: 0.5rem;
+      border: 2px solid #38A3A5;
+      border-radius: 4px; // Rounded corners
+      font-size: 1rem; // Adjust font size as needed
+      color: black;
+      box-sizing: border-box;
+    }
+
+    &_button {
+      margin-left: 1rem; // Add some space between SearchBar and button
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #38A3A5;
+      color: #fff;
+      font-size: 1rem; // Adjust font size as needed
+      border-radius: 4px; // Rounded corners
+      cursor: pointer; // Indicate clickable button
+    }
+  }
+
+  &__dropdown {
+    margin-right: 10rem;
+    margin-left: auto; // Push dropdown to the right
+    display: flex;
+    align-items: center;
+
+    &_select {
+      padding: 0.5rem;
+      border: 2px solid #38A3A5;
+      border-radius: 4px;
+      background-color: #001f3f;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken(#001f3f, 10%);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #38A3A5;
+        box-shadow: 0 0 0 2px lighten(#38A3A5, 20%);
+      }
+    }
+
+    label {
+      margin-left: 5px;
+    }
+  }
+
+  &__auth {
+    position: relative;
+    left: -6rem;
+
+    &_button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: transparent;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: #38A3A5;
+      }
+    }
+  }
+}

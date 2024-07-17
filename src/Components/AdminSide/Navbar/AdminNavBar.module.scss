@@ -1,0 +1,62 @@
+$background: #001f3f; // Dark background color
+$primary: #38A3A5; // Green accent color
+$text: #fff; // White text color
+
+.admin_nav_bar {
+  background-color: $background;
+  color: $text; // Apply text color to entire navbar
+  display: flex;
+  justify-content: space-between; // Distribute content evenly
+  align-items: center; // Align content vertically
+  height: 7%;
+  width: 97.35%;
+  padding: 0 1rem; // Add some horizontal padding
+
+  &__search {
+    display: flex; // Allow for side-by-side elements
+    align-items: center;
+    width: 50%; // Allocate more space for Search bar
+
+    &_bar {
+      flex: 1;
+      height: 90%;
+      margin-left: 2rem;
+      padding: 0.5rem;
+      border: 2px solid $primary;
+      border-radius: 4px; // Rounded corners
+      font-size: 1rem; // Adjust font size as needed
+      color: black;
+      box-sizing: border-box;
+    }
+
+    &_button {
+      margin-left: 1rem; // Add some space between SearchBar and button
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: $primary;
+      color: $text;
+      font-size: 1rem; // Adjust font size as needed
+      border-radius: 4px; // Rounded corners
+      cursor: pointer; // Indicate clickable button
+    }
+  }
+
+  &__auth-button {
+    position: relative;
+    left: -6rem;
+
+    &--login-or-signin {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: transparent;
+      color: $text;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+}

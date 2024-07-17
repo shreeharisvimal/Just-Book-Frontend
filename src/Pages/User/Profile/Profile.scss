@@ -1,0 +1,22 @@
+$primary: #38A3A5 ; 
+body{
+    background-color: #fff;
+
+  }
+.div_main{
+}
+.Homespn{
+
+    position: absolute;
+    width: 11.5rem;
+    top: 8.9rem;
+    left:11%;
+    z-index: 99;
+    color: $primary;
+    padding: .6rem 4.5rem;
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid; 
+    border-color: $primary ;
+
+}

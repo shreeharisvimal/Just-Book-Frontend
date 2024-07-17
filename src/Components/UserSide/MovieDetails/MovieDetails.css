@@ -1,0 +1,102 @@
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.DetailsPage__main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 96.6%;
+  margin: 0 auto;
+  z-index: -99;
+}
+.DetailsPage__slider {
+  width: 100%;
+}
+.DetailsPage__slider .slick-list {
+  overflow: hidden;
+}
+.DetailsPage__image {
+  width: 100%;
+  height: 50%;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.DetailsPage__imageFake {
+  width: auto;
+  height: 500px;
+  opacity: 0.65;
+  pointer-events: none;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.DetailsPage__poster {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  max-width: 300px;
+  max-height: 450px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.DetailsPage__poster img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+.DetailsPage__About {
+  position: relative;
+  top: 3rem;
+  left: 5rem;
+  width: 90%;
+}
+.DetailsPage__About h2,
+.DetailsPage__About span {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.DetailsPage__About hr {
+  margin-top: 2rem;
+}
+.DetailsPage__Cast, .DetailsPage__Crew {
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  position: relative;
+  top: 3rem;
+  left: 4rem;
+  width: 90%;
+}
+.DetailsPage__Cast h2, .DetailsPage__Crew h2 {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.DetailsPage__Cast hr, .DetailsPage__Crew hr {
+  width: 100%;
+  margin-top: 20px;
+}
+.DetailsPage__Cast .DetailsPage__CastItem, .DetailsPage__Crew .DetailsPage__CastItem {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 150px;
+  margin: 10px;
+}
+.DetailsPage__Cast .DetailsPage__CastItem img, .DetailsPage__Crew .DetailsPage__CastItem img {
+  width: 100px;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.DetailsPage__Cast .DetailsPage__CastItem .DetailsPage__CastName, .DetailsPage__Crew .DetailsPage__CastItem .DetailsPage__CastName {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.DetailsPage__Cast .DetailsPage__CastItem .DetailsPage__CastCharacter, .DetailsPage__Crew .DetailsPage__CastItem .DetailsPage__CastCharacter {
+  font-size: 0.9em;
+  color: #666;
+}/*# sourceMappingURL=MovieDetails.css.map */

@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-logout__container {
+  position: absolute;
+  height: 100px;
+  width: 10%;
+  top: 3rem;
+  left: 60rem;
+  background-color: #fff; /* Light background */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  border-color: #38A3A5;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); /* Subtle shadow for depth */
+  padding: 20px; /* Padding for content spacing */
+  margin: 0 auto; /* Center the container horizontally */
+}
+.admin-logout__button {
+  position: relative;
+  margin-left: 1rem;
+  top: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #38A3A5;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}/*# sourceMappingURL=AdminLogout.css.map */

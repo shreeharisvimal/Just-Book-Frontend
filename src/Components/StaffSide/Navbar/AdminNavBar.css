@@ -1,0 +1,52 @@
+.admin-nav-bar {
+  background-color: #001f3f;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7%;
+  width: 97.35%;
+  padding: 0 1rem;
+}
+.admin-nav-bar__search {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.admin-nav-bar__search-bar {
+  flex: 1;
+  height: 90%;
+  margin-left: 2rem;
+  padding: 0.5rem;
+  border: 2px solid #38A3A5;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: black;
+  box-sizing: border-box;
+}
+.admin-nav-bar__search-button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #38A3A5;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.admin-nav-bar__auth-button {
+  position: relative;
+  left: -6rem;
+}
+.admin-nav-bar__auth-button--login-or-signin {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.admin-nav-bar__auth-button--login-or-signin:hover {
+  color: #38A3A5;
+}/*# sourceMappingURL=AdminNavBar.css.map */
