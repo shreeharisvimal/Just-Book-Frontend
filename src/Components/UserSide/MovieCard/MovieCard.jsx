@@ -77,7 +77,7 @@ function MovieCard({ searchQuery}) {
           ))}
         </ul>
       ) : (
-        <div><strong> This Movie is not available at this location please change the location</strong></div>
+        <div><strong>Movie is not available at this location please change the location</strong></div>
       )}
     </div>
   );
