@@ -9,8 +9,9 @@ $text: #fff; // White text color
   justify-content: space-between;
   align-items: center;
   height: 7%;
-  width: 100%;
+  width: 97.85vw;
   padding: 0 1rem;
+  z-index: 999;
 
   &__logo {
     width: 4%;
@@ -21,9 +22,9 @@ $text: #fff; // White text color
 
   &__search {
     margin-left: 10rem;
-    display: flex; // Allow for side-by-side elements
+    display: flex; 
     align-items: center;
-    width: 50%; // Allocate more space for Search bar
+    width: 50%; 
 
     &_bar {
       flex: 1;

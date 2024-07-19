@@ -51,17 +51,6 @@ const Success = () => {
                 </div>
             </div>
             <button onClick={() => window.location.href = '/'}>Back to Home</button>
-
-            {/* Adding animated elements */}
-            <div className={styles.popcorn} style={{ top: '10%', left: '20%' }}></div>
-            <div className={styles.popcorn} style={{ top: '15%', left: '30%' }}></div>
-            <div className={styles.popcorn} style={{ top: '20%', left: '40%' }}></div>
-            <div className={styles.popcorn} style={{ top: '25%', left: '50%' }}></div>
-            <div className={styles.popcorn} style={{ top: '30%', left: '60%' }}></div>
-
-            <div className={styles.partyPopper} style={{ top: '50%', left: '10%' }}></div>
-            <div className={styles.partyPopper} style={{ top: '60%', left: '15%' }}></div>
-            <div className={styles.partyPopper} style={{ top: '70%', left: '20%' }}></div>
         </div>
     );
 };

@@ -9,8 +9,9 @@ $text: #fff; // White text color
   justify-content: space-between;
   align-items: center;
   height: 7%;
-  width: 100%;
+  width: 97.85vw;
   padding: 0 1rem;
+  z-index: 999;
 
   &__search {
     display: flex;

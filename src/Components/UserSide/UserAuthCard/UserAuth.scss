@@ -5,15 +5,16 @@
 
 .container {
     position: absolute;
-    z-index: 99;
+    z-index: 999;
     left: -11rem;
-    width: 350px; /* Set a fixed width for better responsiveness */
+    width: 350px; 
     height: 320px;
-    padding: 2rem; /* Add some padding for visual spacing */
-    border: 1px solid #38A3A5; /* Use a lighter border color for better readability */
-    border-radius: 4px; /* Add subtle rounded corners */
-    background-color: #fff; /* Set a white background for contrast */
+    padding: 2rem; 
+    border: 1px solid #38A3A5; 
+    border-radius: 4px; 
+    background-color: #fff; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+
 
     transform: translateY(-10%);
     opacity: 0;

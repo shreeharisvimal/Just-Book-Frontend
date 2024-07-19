@@ -4,12 +4,6 @@ $text: #fff; // White text color
 $background-light: #f9f9f9; // Light background color
 $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box shadow
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .ticketComponent {
   &__container {
     position: relative;
@@ -26,10 +20,10 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
     border-radius: 10px;
     box-shadow: $shadow;
     overflow-y: scroll;
-    
-}
+  }
+
   .ticket {
-    background-color: #fff;   
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: $shadow;
     width: 300px;
@@ -47,10 +41,9 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
       text-align: center;
       padding: 10px 0;
       border-radius: 10px;
-      &.true{
+      &.true {
         background-color: #f44336;
       }
-      
     }
 
     &__movie-title {
@@ -64,27 +57,26 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
       align-items: center;
     }
 
-    &__Used{
-        position: relative;
-        top:4.5rem;
+    &__Used {
+      position: relative;
+      top: 4.5rem;
     }
 
     &__qr-code {
-        width: 100px;
-        height: 100px;
-        margin: 10px 0;
-        position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 10px 0;
+      position: relative;
 
-        &.true {
-            opacity: .1;
-        }
+      &.true {
+        opacity: 0.1;
+      }
     }
-
 
     &__details {
       text-align: left;
       width: 100%;
-      
+
       p {
         margin: 5px 0;
       }
@@ -93,7 +85,33 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
         color: $primary;
       }
     }
-}
 
+    // Button styles
+    .ticket__pdf-button {
+      margin-top: 1vh;
+      background-color: $primary;
+      color: $text;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 6rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
+      &:hover {
+        background-color: darken($primary, 10%);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      &:active {
+        background-color: darken($primary, 20%);
+        box-shadow: none;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px lighten($primary, 40%);
+      }
+    }
+  }
 }

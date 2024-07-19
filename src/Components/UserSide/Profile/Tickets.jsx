@@ -69,8 +69,8 @@ function Tickets() {
                                     <p><strong>Seats:</strong> {ticket.booking.seats_name}</p>
                                     {
                                         !ticket.qr_code.used &&
-                                        <span><button onClick={()=> Download_pdf(ticket.id)}>PDF</button> OR <button>PNG</button></span>
-
+                                        // <span><button onClick={()=> Download_pdf(ticket.id)}>PDF</button> </span>
+                                        <span><button className="ticket__pdf-button" onClick={() => Download_pdf(ticket.id)}>Download</button></span>
                                     }
                                 </div>
                             </div>

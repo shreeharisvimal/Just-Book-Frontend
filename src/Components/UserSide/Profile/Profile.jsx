@@ -75,9 +75,7 @@ function Profile() {
           </div>
           <strong className='names'>
             <br />
-            <p>{ userDetails ? userDetails.first_name : 'No First Name'}</p>
-            <br />
-            <p>{ userDetails ? userDetails.last_name ?userDetails.last_name : 'No Last Name' : ''}</p>
+            <p>{ userDetails ? userDetails.first_name : 'No First Name'} { userDetails ? userDetails.last_name ?userDetails.last_name : 'No Last Name' : ''}</p>
           </strong>
         </aside>
         <main className="profile__main">
