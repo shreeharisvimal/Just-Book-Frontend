@@ -8,7 +8,7 @@ import { UseMovieId } from '../../ContextApi/MovieIdContext';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function MovieCard() {
+function MovieCard({ searchQuery}) {
   const [movies, setMovies] = useState([]);
   const { setMovieId } = UseMovieId();
   const navigate = useNavigate();
@@ -18,18 +18,17 @@ function MovieCard() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        toast.loading('Fetching your movies', { autoClose: 1000 });
         const movieResp = await axios.get('movie/movieListCreateAPIView/');
         const showResp = await axios.get('show/ShowFetchAll/');
         if (movieResp.status === 200 && showResp.status === 200) {
           const moviesData = movieResp.data;
           const showData = showResp.data;
 
-          const filteredMovies = moviesData.filter((movie) => {
-            return showData.some((show) => show.movie.id === movie.id &&  show.theater.city.toUpperCase() === Location.city.toUpperCase());
+          const myfilteredMovies = moviesData.filter((movie) => {
+            return showData.some((show) => show.movie.id === movie.id && show.theater.city.toUpperCase() === Location.city.toUpperCase());
           });
 
-          setMovies(filteredMovies);
+          setMovies(myfilteredMovies);
           setLoading(false);
           toast.dismiss();
         }
@@ -41,6 +40,15 @@ function MovieCard() {
 
     fetchMovies();
   }, [Location.city]);
+
+  const filteredMovies = movies.filter((movie) => {
+    console.log("MovieCard filteredMovies searchQuery:", searchQuery); 
+    if(searchQuery){
+      return movie.title && movie.title.toLowerCase().includes(searchQuery.toLowerCase());
+    }else{
+      return movie;
+    }
+  });
 
   const handleMovieDetails = (tmdbId, movieId) => {
     localStorage.setItem('BookShowId', movieId);
@@ -54,9 +62,9 @@ function MovieCard() {
 
   return (
     <div className='MovieFullCard'>
-      {movies.length > 0 ? (
+      {filteredMovies.length > 0 ? (
         <ul className="movie-list">
-          {movies.map((movie) => (
+          {filteredMovies.map((movie) => (
             <li key={movie.id} className="movie-item" onClick={() => handleMovieDetails(movie.tmdb_id, movie.id)}>
               <img src={`${imageUrl}${movie.poster_path}`} alt={movie.title} />
               <div className="movie-info">
@@ -69,7 +77,7 @@ function MovieCard() {
           ))}
         </ul>
       ) : (
-        <div>No Movies Are Available For Your Location</div>
+        <div><strong> This Movie is not available at this location please change the location</strong></div>
       )}
     </div>
   );

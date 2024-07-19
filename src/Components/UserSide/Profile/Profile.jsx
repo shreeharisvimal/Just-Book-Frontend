@@ -56,26 +56,28 @@ function Profile() {
   };
 
   useEffect(() => {
-    FetchThisUser();
+    console.log('Auth status:', auth_user.isAuthenticated);
     if (!auth_user.isAuthenticated) {
-      // navigate('/');
+      navigate('/');
+    } else {
+      FetchThisUser();
     }
   }, [auth_user.isAuthenticated, navigate]);
 
   return (
-    <Suspense fallback={<div>Loading</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="profile__container">
         <aside className="profile__aside">
           <button onClick={() => setChangePage(true)}>PROFILE</button>
           <button onClick={() => setChangePage(false)}>TICKETS</button>
           <div className="profile__picture-container">
-            <img src={userDetails ? userDetails.profile_pic ? userDetails.profile_pic : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
+            <img src={userDetails ? userDetails.profile_pic || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
               alt="avatar"
               className="profile__picture" />
           </div>
           <strong className='names'>
             <br />
-            <p>{ userDetails ? userDetails.first_name : 'No First Name'} { userDetails ? userDetails.last_name ?userDetails.last_name : 'No Last Name' : ''}</p>
+            <p>{userDetails ? `${userDetails.first_name} ${userDetails.last_name}` : 'No Name Available'}</p>
           </strong>
         </aside>
         <main className="profile__main">
