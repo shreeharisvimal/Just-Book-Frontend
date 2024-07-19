@@ -8,5 +8,6 @@ const Instance = axios.create({
     Authorization: `Bearer ${accessToken}`
   }
 });
+console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
 
 export default Instance;
