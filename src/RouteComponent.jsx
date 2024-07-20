@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import StaffPrivateRouter from './Wrappers/StaffPrivateRouter';
-
+import './Wrappers/Loader.scss'
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -24,7 +24,9 @@ function RouteComponent() {
 
   return (
     
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div className="loader"></div>
+    </div> }>
         <ToastContainer />
         <Routes>
           <Route path="/" element={<LandingPage />} />

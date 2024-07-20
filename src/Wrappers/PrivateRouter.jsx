@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate } from 'react-router-dom';
 import UserAuth from '../Utils/AuthUser';
+import './Loader.scss';
 
 function PrivateRouter({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,7 +17,7 @@ function PrivateRouter({ children }) {
         setIsAuthenticated(AuthInfo.isAuthenticated);
         setTimeout(() => {
           setLoading(false);
-        }, 3000);
+        }, 2000);
       }
     };
     fetchData();
@@ -27,22 +28,18 @@ function PrivateRouter({ children }) {
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      toast.warning('Please login first', { autoClose: 2000 });
+      toast.warning('Please login first', { autoClose: 3000 });
       setTimeout(() => {
         setShouldRedirect(true);
-      }, 2000);
+      }, 1000);
     }
   }, [isAuthenticated, isLoading]);
 
   if (isLoading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline' }}>
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </div>
+        <div className="loader"></div>
+      </div> 
     );
   }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import AuthAdmin from '../Utils/AuthAdmin';
 import { Navigate } from 'react-router-dom';
+import './Loader.scss';
 
 function AdminPrivateRouter({ children }) {
-
     const INITIAL_STATE = {
         isAuthenticated: false,
         isAdmin: false,
@@ -26,7 +26,11 @@ function AdminPrivateRouter({ children }) {
             } catch (error) {
                 console.error('Error during authentication:', error);
             } finally {
-                if (isMounted) setLoading(false);
+                if (isMounted) {
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 2000); // Reduced timeout for faster loading
+                }
             }
         };
 
@@ -39,15 +43,17 @@ function AdminPrivateRouter({ children }) {
     if (isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
+                <div className="loader"></div>
             </div>
         );
     }
 
+    if (!authState.isAuthenticated) {
+        return <Navigate to="/login" />; // Redirect to login if not authenticated
+    }
+
     if (!authState.isAdmin) {
-        return <Navigate to="/admin/" />;
+        return <Navigate to="/admin/" />; // Redirect to admin login if not admin
     }
 
     return children;

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense} from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';

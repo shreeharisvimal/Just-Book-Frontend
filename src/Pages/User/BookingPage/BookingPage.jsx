@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import useRazorpay from 'react-razorpay';
 import { useNavigate } from 'react-router-dom';
 import './BookingPage.scss';
+import '../../../Wrappers/Loader.scss'
 import { LanguageUtils } from '../../../Utils/LanguageUtils';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
@@ -120,7 +121,6 @@ function BookingPage() {
                                     Accept: 'application/json', 
                                 },
                             });
-                            console.log("THe resp"+resp)
                             if (resp.status === 201) {
                                 await RemoveLocalStorage();
                                 await UpdateSeatStatus();
@@ -170,7 +170,7 @@ function BookingPage() {
     }, []);
 
     return (
-        <Suspense fallback={<div>Loading data...</div>}>
+        <Suspense fallback={<div className="loader"></div>}>
             <div className='main'>
                 <NavBar />
                 {loading ? (
