@@ -27,7 +27,6 @@ function Profile() {
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log(res.status);
       localStorage.clear();
       axios.defaults.headers.common['Authorization'] = null;
       window.location.href = '/';
@@ -47,8 +46,8 @@ function Profile() {
       });
 
       if (res.status === 200) {
-        console.log("User fetched");
         setThisuser(res.data);
+        localStorage.setItem('first_name', res.data.first_name)
       }
     } catch (error) {
       console.log(error);
@@ -56,9 +55,8 @@ function Profile() {
   };
 
   useEffect(() => {
-    console.log('Auth status:', auth_user.isAuthenticated);
     if (!auth_user.isAuthenticated) {
-      navigate('/');
+
     } else {
       FetchThisUser();
     }

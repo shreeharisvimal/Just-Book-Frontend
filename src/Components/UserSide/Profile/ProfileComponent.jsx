@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './ProfileComponent.scss';
 import axios from '../../../axios';
 import { toast } from 'react-toastify';
+import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
+import { useDispatch } from 'react-redux';
+
 
 function ProfileComponent() {
-    
-    useEffect(()=>{
+    const dispatch = useDispatch();
+    useEffect(() => {
         HandleFetchUser();
-    },[])
+    }, [])
 
     const token = localStorage.getItem("AccessToken");
     const [user, setUser] = useState(null);
@@ -19,10 +22,7 @@ function ProfileComponent() {
     };
 
     const [formData, setFormData] = useState(INIT_STATE);
-
-    useEffect(() => {
-        HandleFetchUser();
-    }, []);
+    const [imagePreview, setImagePreview] = useState(null);
 
     useEffect(() => {
         if (user) {
@@ -31,26 +31,40 @@ function ProfileComponent() {
                 last_name: user.last_name,
                 profile_pic: null,
             });
+            setImagePreview(user.profile_pic ? user.profile_pic : null);
         }
     }, [user]);
 
     const handleOnChange = (e) => {
         const { name, value, files } = e.target;
-        setFormData({ ...formData, [name]: files ? files[0] : value });
+        if (files) {
+            setFormData({ ...formData, [name]: files[0] });
+            setImagePreview(URL.createObjectURL(files[0]));
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
-    const HandleFetchUser = async()=>{
-        try{
+    const HandleFetchUser = async () => {
+        try {
             const res = await axios.get(`Profile/`, {
                 headers: {
                   'content-type': 'multipart/form-data',
                   'authorization': `Bearer ${token}`,
                 }
-              });
-            if(res.status === 200){
-                setUser(res.data)
+            });
+            if (res.status === 200) {
+                setUser(res.data);
+                dispatch(
+                    set_Authenticate({
+                      first_name: res.data.first_name,
+                      user_cred: res.data.user_cred,
+                      isAuth: true,
+                      isAdmin: res.data.isAdmin,
+                    })
+                  );
             }
-        }catch(error){
+        } catch (error) {
             console.log(error);
         };
     };
@@ -58,12 +72,13 @@ function ProfileComponent() {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
 
-        
         const formDataToSend = new FormData();
 
         formDataToSend.append('first_name', formData.first_name);
         formDataToSend.append('last_name', formData.last_name);
-        formDataToSend.append('profile_pic', formData.profile_pic);
+        if (formData.profile_pic) {
+            formDataToSend.append('profile_pic', formData.profile_pic);
+        }
 
         try {
             const res = await axios.post(`Profile/`, formDataToSend, {
@@ -74,12 +89,12 @@ function ProfileComponent() {
             });
 
             if (res.status === 201) {
-                toast.success('Image uploaded');
+                toast.success('Profile updated successfully');
                 window.location.reload();
             }
         } catch (err) {
             console.log(err);
-            toast.error('Please reload the page');
+            toast.error('Please try again later');
         }
     };
 
@@ -95,13 +110,12 @@ function ProfileComponent() {
                             type="file"
                             name="profile_pic"
                             onChange={handleOnChange}
-                            required
                         />
                         <div className="profileComponent__image-container">
-                            {formData.profile_pic && (
+                            {imagePreview && (
                                 <img
                                     className="profileComponent__image"
-                                    src={URL.createObjectURL(formData.profile_pic)}
+                                    src={imagePreview}
                                     alt="Profile"
                                 />
                             )}
