@@ -1,31 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import './TheaterPage.scss';
 import axios from '../../../Admin_axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import { useSelector } from 'react-redux';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
 
 function TheaterPage() {
-  const user = useSelector((state) => state.auth_user);
+  const CITY = [
+    "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata",
+    "Pune", "Ahmedabad", "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur",
+    "Visakhapatnam", "Indore", "Kochi", "Trivandrum", 'Alappuzha',
+  ];
+  const [showEdit, setShowEditTheater] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [errors, setErrors] = useState({});
   let email;
-  try {
-    const RefreshToken = JSON.parse(localStorage.getItem('RefreshToken'));
-    const decodeRefresh = jwtDecode(RefreshToken);
-    email = decodeRefresh.user_cred;
-    console.log('the user email is ', email);
-  } catch (error) {
-    console.log('the error', error);
-  }
+  const INIT_STATE = {
+    theater_name: '',
+    email: email,
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    description: '',
+  };
+  const [formData, setFormData] = useState(INIT_STATE);
+  const [theaterId, setTheaterId] = useState(null);
+
+ 
 
   const [theater, setTheater] = useState([]);
   const [showTheater, setShowTheater] = useState(false);
 
   const fetchTheaters = async () => {
     try {
-      const resp = await axios.get(`/theater/FetchTheaterStaff/${user.user_cred}/`);
+      const RefreshToken = localStorage.getItem('RefreshToken');
+      const decodeRefresh = jwtDecode(RefreshToken);
+      email = decodeRefresh.user_cred;
+      console.log('the user email is ', email);
+    } catch (error) {
+      console.log('the error', error);
+    }
+    try {
+      const resp = await axios.get(`/theater/FetchTheaterStaff/${email}/`);
       console.log('the theater', resp.data);
       setTheater(resp.data);
     } catch (error) {
@@ -37,12 +59,52 @@ function TheaterPage() {
     fetchTheaters();
   }, [showTheater]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const editTheater = (theater) => {
+    setFormData({
+      theater_name: theater.theater_name,
+      email: theater.email,
+      phone: theater.phone,
+      address: theater.address,
+      city: theater.city,
+      state: theater.state,
+      description: theater.description,
+    });
+    setTheaterId(theater.id);
+    setEditMode(true);
+    setShowEditTheater(true);
+  };
+
   const deleteTheater = async (id) => {
     try {
       await axios.delete(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${id}/`);
       fetchTheaters();
     } catch (error) {
       console.error('Error deleting theater:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editMode) {
+        await axios.put(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${theaterId}/`, formData);
+        setEditMode(false);
+      } else {
+        await axios.post('/theater/TheaterApiRetrieveUpdateDestroyAPIView/', formData);
+      }
+      fetchTheaters();
+      setShowEditTheater(false);
+      setFormData(INIT_STATE);
+    } catch (error) {
+      console.error('Error submitting form:', error);
     }
   };
 
@@ -76,10 +138,55 @@ function TheaterPage() {
                   <button className="theater-page__delete-btn" onClick={() => deleteTheater(theater.id)}>
                     Delete
                   </button>
+                  <button className="theater-page__edit-btn" onClick={() => editTheater(theater)}>
+                    Edit
+                  </button>
                 </div>
               </div>
             ))}
           </div>
+          {showEdit && (
+            <form onSubmit={handleSubmit} className="form">
+              <h2 className="form-title">{editMode ? 'Edit Theater' : 'Add Theater'}</h2>
+              <input
+                type="text"
+                name="theater_name"
+                value={formData.theater_name}
+                placeholder="Theater Name"
+                onChange={handleChange}
+                className="form-input"
+              />
+              {errors.phone && <p className="error-text">{errors.phone}</p>}
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                placeholder="Address"
+                onChange={handleChange}
+                className="form-input"
+              />
+            
+              {errors.city && <p className="error-text">{errors.city}</p>}
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                placeholder="State"
+                onChange={handleChange}
+                className="form-input"
+              />
+              {errors.state && <p className="error-text">{errors.state}</p>}
+              <textarea
+                name="description"
+                value={formData.description}
+                placeholder="Description"
+                onChange={handleChange}
+                className="form-textarea"
+              />
+              <button type="submit" onClick={handleSubmit} className="form-button">Submit</button>
+      <button type="submit" onClick={()=>setShowEditTheater(false)} className="form-button">Cancel</button>
+            </form>
+          )}
         </div>
       </div>
     </React.Suspense>

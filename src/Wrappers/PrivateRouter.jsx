@@ -16,7 +16,7 @@ function PrivateRouter({ children }) {
         setIsAuthenticated(AuthInfo.isAuthenticated);
         setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 3000);
       }
     };
     fetchData();
@@ -30,7 +30,7 @@ function PrivateRouter({ children }) {
       toast.warning('Please login first', { autoClose: 2000 });
       setTimeout(() => {
         setShouldRedirect(true);
-      }, 3000);
+      }, 2000);
     }
   }, [isAuthenticated, isLoading]);
 

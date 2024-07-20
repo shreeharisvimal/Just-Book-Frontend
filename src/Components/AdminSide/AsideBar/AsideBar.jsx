@@ -47,7 +47,7 @@ function AsideBar() {
           <li className={styles.menuItem}>
             <a className={styles.menuLink} onClick={() => handleClick('admintheaterManagement/')}>
               <i className="icon material-icons md-comment"></i>
-              <span className={styles.text}>Theater Management</span>
+              <span className={styles.text}>Theater Owners</span>
             </a>
           </li>
           

@@ -8,6 +8,12 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 $pending-color: #f1c40f;
 $approved-color: #2ecc71;
 $rejected-color: #e74c3c;
+$error-color: #ff4c4c;
+$input-border-color: #ccc;
+$input-border-focus-color: #3498db;
+$font-family: 'Arial', sans-serif;
+$margin: 1rem 0;
+
 
 .theater-page {
   &__container {
@@ -20,6 +26,7 @@ $rejected-color: #e74c3c;
     justify-content: space-between;
     align-items: flex-start;
   }
+
   &__create-btn {
     background-color: $primary-color;
     border: none;
@@ -28,12 +35,13 @@ $rejected-color: #e74c3c;
     padding: $padding;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 1rem 0;
+    margin: $margin;
 
     &:hover {
       background-color: $secondary-color;
     }
   }
+
   &__content {
     display: flex;
     flex-direction: column;
@@ -41,12 +49,14 @@ $rejected-color: #e74c3c;
     width: 100%;
     max-width: 1200px;
   }
+
   &__theater-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
   }
+
   &__theater-card {
     background-color: white;
     border-radius: $border-radius;
@@ -60,6 +70,7 @@ $rejected-color: #e74c3c;
       transform: translateY(-10px);
     }
   }
+
   &__theater-header {
     padding: $padding;
     border-radius: $border-radius $border-radius 0 0;
@@ -77,6 +88,7 @@ $rejected-color: #e74c3c;
       background-color: $rejected-color;
     }
   }
+
   &__details {
     padding: $padding;
 
@@ -85,12 +97,14 @@ $rejected-color: #e74c3c;
       font-size: 14px;
     }
   }
+
   &__actions {
     display: flex;
     justify-content: flex-end;
     padding: $padding;
 
-    .theater-page__delete-btn {
+    .theater-page__delete-btn,
+    .theater-page__edit-btn {
       padding: 0.5rem 1rem;
       border: none;
       border-radius: 4px;
@@ -105,4 +119,86 @@ $rejected-color: #e74c3c;
       }
     }
   }
+}
+
+.form {
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  padding: $padding;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 2rem 0;
+  width: 100%;
+  
+  &-title {
+    color: $primary-color;
+    font-family: $font-family;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: $margin;
+  }
+  
+  &-input,
+  &-Drop,
+  .react-tel-input .form-control {
+    width: 90%;
+    padding: 0.75rem;
+    margin: $margin 0;
+    border: 1px solid $input-border-color;
+    border-radius: 4px;
+    font-family: $font-family;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+      border-color: $input-border-focus-color;
+      outline: none;
+    }
+  }
+  
+  &-Drop {
+    background: white;
+    appearance: none;
+  }
+  
+  &-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin: $margin 0;
+    border: 1px solid $input-border-color;
+    border-radius: 4px;
+    font-family: $font-family;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+      border-color: $input-border-focus-color;
+      outline: none;
+    }
+  }
+  
+  &-button {
+    background: $primary-color;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-family: $font-family;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+}
+
+.error-text {
+  color: $error-color;
+  font-family: $font-family;
+  font-size: 0.875rem;
+  margin-top: -$margin;
 }

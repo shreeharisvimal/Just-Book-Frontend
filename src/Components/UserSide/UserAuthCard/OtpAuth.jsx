@@ -36,7 +36,6 @@ function OtpAuth({ userdata, otpres }) {
               localStorage.setItem('user_cred', JSON.stringify(userdata.user_cred));
               localStorage.setItem('first_name', JSON.stringify(userdata.first_name));
               localStorage.setItem('AccessToken', userdata.access_token);
-              localStorage.setItem('RefreshToken', userdata.refresh_token);
               const decodedToken = jwtDecode(userdata.access_token);
               dispatch(
                 set_Authenticate({
