@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axios from '../../../axios';
 import OtpAuth from './OtpAuth';
 import './UserAuth.scss';
+import './auth.css'
 
 function UserAuthCard() {
   const [phone, setPhone] = useState('');
@@ -94,7 +95,7 @@ function UserAuthCard() {
               disabled={!!phone} 
             />
           </div>
-          <button type="submit" className="Submit">SignIn Or SignUp</button>
+          <button type="submit" className="bton">SignIn Or SignUp</button>
         </form>
       )}
       <br />

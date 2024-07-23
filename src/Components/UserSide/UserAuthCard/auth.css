@@ -1,0 +1,46 @@
+.bton {
+	width: 24vw;
+	position: relative;
+	height: 3.5em;
+	border: 3px ridge #38A3A5;
+	outline: none;
+	background-color: transparent;
+	color: black;
+	transition: 1s;
+	border-radius: 0.3em;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+    }
+    
+    .bton::after {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: 3%;
+	width: 95%;
+	height: 40%;
+	background-color: #ffffff;
+	transition: 0.5s;
+	transform-origin: center;
+    }
+    
+    .bton::before {
+	content: "";
+	transform-origin: center;
+	position: absolute;
+	top: 80%;
+	left: 3%;
+	width: 95%;
+	height: 40%;
+	background-color: #ffffff;
+	transition: 0.5s;
+    }
+    
+    .bton:hover::before, .bton:hover::after {
+	transform: scale(0)
+    }
+    
+    .bton:hover {
+	box-shadow: inset 0px 0px 25px #38A3A5;
+    }

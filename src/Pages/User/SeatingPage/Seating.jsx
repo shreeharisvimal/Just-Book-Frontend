@@ -2,8 +2,9 @@ import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../../axios';
 import './Seating.scss';
+import './seating.css';
 import { set_Booking } from '../../../Redux/Booking/BookSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
@@ -192,7 +193,10 @@ function Seating() {
         </span>
 
         {Object.keys(selectedSeats).length > 0 && (
-          <button className="book-button" onClick={BookTicket}>Book The Seats</button>
+          <span className='book'>
+          <button className="book learn-more" onClick={BookTicket}> Book The Seats
+        </button>
+          </span>
         )}
 
         {seatAllocation ? (

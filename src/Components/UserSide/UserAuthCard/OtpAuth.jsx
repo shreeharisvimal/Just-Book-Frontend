@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
 import {jwtDecode} from 'jwt-decode';
 import './otp.scss';
+import './myOTP.css'
 
 function OtpAuth({ userdata, otpres }) {
   const [otp, setOtp] = useState("");
@@ -80,7 +81,7 @@ function OtpAuth({ userdata, otpres }) {
             onChange={handleOtpChange}
           />
         </div>
-        <button type="submit">Verify OTP</button>
+        <button className="btn" type="submit"> Verify OTP</button>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
       <br />

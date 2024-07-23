@@ -1,5 +1,3 @@
-// BookingPage.jsx
-
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import axios from '../../../axios';
 import { imageUrl } from '../../../Tmdb';

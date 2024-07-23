@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { LanguageUtils } from '../../../Utils/LanguageUtils';
 import axios from '../../../axios';
 import './Show.scss';
+import './show.css';
 import { useSelector } from 'react-redux';
 
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
@@ -131,10 +132,12 @@ function Show() {
                                             <div className="theater__shows">
                                                 {groupedShowsByTheater[theaterName].shows.map((show, idx) => (
                                                     show.show_date === selectedDate && (
-                                                        <div className="theater__shows-item" key={idx} onClick={()=>BookTicket(show.screen.id, show.id)}>
-                                                            <div className="theater__shows-item-time">Show: {show.show_time}</div>
+                                                        <div className="showbtn" key={idx} onClick={()=>BookTicket(show.screen.id, show.id)}>
+                                                            <i class="animation"></i>   
+                                                            <div className="theater__shows-item-time">Time: {show.show_time}</div>
                                                             <div className="theater__shows-item-price">Price: {show.price}</div>
                                                             <div className="theater__shows-item-screen">Screen: {show.screen.name}</div>
+                                                            <i class="animation"></i>
                                                         </div>
                                                     )
                                                 ))}

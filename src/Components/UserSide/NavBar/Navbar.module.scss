@@ -85,18 +85,18 @@ $text: #fff; // White text color
     position: relative;
     left: -6rem;
 
-    &_button {
-      padding: 0.5rem 1rem;
-      border: none;
-      background-color: transparent;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
+    // &_button {
+    //   padding: 0.5rem 1rem;
+    //   border: none;
+    //   background-color: transparent;
+    //   color: #fff;
+    //   font-size: 1rem;
+    //   cursor: pointer;
+    //   text-decoration: none;
 
-      &:hover {
-        color: #38A3A5;
-      }
-    }
+    //   &:hover {
+    //     color: #38A3A5;
+    //   }
+    // }
   }
 }

@@ -152,8 +152,7 @@ body {
           padding: 10px;
           border-radius: 5px;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          text-align: center;
-
+          display: flex;
           &-time, &-price, &-screen {
             color: $primary-color;
             font-size: 12px;
@@ -174,11 +173,6 @@ ul {
 }
 
 
-* {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  outline: 0;
-}
+
 
 

@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../axios';
+import './booking.css'
 
 function MovieDetails() {
     const navigate = useNavigate();
@@ -119,7 +120,13 @@ function MovieDetails() {
                     Release Date {myMovieDetails.release_date}
                     </h3>
                 </div>
-                <button className='DetailsPage__btn' onClick={BookTicket}>Book Now</button>
+                {/* <button className='DetailsPage__btn' onClick={BookTicket}>Book Now</button> */}
+                <button className="fancy" onClick={BookTicket}>
+                    <span className="text">Booking Now</span>
+                    <span className="top-key"></span>
+                    <span className="bottom-key-1"></span>
+                    <span className="bottom-key-2"></span>
+                </button>
                 <div className='DetailsPage__main'>
                     {myMovieDetails.images.backdrops.length > 0 ? (
                         <Slider {...settings} className='DetailsPage__slider'>

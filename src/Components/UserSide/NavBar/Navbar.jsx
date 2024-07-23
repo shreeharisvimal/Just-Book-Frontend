@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Image from '../../../logo192.png';
 import UserAuthCard from '../UserAuthCard/UserAuthCard';
 import styles from './Navbar.module.scss';
+import './nav.css'
 import isAuthUser from '../../../Utils/AuthUser';
 import { jwtDecode } from 'jwt-decode';
 import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
@@ -140,13 +141,13 @@ function Navbar({ onSearch }) {
       </div>
       <div className={styles.navbar__auth}>
                 {AuthUser.first_name ? (
-                    <Link to='/profile' className={styles.navbar__auth_button}>
+                    <Link to='/profile' className='button'>
                         {AuthUser.first_name}
                     </Link>
                 ) : (
-                    <button className={styles.navbar__auth_button} onClick={toggleLoginOrSignin}>
-                        SignIn / SignUp
-                    </button>
+                  <button class="button" data-text="Awesome" onClick={toggleLoginOrSignin}>
+                      Sign In / Sign Up
+                  </button> 
                 )}
                 {isLoginOrSigninVisible && <UserAuthCard />}
             </div>
