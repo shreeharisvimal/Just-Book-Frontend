@@ -32,7 +32,7 @@ function StaffPrivateRouter({children}) {
                 if (isMounted) {
                     setTimeout(() => {
                         setLoading(false);
-                    }, 2000); // Reduced timeout for faster loading
+                    }, 3000);
                 }
             }
         };

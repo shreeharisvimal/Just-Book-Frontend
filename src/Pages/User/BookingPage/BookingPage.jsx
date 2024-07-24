@@ -3,7 +3,7 @@ import axios from '../../../axios';
 import { imageUrl } from '../../../Tmdb';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import useRazorpay from 'react-razorpay';
+// import useRazorpay from 'react-razorpay';
 import { useNavigate } from 'react-router-dom';
 import './BookingPage.scss';
 import '../../../Wrappers/Loader.scss'
@@ -11,7 +11,7 @@ import { LanguageUtils } from '../../../Utils/LanguageUtils';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 function BookingPage() {
-    const Razorpay = useRazorpay()
+    // const Razorpay = useRazorpay()
     const Book_details = useSelector((state) => state.Book_details);
     const user = useSelector((state) => state.auth_user);
     const [loading, setLoading] = useState(false);
