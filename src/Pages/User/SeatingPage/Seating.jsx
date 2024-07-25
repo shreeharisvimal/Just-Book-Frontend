@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../../axios';
 import './Seating.scss';
@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 function Seating() {
-
   const { screenId, showId } = useParams();
   const [normalPrice, setNormalPrice] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -24,12 +23,80 @@ function Seating() {
   const [isReloading, setIsReloading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const wsRef = useRef(null); 
 
   const calculatePriceWithPercentage = (percentage, price) => {
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
     const totalPrice = parseInt(price) + percentageAmount;
     return Math.round(totalPrice);
   };
+
+  const handleSelecting = useCallback((row, seat, seatName ,updatedSeatAllocation) => {
+    const updatedSelectedSeats = { ...selectedSeats };
+
+    if (updatedSelectedSeats[row]) {
+      if (updatedSelectedSeats[row].includes(seat)) {
+        updatedSelectedSeats[row] = updatedSelectedSeats[row].filter(s => s !== seat);
+        if (updatedSelectedSeats[row].length === 0) {
+          delete updatedSelectedSeats[row];
+        }
+      } else {
+        updatedSelectedSeats[row] = [...updatedSelectedSeats[row], seat];
+      }
+    } else {
+      updatedSelectedSeats[row] = [seat];
+    }
+
+    setSelectedSeats(updatedSelectedSeats);
+    setBookingSeats(prev => [...prev, seatName]);
+
+    let newTotalAmount = 0;
+    Object.keys(updatedSelectedSeats).forEach(r => {
+      updatedSelectedSeats[r].forEach(s => {
+        const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
+        const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
+        newTotalAmount += seatAmount;
+      });
+    });
+
+    if (wsRef.current) {
+      wsRef.current.send(JSON.stringify({
+        action: 'seat_update',
+        data: {
+          seat_data: updatedSeatAllocation
+        }
+      }));
+    }
+
+    setTotalAmount(Math.round(newTotalAmount));
+    handleShowBook(newTotalAmount);
+  }, [selectedSeats, bookingSeats, seatTypes, normalPrice, seatAllocation]);
+
+  const handleShowBook = (newTotalAmount) => {
+    if (newTotalAmount <= 0) {
+      setSelectedSeats({});
+    }
+  };
+
+  useEffect(() => {
+    const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
+    const ws = new WebSocket(wsUrl);
+    wsRef.current = ws;
+    console.log(ws)
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setSeatAllocation(data.seat_data);
+    };
+
+    ws.onclose = () => {
+      console.error('WebSocket closed unexpectedly');
+    };
+
+    return () => {
+      ws.close();
+      wsRef.current = null;
+    };
+  }, [showId]);
 
   const fetchSeats = async () => {
     try {
@@ -64,7 +131,6 @@ function Seating() {
     }
   }, [isDataFetched, isReloading]);
 
-
   const BookTicket = () => {
     try {
       dispatch(
@@ -82,53 +148,15 @@ function Seating() {
     }
   };
 
-  const handleSelecting = (row, seat, seatName) => {
-    const updatedSelectedSeats = { ...selectedSeats };
-
-    if (updatedSelectedSeats[row]) {
-      if (updatedSelectedSeats[row].includes(seat)) {
-        updatedSelectedSeats[row] = updatedSelectedSeats[row].filter(s => s !== seat);
-        if (updatedSelectedSeats[row].length === 0) {
-          delete updatedSelectedSeats[row];
-        }
-      } else {
-        updatedSelectedSeats[row] = [...updatedSelectedSeats[row], seat];
-      }
-    } else {
-      updatedSelectedSeats[row] = [seat];
-    }
-
-    setSelectedSeats(updatedSelectedSeats);
-    setBookingSeats(prev => [...prev, seatName]);
-    console.log(bookingSeats);
-
-    let newTotalAmount = 0;
-    Object.keys(updatedSelectedSeats).forEach(r => {
-      updatedSelectedSeats[r].forEach(s => {
-        const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
-        const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
-        newTotalAmount += seatAmount;
-      });
-    });
-
-    setTotalAmount(Math.round(newTotalAmount));
-    handleShowBook(newTotalAmount);
-  };
-
-  const handleShowBook = (newTotalAmount) => {
-    if (newTotalAmount <= 0) {
-      setSelectedSeats({});
-    }
-  };
-
-  const updateSeatValue = (row, seat, seatName) => {
+  const updateSeatValue = useCallback((row, seat, seatName) => {
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace) {
       const updatedSeatData = {
         ...seatData,
-        status: seatData.status === 'selected' ? 'available' : 'selected'
+        status: seatData.status === 'selected' ? 'available' : 'selected',
+        holdedseat:!seatData.holdedseat
       };
-
+      console.log(updatedSeatData)
       const updatedRowData = {
         ...seatAllocation[row],
         seats: {
@@ -143,19 +171,18 @@ function Seating() {
       };
 
       let count = 0;
-        Object.keys(selectedSeats).forEach(r => {
+      Object.keys(selectedSeats).forEach(r => {
         count += selectedSeats[r].length;
       });
 
       if (count < 10 || (count === 10 && selectedSeats[row]?.includes(seat))) {
         setSeatAllocation(updatedSeatAllocation);
-        handleSelecting(row, seat, seatName);
-      }else{
-        toast.warning('You can select maximum 10 seats');
+        handleSelecting(row, seat, seatName, updatedSeatAllocation);
+      } else {
+        toast.warning('You can select a maximum of 10 seats');
       }
-
     }
-  };
+  }, [seatAllocation, selectedSeats, handleSelecting]);
 
   if (loading) {
     return <div className="seats">Loading seat allocation...</div>;
@@ -182,24 +209,24 @@ function Seating() {
           <span className="total-amount">Total Amount: {totalAmount}rs</span>
           <div className="Dummy">
             <span className="Dummy-available">A11</span>
-            <label htmlFor="">Available</label>
+            <label>Available</label>
             <br />
             <span className="Dummy-selected">A11</span>
-            <label htmlFor="">Selected</label>
+            <label>Selected</label>
             <br />
             <span className="Dummy-booked">B11</span>
-            <label htmlFor="">Booked</label>
+            <label>Booked</label>
+            <br />
           </div>
         </span>
 
         {Object.keys(selectedSeats).length > 0 && (
           <span className='book'>
-          <button className="book learn-more" onClick={BookTicket}> Book The Seats
-        </button>
+            <button className="book learn-more" onClick={BookTicket}> Book The Seats </button>
           </span>
         )}
 
-        {seatAllocation ? (
+{seatAllocation ? (
           Object.keys(seatAllocation).map((row) => (
             <div key={row} className="seats__row">
               <div className="seats__row-options">
@@ -208,14 +235,16 @@ function Seating() {
               <div className="seats__row-seats">
                 {Object.keys(seatAllocation[row].seats).map((seat) => {
                   const seatData = seatAllocation[row].seats[seat];
-                  const seatClass = seatData.status === 'selected'
-                    ? 'seats__row-seats__seat--selected'
-                    : seatData.is_freeSpace
-                    ? 'seats__row-seats__seat--free-space'
-                    : seatData.status === 'available'
-                    ? 'seats__row-seats__seat--available'
-                    : 'seats__row-seats__seat--booked';
-                    const isBooked = seatClass === 'seats__row-seats__seat--booked';
+                  const seatClass = seatData.holdedseat === true
+                  ? 'eats__row-seats__seat--holdedseat'
+                  : seatData.is_freeSpace
+                  ? 'seats__row-seats__seat--free-space'
+                  : seatData.status === 'selected'
+                  ? 'seats__row-seats__seat--selected'
+                  : seatData.status === 'available'
+                  ? 'seats__row-seats__seat--available'
+                  : 'seats__row-seats__seat--booked';
+                  const isBooked = seatClass === 'seats__row-seats__seat--booked';
                   return (
                     <button
                       onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name):undefined}
@@ -230,7 +259,7 @@ function Seating() {
             </div>
           ))
         ) : (
-          <div className="seats">No seat allocation available</div>
+          <p>Seat allocation data not available.</p>
         )}
       </div>
     </div>

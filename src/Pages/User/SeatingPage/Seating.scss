@@ -9,7 +9,8 @@ $color-text: #0e1422;
 $background-color: #fff;
 $background-available: #38A3A5;
 $background-blocked: #001f3f;
-$hover-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+$background-holdedseats: hsl(51, 100%, 50%);
+$hover-shadow: 0 0 10px rgba(93, 89, 5, 0.3);
 
 @use 'sass:color'; // Import Sass color module
 
@@ -104,6 +105,12 @@ body{
           cursor: not-allowed;
           border-color: color.scale($background-blocked, $lightness: -20%);
         }
+        &--holdedseat {
+          background: $background-holdedseats;
+          color: $color-blocked;
+          cursor: not-allowed;
+          border-color: color.scale($background-holdedseats, $lightness: -20%);
+        }
         
         &--available {
           border-color: $background-available;
@@ -169,8 +176,6 @@ body{
               color: $color-text;
             }
             
-            
-            
             &-selected {
                 background: lighten($background-available, 20%);
             }
@@ -179,7 +184,10 @@ body{
                 background: $background-blocked;
                 color: $color-blocked;
             }
-            
+            &-holdedseat {
+              background: $background-holdedseats;
+              color: $color-blocked;
+            }
             label {
       margin: 0 10px;
       font-size: 14px;

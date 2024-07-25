@@ -23,11 +23,6 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <div className="loader"></div>
-          </div>
-        ) : (
           <Suspense fallback={
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
               <div className="loader"></div>
@@ -37,7 +32,6 @@ function App() {
               <MyRouter />
             </MovieId>
           </Suspense>
-        )}
       </div>
     </Provider>
   );

@@ -7,8 +7,9 @@ for (let row = 65; row < 75; row++) {
   for (let col = 1; col <= 20; col++) {
     SeatAllocation[rowLetter].seats[col] = { 
       status: 'available',
-      is_freeSpace: false,
       name: `${rowLetter}${col}`,
+      is_freeSpace: false,
+      holdedseat:false,
     };
   }
 }
