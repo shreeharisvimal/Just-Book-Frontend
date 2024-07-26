@@ -36,6 +36,8 @@ function OtpAuth({ userdata, otpres }) {
             try {
               localStorage.setItem('user_cred', JSON.stringify(userdata.user_cred));
               localStorage.setItem('first_name', JSON.stringify(userdata.first_name));
+              console.log(userdata.user_id)
+              localStorage.setItem('user_id', JSON.stringify(userdata.user_id));
               localStorage.setItem('AccessToken', userdata.access_token);
               const decodedToken = jwtDecode(userdata.access_token);
               dispatch(

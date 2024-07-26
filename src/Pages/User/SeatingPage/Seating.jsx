@@ -6,6 +6,8 @@ import './seating.css';
 import { set_Booking } from '../../../Redux/Booking/BookSlice';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+
+
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 function Seating() {
@@ -159,7 +161,8 @@ function Seating() {
       const updatedSeatData = {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
-        holdedseat:!seatData.holdedseat
+        holdedseat:!seatData.holdedseat,
+        user:localStorage.getItem('user_id') || seatData.user,
       };
       console.log(updatedSeatData)
       const updatedRowData = {
@@ -232,46 +235,53 @@ function Seating() {
         )}
 
 {seatAllocation ? (
-        Object.keys(seatAllocation).map((row) => (
-          <div key={row} className="seats__row">
-            <div className="seats__row-options">
-              <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
-            </div>
-            <div className="seats__row-seats">
-              {Object.keys(seatAllocation[row].seats).map((seat) => {
-                const seatData = seatAllocation[row].seats[seat];
-                const seatClass = seatData.status === 'booked'
-                  ? 'seats__row-seats__seat--booked'
-                  : seatData.is_freeSpace === true ?
-                  'seats__row-seats__seat--free-space'
-                  : seatData.holdedseat
-                  ? Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)
-                    ? 'seats__row-seats__seat--selected'
-                    : 'seats__row-seats__seat--holdedseat'
-                  : seatData.status === 'selected'
-                  ? 'seats__row-seats__seat--selected'
-                  : seatData.status === 'available'
-                  ? 'seats__row-seats__seat--available'
-                  : 'seats__row-seats__seat--booked';
+  Object.keys(seatAllocation).map((row) => (
+    <div key={row} className="seats__row">
+      <div className="seats__row-options">
+        <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
+      </div>
+      <div className="seats__row-seats">
+        {Object.keys(seatAllocation[row].seats).map((seat) => {
+          const seatData = seatAllocation[row].seats[seat];
+          let seatClass;
+          if (seatData.status === 'booked') {
+            seatClass = 'seats__row-seats__seat--booked';
+          } else if (seatData.is_freeSpace) {
+            seatClass = 'seats__row-seats__seat--free-space';
+          } else if (seatData.holdedseat) {
+            if (Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)) {
+              seatClass = 'seats__row-seats__seat--selected';
+            } else if (seatData.user === localStorage.getItem('user_id')) {
+              seatClass = 'seats__row-seats__seat--available';
+            } else {
+              seatClass = 'seats__row-seats__seat--holdedseat';
+            }
+          } else if (seatData.status === 'selected') {
+            seatClass = 'seats__row-seats__seat--selected';
+          } else if (seatData.status === 'available') {
+            seatClass = 'seats__row-seats__seat--available';
+          } else {
+            seatClass = 'seats__row-seats__seat--booked';
+          }
 
-                const isBooked = seatClass === 'seats__row-seats__seat--booked';
+          const isBooked = seatClass === 'seats__row-seats__seat--booked';
 
-                return (
-                  <button
-                    onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
-                    key={seat}
-                    className={`seats__row-seats__seat ${seatClass}`}
-                  >
-                    {seatData.name}
-                  </button>
-                );
-              })}
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>Seat allocation data not available.</p>
-        )}
+          return (
+            <button
+              onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
+              key={seat}
+              className={`seats__row-seats__seat ${seatClass}`}
+            >
+              {seatData.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  ))
+) : (
+  <p>No seat allocation data available</p>
+)}
       </div>
     </div>
   );

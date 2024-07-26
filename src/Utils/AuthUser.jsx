@@ -14,6 +14,7 @@ const updateUserToken = async () => {
             localStorage.setItem('AccessToken',(access_token));
             localStorage.setItem('RefreshToken', (refresh_token));
             const decodedAccessToken = jwtDecode(access_token);
+            localStorage.setItem('user_id', (decodedAccessToken['user_id']));
             return { name: decodedAccessToken.first_name, isAuthenticated: true };
         }
     } catch (error) {
