@@ -48,7 +48,11 @@ function Seating() {
     }
 
     setSelectedSeats(updatedSelectedSeats);
-    setBookingSeats(prev => [...prev, seatName]);
+    setBookingSeats(prev => {
+      const updatedSeats = new Set(prev); 
+      updatedSeats.add(seatName); 
+      return [...updatedSeats]; 
+    });
 
     let newTotalAmount = 0;
     Object.keys(updatedSelectedSeats).forEach(r => {
@@ -149,6 +153,7 @@ function Seating() {
   };
 
   const updateSeatValue = useCallback((row, seat, seatName) => {
+    console.log("The 1 st is seltected", selectedSeats, 'HSDHFKJSADF', bookingSeats)
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace) {
       const updatedSeatData = {
@@ -227,34 +232,40 @@ function Seating() {
         )}
 
 {seatAllocation ? (
-          Object.keys(seatAllocation).map((row) => (
-            <div key={row} className="seats__row">
-              <div className="seats__row-options">
-                <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
-              </div>
-              <div className="seats__row-seats">
-                {Object.keys(seatAllocation[row].seats).map((seat) => {
-                  const seatData = seatAllocation[row].seats[seat];
-                  const seatClass = seatData.holdedseat === true
-                  ? 'eats__row-seats__seat--holdedseat'
-                  : seatData.is_freeSpace
-                  ? 'seats__row-seats__seat--free-space'
+        Object.keys(seatAllocation).map((row) => (
+          <div key={row} className="seats__row">
+            <div className="seats__row-options">
+              <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
+            </div>
+            <div className="seats__row-seats">
+              {Object.keys(seatAllocation[row].seats).map((seat) => {
+                const seatData = seatAllocation[row].seats[seat];
+                const seatClass = seatData.status === 'booked'
+                  ? 'seats__row-seats__seat--booked'
+                  : seatData.is_freeSpace === true ?
+                  'seats__row-seats__seat--free-space'
+                  : seatData.holdedseat
+                  ? Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)
+                    ? 'seats__row-seats__seat--selected'
+                    : 'seats__row-seats__seat--holdedseat'
                   : seatData.status === 'selected'
                   ? 'seats__row-seats__seat--selected'
                   : seatData.status === 'available'
                   ? 'seats__row-seats__seat--available'
                   : 'seats__row-seats__seat--booked';
-                  const isBooked = seatClass === 'seats__row-seats__seat--booked';
-                  return (
-                    <button
-                      onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name):undefined}
-                      key={seat}
-                      className={`seats__row-seats__seat ${seatClass}`}
-                    >
-                      {seatData.name}
-                    </button>
-                  );
-                })}
+
+                const isBooked = seatClass === 'seats__row-seats__seat--booked';
+
+                return (
+                  <button
+                    onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
+                    key={seat}
+                    className={`seats__row-seats__seat ${seatClass}`}
+                  >
+                    {seatData.name}
+                  </button>
+                );
+              })}
               </div>
             </div>
           ))
