@@ -153,6 +153,28 @@ function Seating() {
     }
   };
 
+
+  const getSeatClass = useCallback((seatData) => {
+    if (seatData.status === 'booked') return 'seats__row-seats__seat--booked';
+    if (seatData.is_freeSpace) return 'seats__row-seats__seat--free-space';
+    if (seatData.holdedseat) {
+      if (Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)) {
+        return 'seats__row-seats__seat--selected';
+      }
+      if (seatData.user === localStorage.getItem('user_id') && localStorage.getItem('user_id')) {
+        return 'seats__row-seats__seat--available';
+      }
+      if (seatData.user && localStorage.getItem('user_id') !== seatData.user) {
+        return 'seats__row-seats__seat--holdedseat';
+      }
+      return 'seats__row-seats__seat--holdedseat';
+    }
+    if (seatData.status === 'selected') return 'seats__row-seats__seat--selected';
+    if (seatData.status === 'available') return 'seats__row-seats__seat--available';
+    return 'seats__row-seats__seat--booked';
+  }, [bookingSeats]);
+
+
   const updateSeatValue = useCallback((row, seat, seatName) => {
     console.log("The 1 st is seltected", selectedSeats, 'HSDHFKJSADF', bookingSeats)
     const seatData = seatAllocation[row].seats[seat];
@@ -215,72 +237,49 @@ function Seating() {
         <span className='Details'>
           <span className="total-amount">Total Amount: {totalAmount}rs</span>
           <div className="Dummy">
-            <span className="Dummy-available">A11</span>
-            <label>Available</label>
-            <br />
-            <span className="Dummy-selected">A11</span>
-            <label>Selected</label>
-            <br />
-            <span className="Dummy-booked">B11</span>
-            <label>Booked</label>
-            <br />
+            {[['available', 'Available'], ['selected', 'Selected'], ['booked', 'Booked']].map(([status, label]) => (
+              <React.Fragment key={status}>
+                <span className={`Dummy-${status}`}>A11</span>
+                <label>{label}</label>
+                <br />
+              </React.Fragment>
+            ))}
           </div>
         </span>
 
         {Object.keys(selectedSeats).length > 0 && (
           <span className='book'>
-            <button className="book learn-more" onClick={BookTicket}> Book The Seats </button>
+            <button className="book learn-more" onClick={BookTicket}>Book The Seats</button>
           </span>
         )}
 
-{seatAllocation ? (
-  Object.keys(seatAllocation).map((row) => (
-    <div key={row} className="seats__row">
-      <div className="seats__row-options">
-        <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
-      </div>
-      <div className="seats__row-seats">
-        {Object.keys(seatAllocation[row].seats).map((seat) => {
-          const seatData = seatAllocation[row].seats[seat];
-          let seatClass;
-          if (seatData.status === 'booked') {
-            seatClass = 'seats__row-seats__seat--booked';
-          } else if (seatData.is_freeSpace) {
-            seatClass = 'seats__row-seats__seat--free-space';
-          } else if (seatData.holdedseat) {
-            if (Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)) {
-              seatClass = 'seats__row-seats__seat--selected';
-            } else if (seatData.user === localStorage.getItem('user_id')) {
-              seatClass = 'seats__row-seats__seat--available';
-            } else {
-              seatClass = 'seats__row-seats__seat--holdedseat';
-            }
-          } else if (seatData.status === 'selected') {
-            seatClass = 'seats__row-seats__seat--selected';
-          } else if (seatData.status === 'available') {
-            seatClass = 'seats__row-seats__seat--available';
-          } else {
-            seatClass = 'seats__row-seats__seat--booked';
-          }
+        {seatAllocation ? (
+          Object.keys(seatAllocation).map((row) => (
+            <div key={row} className="seats__row">
+              <div className="seats__row-options">
+                <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
+              </div>
+              <div className="seats__row-seats">
+                {Object.entries(seatAllocation[row].seats).map(([seat, seatData]) => {
+                  const seatClass = getSeatClass(seatData);
+                  const isBooked = seatClass === 'seats__row-seats__seat--booked';
 
-          const isBooked = seatClass === 'seats__row-seats__seat--booked';
-
-          return (
-            <button
-              onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
-              key={seat}
-              className={`seats__row-seats__seat ${seatClass}`}
-            >
-              {seatData.name}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  ))
-) : (
-  <p>No seat allocation data available</p>
-)}
+                  return (
+                    <button
+                      onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
+                      key={seat}
+                      className={`seats__row-seats__seat ${seatClass}`}
+                    >
+                      {seatData.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No seat allocation data available</p>
+        )}
       </div>
     </div>
   );

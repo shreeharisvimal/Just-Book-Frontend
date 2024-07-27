@@ -44,6 +44,7 @@ const isAuthUser = async () => {
     }
     else{
         localStorage.removeItem('AccessToken')
+        localStorage.clear();
     }
 
     const updatedToken = await updateUserToken();
