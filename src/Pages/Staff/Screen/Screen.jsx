@@ -70,7 +70,7 @@ function Screen() {
           CREATE SCREEN
         </button>
         {showCreate ? (
-          <ScreenComp />
+          <ScreenComp setShowCreate={setShowCreate}/>
         ) : (
           <div>
             <h2 className={styles.screen__title}>Existing Screen Types</h2>

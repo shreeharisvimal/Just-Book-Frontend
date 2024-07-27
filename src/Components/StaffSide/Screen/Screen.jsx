@@ -4,7 +4,7 @@ import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
-function Screen() {
+function Screen({setShowCreate}) {
   const INIT_STATE = {
     name: '',
     theater: '',
@@ -65,6 +65,7 @@ function Screen() {
         const resp = await axios.post('/theater/ScreenApiCreate/', newScreen);
         if (resp.status === 201) {
           setNewScreen(INIT_STATE);
+          setShowCreate(false)
           toast.success('Screen created successfully');
         }
       }

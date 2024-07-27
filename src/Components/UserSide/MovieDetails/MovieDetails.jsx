@@ -10,10 +10,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../axios';
 import './booking.css'
+import '../../../Wrappers/Loader.scss'
 
 function MovieDetails() {
     const navigate = useNavigate();
     const { movieId } = UseMovieId();
+    const [showMoviedetails, setshowmoviedetails] = useState(false)
     const [myMovieId, setMymovieId] = useState(localStorage.getItem("BookShowId"));
     const [SavedMovieId, setSavedMovieId] = useState(movieId || localStorage.getItem('MovieId'));
     const [myMovieDetails, setmyMovieDetails] = useState(null);
@@ -83,6 +85,9 @@ function MovieDetails() {
     useEffect(() => {
         MovieFetching();
         ShowFetchAndArrangeScreen();
+        setTimeout(()=>{
+            setshowmoviedetails(true)
+        },3000)
     }, [SavedMovieId]);
 
     const settings = {
@@ -98,7 +103,7 @@ function MovieDetails() {
         slidesToScroll: 1,
     };
 
-    if (myMovieDetails) {
+    if (showMoviedetails) {
         return (
             <div className='DetailsPage'>
                     <span className='DetailsPage__Rating' >
@@ -183,7 +188,9 @@ function MovieDetails() {
             </div>
         );
     } else {
-        return <div>No Movies were found, please wait</div>;
+        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <div className="loader"></div>
+                  </div>;
     }
 }
 

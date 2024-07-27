@@ -88,7 +88,6 @@ function Seating() {
     const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
-    console.log(ws)
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setSeatAllocation(data.seat_data);

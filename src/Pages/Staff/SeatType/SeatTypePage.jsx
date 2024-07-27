@@ -68,6 +68,7 @@ function SeatTypePage() {
       if (response.status === 201) {
         toast.success("Seat Type is created successfully");
         setFormData(INIT_STATE);
+        setShowCreate(false)
         FetchSeatTypes();
       }
     } catch (error) {

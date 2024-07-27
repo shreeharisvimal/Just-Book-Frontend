@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './TheaterPage.scss';
 import axios from '../../../Admin_axios';
 import {jwtDecode} from 'jwt-decode';
-import { useSelector } from 'react-redux';
-import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
@@ -116,7 +114,7 @@ function TheaterPage() {
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
         </button>
-        {showTheater && <TheaterComp />}
+        {showTheater && <TheaterComp setShowTheater={setShowTheater} />}
         <div className="theater-page__content">
           <div className="theater-page__theater-list">
             {theater.map((theater) => (

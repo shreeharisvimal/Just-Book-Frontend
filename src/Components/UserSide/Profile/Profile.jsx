@@ -20,7 +20,8 @@ function Profile() {
       return;
     }
     try {
-      const refresh_token = localStorage.getItem('RefreshToken');
+      const refresh_token = JSON.parse(JSON.stringify(localStorage.getItem('RefreshToken')));
+      console.log(refresh_token)
       const token = localStorage.getItem('AccessToken');
       const res = await axios.post('logout/', { refresh_token: refresh_token }, {
         headers: {

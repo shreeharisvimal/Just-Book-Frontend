@@ -75,7 +75,10 @@ function UserAuthCard() {
       ) : (
         <form onSubmit={handleUserAuth}>
           <div>
+
             <input 
+              className="PhoneInput"
+              pattern="\d+"
               type="text" 
               name="phone" 
               value={phone} 

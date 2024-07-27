@@ -6,7 +6,7 @@ import PhoneInput from 'react-phone-input-2';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
-function Theater() {
+function Theater({setShowTheater}) {
   const CITY = [
     "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata",
     "Pune", "Ahmedabad", "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur",
@@ -60,6 +60,7 @@ function Theater() {
       if (res.status === 201 || res.status === 200) {
         toast.success('Successfully created a Theater');
         setFormData(INIT_STATE);
+        setShowTheater(false)
         setErrors({})
       }
       else if(res.status === 226){

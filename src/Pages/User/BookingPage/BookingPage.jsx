@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './BookingPage.scss';
 import '../../../Wrappers/Loader.scss'
+import './bookingPage.css'
 import { LanguageUtils } from '../../../Utils/LanguageUtils';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
@@ -126,7 +127,7 @@ function BookingPage() {
                                 const id = resp.data.ticket
                                 setTimeout(() => {
                                     navigate(`/SuccessPage/${id}/`);
-                                  }, 3000);
+                                  }, 2000);
                             } else {
                                 toast.error('Error completing the purchase');
                             }
@@ -202,7 +203,11 @@ function BookingPage() {
                                     </div>
                                 )}
                             </div>
-                            <button className="pay-now" onClick={initiatePayment}>Pay Now</button>
+                            {/* <button className="pay-now" onClick={initiatePayment}>Pay Now</button> */}
+                            <button className="Btn" onClick={initiatePayment}>
+                                Pay
+                                <svg className="svgIcon" viewBox="0 0 576 512"><path d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z"></path></svg>
+                                </button>
                             </div>
                             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                             </div>

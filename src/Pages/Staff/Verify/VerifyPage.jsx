@@ -23,8 +23,8 @@ function VerifyPage() {
                 },
             });
             if (response.status === 200) {
-                setTicket(response.data[0]); // Assuming response is an array with one object
-                setShowUsedMessage(false); // Reset showUsedMessage state
+                setTicket(response.data[0]);
+                setShowUsedMessage(false); 
             } else if (response.status === 226) {
                 setTicket(response.data[0]);
                 setShowUsedMessage(true);

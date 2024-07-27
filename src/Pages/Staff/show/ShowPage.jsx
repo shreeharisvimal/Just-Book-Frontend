@@ -60,7 +60,7 @@ function ShowPage() {
             {showCreate ? 'Close Creating' : 'Create Show'}
           </button>
           {showCreate ? (
-            <ShowComp />
+            <ShowComp setShowCreate={setShowCreate}/>
           ) : (
             <div className='show-page__table-container'>
               <h2>Show List</h2>

@@ -4,7 +4,7 @@ import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
-function Show() {
+function Show({setShowCreate}) {
     const user = useSelector((state) => state.auth_user);
     const INIT_STATE = {
         movie: '',
@@ -93,7 +93,7 @@ function Show() {
                 if (resp.status === 201){
                     toast.success('Show Added Successfully');
                     setFormData(INIT_STATE); 
-                
+                    setShowCreate(false)
                 }else if(resp.status === 226){
                     toast.error('Show Already Exists');
                 }
