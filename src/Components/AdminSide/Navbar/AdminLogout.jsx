@@ -20,11 +20,9 @@ const auth_user = useSelector((state) =>state.auth_user)
         const token = (localStorage.getItem('AccessToken'))
         
            try {
-              console.log(token)
              const res = await axios.post('logout/',{refresh_token:refresh_token},{headers:{
               'Authorization': `Bearer ${token}`
             }})
-             console.log(res.status)
              localStorage.clear();
              axios.defaults.headers.common['Authorization'] = null;
              window.location.href = '/admin/'
