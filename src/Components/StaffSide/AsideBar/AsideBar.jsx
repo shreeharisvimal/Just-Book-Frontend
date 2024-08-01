@@ -1,9 +1,18 @@
 import React from 'react';
 import './AsideBar.scss';
 import Image from '../../../logo192.png';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; 
 
 function AsideBar() {
+  const location = useLocation();
+
+  function getLastSegment() {
+    const segments = location.pathname.split('/').filter(Boolean);
+    return segments.pop();
+  }
+
+
   const navigate = useNavigate();
   const handleClick = (path) => {
     navigate(`/admin/${path}`);
@@ -27,70 +36,36 @@ function AsideBar() {
       <nav className="aside-bar__nav">
         {/* Main Menu Section */}
         <ul className="aside-bar__menu-aside">
-          {/* Active Menu Item */}
-          <li className="menu-item active">
-            <a className="menu-link" onClick={() => handleClick('staffDashboard/')}>
-              <i className="icon material-icons md-home"></i>
-              <span className="text">Dashboard</span>
-            </a>
-          </li>
-          {/* Other Menu Items */}
-          <li className="menu-item">
+          <li className={`menu-item ${getLastSegment() === 'theaterManagement' ? "active" : ''}`}>
             <a className="menu-link" onClick={() => handleClick('theaterManagement/')}>
               <i className="icon material-icons md-comment"></i>
               <span className="text">Theater Management</span>
             </a>
           </li>
-          <li className="menu-item">
+          <li className={`menu-item ${getLastSegment() === 'screenManagement' ? "active" : ''}`}>
             <a className="menu-link" onClick={() => handleClick('screenManagement/')}>
               <i className="icon material-icons md-stars"></i>
               <span className="text">Screen Management</span>
             </a>
           </li>
-          <li className="menu-item">
+          <li className={`menu-item ${getLastSegment() === 'screenTypeManagement' ? "active" : ''}`}>
             <a className="menu-link" onClick={() => handleClick('screenTypeManagement/')}>
               <i className="icon material-icons md-stars"></i>
               <span className="text">Screen Type Management</span>
             </a>
           </li>
-          <li className="menu-item">
+          <li className={`menu-item ${getLastSegment() === 'showManagement' ? "active" : ''}`}>
             <a className="menu-link" onClick={() => handleClick('showManagement/')}>
               <i className="icon material-icons md-stars"></i>
               <span className="text">Show Management</span>
             </a>
           </li>
-          <li className="menu-item">
+          <li className={`menu-item ${getLastSegment() === 'seatTypeManagement' ? "active" : ''}`}>
             <a className="menu-link" onClick={() => handleClick('seatTypeManagement/')}>
               <i className="icon material-icons md-stars"></i>
               <span className="text">Seat Type Management</span>
             </a>
           </li> 
-        </ul>
-
-        {/* Separator */}
-        <hr className="aside-bar__hr" />
-
-        {/* Second Menu Section */}
-        <ul className="aside-bar__menu-aside">
-          {/* Menu Item with Submenu */}
-          <li className="menu-item has-submenu">
-            <a className="menu-link" href="#">
-              <i className="icon material-icons md-settings"></i>
-              <span className="text">Settings</span>
-            </a>
-            <div className="submenu">
-              <a href="page-settings-1.html">Setting sample 1</a>
-              <a href="page-settings-2.html">Setting sample 2</a>
-            </div>
-          </li>
-
-          {/* Regular Menu Item */}
-          <li className="menu-item">
-            <a className="menu-link" href="page-blank.html">
-              <i className="icon material-icons md-local_offer"></i>
-              <span className="text">Starter page</span>
-            </a>
-          </li>
         </ul>
       </nav>
     </aside>

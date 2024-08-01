@@ -22,13 +22,13 @@ const SuccessPage = lazy(()=> import('./Components/UserSide/sucesspage/Sucess'))
 
 function RouteComponent() {
   const [loading, setLoading] = useState(true);
-  const fallbackDuration = 3000; 
+  const fallbackDuration = 1000; 
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, fallbackDuration);
-
+    
     return () => clearTimeout(timer);
   }, [fallbackDuration]);
 

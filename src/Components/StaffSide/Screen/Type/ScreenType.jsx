@@ -7,9 +7,23 @@ function ScreenType() {
   const INIT_STATE = { name: '', price_multi: '' };
   const [newScreenType, setNewScreenType] = useState(INIT_STATE);
 
+  const FormValidata = () => {
+    for (let key in newScreenType) {
+      if (newScreenType[key].trim() === '') {
+        toast.warning('Please fill out every field');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (FormValidata() === false){
+        return
+      }
       const resp = await axios.post("theater/ScreenTypeApiCreate/", newScreenType);
       console.log(resp)
       if (resp.status === 201) {

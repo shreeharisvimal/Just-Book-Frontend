@@ -66,6 +66,16 @@ function Show({setShowCreate}) {
         }
     };
 
+    const FormValidata = () => {
+        for (let key in FormData) {
+          if (FormData[key].trim() === '') {
+            toast.warning('Please fill out every field');
+            return false;
+          }
+        }
+        return true;
+      };
+
     const HandleChange = (event) => {
         const { name, value } = event.target;
         if (name === 'show_date' && new Date(value) < new Date()) {
@@ -89,6 +99,9 @@ function Show({setShowCreate}) {
 
             
             try {
+                if (FormValidata() === false){
+                    return;
+                }
                 const resp = await axios.post('/show/showCreateApi/', FormData);
                 if (resp.status === 201){
                     toast.success('Show Added Successfully');

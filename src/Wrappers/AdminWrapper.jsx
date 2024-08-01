@@ -8,7 +8,6 @@ import { Route, Routes } from 'react-router-dom';
 import axios from '../axios';
 import { get_UserDetails } from '../Redux/User/UserSlice';
 
-const AdminDashboard = lazy(() => import('../Pages/Admin/Dashboard/DashBoardPage'));
 const MoviePage = lazy(() => import('../Pages/Admin/Movie/MoviePage'));
 const TheaterPage = lazy(() => import('../Pages/Staff/Theater/TheaterPage'));
 const ScreenPage = lazy(() => import('../Pages/Staff/Screen/Screen'));
@@ -16,7 +15,6 @@ const Genres = lazy(() => import('../Pages/Admin/Movie/Genre/Genre'));
 const Language = lazy(() => import('../Pages/Admin/Movie/Language/Language'));
 const ScreenType = lazy(() => import('../Pages/Staff/Screen/ScreenType/ScreenType'));
 const StaffManagement = lazy(() => import('../Pages/Admin/Staff/Staff'));
-const StaffDashboard = lazy(() => import('../Pages/Staff/Dashboard/DashBoardPage'));
 const AdminTheaterPage = lazy(()=> import('../Pages/Admin/Theater/TheaterPage'))
 const ShowPage = lazy(()=> import('../Pages/Staff/show/ShowPage'))
 const SeatTypePage = lazy(()=> import('../Pages/Staff/SeatType/SeatTypePage'))
@@ -83,7 +81,7 @@ function AdminWrapper() {
         <div>
             <Routes>
                 
-                <Route path='/DashBoard/*' element={<AdminPrivateRouter><AdminDashboard /></AdminPrivateRouter>} />
+                {/* <Route path='/DashBoard/*' element={<AdminPrivateRouter><AdminDashboard /></AdminPrivateRouter>} /> */}
                 <Route path='/movieManagement/*' element={<AdminPrivateRouter><MoviePage /></AdminPrivateRouter>} />
                 <Route path='/admintheaterManagement/' element={<AdminPrivateRouter><AdminTheaterPage /></AdminPrivateRouter>} />
                 <Route path='/movieManagement/genre/' element={<AdminPrivateRouter><Genres /></AdminPrivateRouter>} />
@@ -95,7 +93,7 @@ function AdminWrapper() {
                 <Route path='/screenTypeManagement/' element={<StaffPrivateRouter><ScreenType /></StaffPrivateRouter>} />
                 <Route path='/screenManagement/' element={<StaffPrivateRouter><ScreenPage /></StaffPrivateRouter>} />
                 <Route path='/theaterManagement/' element={<StaffPrivateRouter><TheaterPage /></StaffPrivateRouter>} />
-                <Route path='/staffDashboard/' element={<StaffPrivateRouter><StaffDashboard /></StaffPrivateRouter>} />
+                {/* <Route path='/staffDashboard/' element={<StaffPrivateRouter><StaffDashboard /></StaffPrivateRouter>} /> */}
                 <Route path='/showManagement/' element={<StaffPrivateRouter><ShowPage /></StaffPrivateRouter>} />
                 <Route path='/seatTypeManagement/' element={<StaffPrivateRouter><SeatTypePage /></StaffPrivateRouter>} />
                 <Route path="/SelectSeating/:screenId" element={<StaffPrivateRouter><SeatingPage/></StaffPrivateRouter>} />

@@ -48,7 +48,7 @@ function Screen({setShowCreate}) {
 
   const FormValidata = () => {
     for (let key in newScreen) {
-      if (newScreen[key] === '') {
+      if (newScreen[key].trim() === '') {
         toast.warning('Please fill out every field');
         return false;
       }
@@ -61,7 +61,6 @@ function Screen({setShowCreate}) {
     try {
       const FormValidateResp = FormValidata();
       if (FormValidateResp === true) {
-        console.log(newScreen)
         const resp = await axios.post('/theater/ScreenApiCreate/', newScreen);
         if (resp.status === 201) {
           setNewScreen(INIT_STATE);

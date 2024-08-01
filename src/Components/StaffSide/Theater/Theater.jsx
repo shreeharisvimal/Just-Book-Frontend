@@ -51,7 +51,6 @@ function Theater({setShowTheater}) {
     const formErrors = validate();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
-      console.log("AN error have been found",errors)
       return;
     }
     
@@ -69,7 +68,6 @@ function Theater({setShowTheater}) {
         toast.error('Failed to create Theater');
       }
     } catch (error) {
-      toast.error('Error creating Theater');
       console.log('Error:', error);
     }
   };

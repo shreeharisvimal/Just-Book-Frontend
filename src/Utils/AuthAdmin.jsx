@@ -41,8 +41,6 @@ const checkAdmin = async () => {
 
 const authAdmin = async () => {
     const accessToken = localStorage.getItem('AccessToken');
-    const refreshToken = localStorage.getItem('RefreshToken');
-
     if (!accessToken) {
         return {
             first_name: null,
@@ -54,11 +52,8 @@ const authAdmin = async () => {
 
     const currentTime = Date.now() / 1000;
     let decodedAccessToken;
-    let decodedRefreshToken;
-
     try {
         decodedAccessToken = jwtDecode(accessToken);
-        decodedRefreshToken = jwtDecode(refreshToken);
     } catch (error) {
         console.error('Error decoding tokens:', error);
         return {

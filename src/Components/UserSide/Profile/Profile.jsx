@@ -3,7 +3,6 @@ import './Profile.scss';
 import { useNavigate } from "react-router-dom";
 import axios from '../../../axios';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 const Prof = lazy(() => import('./ProfileComponent'));
 const Tickets = lazy(() => import('./Tickets'));
@@ -20,7 +19,7 @@ function Profile() {
       return;
     }
     try {
-      const refresh_token = (JSON.stringify(localStorage.getItem('RefreshToken')));
+      const refresh_token = ((localStorage.getItem('RefreshToken')));
       const token = localStorage.getItem('AccessToken');
       const res = await axios.post('logout/', { refresh_token: refresh_token }, {
         headers: {
