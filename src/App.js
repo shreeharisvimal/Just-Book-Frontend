@@ -8,7 +8,7 @@ const MyRouter = lazy(() => import('./RouteComponent'));
 const MovieId = lazy(() => import('./Components/ContextApi/MovieIdContext'));
 
 
-function App() {
+function  App() {
   const [loading, setLoading] = useState(true);
   const fallbackDuration = 3000; 
 
