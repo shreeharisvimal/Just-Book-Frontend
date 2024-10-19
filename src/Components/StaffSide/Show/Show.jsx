@@ -66,10 +66,11 @@ function Show({setShowCreate}) {
         }
     };
 
-    const FormValidata = () => {
-        for (let key in FormData) {
-          if (FormData[key].trim() === '') {
-            toast.warning('Please fill out every field');
+    const FormValidate = () => {
+        for (let key of Object.keys(FormData)) {
+          const value = FormData[key];
+          if (typeof value === 'string' && value.trim() === '') {
+            toast.warning(`Please fill out the ${key} field`);
             return false;
           }
         }
@@ -99,7 +100,7 @@ function Show({setShowCreate}) {
 
             
             try {
-                if (FormValidata() === false){
+                if (FormValidate() === false){
                     return;
                 }
                 const resp = await axios.post('/show/showCreateApi/', FormData);
