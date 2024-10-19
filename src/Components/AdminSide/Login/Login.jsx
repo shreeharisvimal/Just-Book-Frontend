@@ -56,9 +56,9 @@ function Login() {
                 })
               );
               if (response.data.is_staff && !response.data.isAdmin){
-                navigate('staffDashboard/')
+                navigate('theaterManagement/')
               }else if(response.data.isAdmin){
-                navigate('DashBoard/');
+                navigate('movieManagement/');
               }
             } catch (err) {
               console.log('error in the access token', err);
