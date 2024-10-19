@@ -62,9 +62,9 @@ function TheaterPage() {
       <div className="theater-page__container">
         <AsideBar />
         <NavBar />
-        <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
+        {/* <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
-        </button>
+        </button> */}
         {showTheater && <TheaterComp />}
         <div className="theater-page__content">
           <div className="theater-page__theater-list">

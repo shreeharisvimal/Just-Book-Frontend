@@ -45,7 +45,7 @@ function AsideBar() {
           <li className={`${styles.menuItem} ${ getLastSegment() === 'admintheaterManagement' ? styles.active : ''}`}>
             <a className={styles.menuLink} onClick={() => handleClick('admintheaterManagement/')}>
               <i className="icon material-icons md-comment"></i>
-              <span className={styles.text}>Theater Owners</span>
+              <span className={styles.text}>Theater's Management</span>
             </a>
           </li>
           
