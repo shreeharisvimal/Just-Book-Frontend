@@ -55,7 +55,7 @@ function ScreenType() {
                   <li key={screenType.id} className="container__list-item">
                     <span>
                       <strong>SCREEN TYPE NAME:</strong> {screenType.name} <br />
-                      <strong>EXTRA COST:</strong> {screenType.price_multi}
+                      <strong>EXTRA COST:</strong> {screenType.price_multi} %
                     </span>
                     <button 
                       className="container__list-item__delete-button" 

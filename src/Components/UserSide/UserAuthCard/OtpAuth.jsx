@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; 
 import './otp.scss';
 import './myOTP.css'
 
@@ -21,16 +21,15 @@ function OtpAuth({ userdata, otpres }) {
 
     try {
       if (!otpres) {
-        console.error('OTP response is null.');
         return; 
       }
 
-      console.log('The response for OTP:', otpres);
-
       if (otpres.otp) {
         const otpFromServer = otpres.otp;
+        if (String(otpFromServer) !== otp){
+          setErrorMessage("Incorrect Otp. Please try again.");
+        }        
         if (String(otpFromServer) === otp) {
-          console.log('OTP Verified!');
           toast.success('OTP verification successful');
           if (userdata.access_token && userdata.refresh_token) {
             try {
@@ -56,6 +55,7 @@ function OtpAuth({ userdata, otpres }) {
           }
         } else {
           setErrorMessage("Invalid OTP. Please try again.");
+          toast.error('Invalid OTP. Please try again.');
         }
       } else {
         console.error('Failed to retrieve OTP from the server.');

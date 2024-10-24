@@ -8,7 +8,7 @@ function Screen({setShowCreate}) {
   const INIT_STATE = {
     name: '',
     theater: '',
-    total_seats: null,
+    total_seats: 50,
     screen_type: '',
   };
 
@@ -46,10 +46,11 @@ function Screen({setShowCreate}) {
 
   };
 
-  const FormValidata = () => {
-    for (let key in newScreen) {
-      if (newScreen[key].trim() === '') {
-        toast.warning('Please fill out every field');
+  const FormValidate = () => {
+    for (let key of Object.keys(newScreen)) {
+      const value = newScreen[key];
+      if (typeof value === 'string' && value.trim() === '') {
+        toast.warning(`Please fill out the ${key} field`);
         return false;
       }
     }
@@ -59,7 +60,7 @@ function Screen({setShowCreate}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const FormValidateResp = FormValidata();
+      const FormValidateResp = FormValidate();
       if (FormValidateResp === true) {
         const resp = await axios.post('/theater/ScreenApiCreate/', newScreen);
         if (resp.status === 201) {
@@ -99,14 +100,6 @@ function Screen({setShowCreate}) {
             ) : null
           ))}
         </select>
-        <input
-          type="number"
-          name="total_seats"
-          placeholder="Total Seats"
-          value={newScreen.total_seats}
-          onChange={handleInputChange}
-          className="screen__form__input"
-        />
         <select
           name="screen_type"
           value={newScreen.screen_type}

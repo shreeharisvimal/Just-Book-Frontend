@@ -38,6 +38,20 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: $secondary-color;
   }
 }
+.show-page__delete-button {
+  background-color: #e74c3c; 
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: darken(#e74c3c, 10%);
+  }
+}
 
 .show-page__table-container {
   width: 100%;

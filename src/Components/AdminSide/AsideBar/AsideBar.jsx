@@ -49,12 +49,12 @@ function AsideBar() {
             </a>
           </li>
           
-          {/* <li className={`${styles.menuItem} ${ getLastSegment() === 'StaffManagement' ? styles.active : ''}`}>
+          <li className={`${styles.menuItem} ${ getLastSegment() === 'StaffManagement' ? styles.active : ''}`}>
             <a className={styles.menuLink} onClick={() => handleClick('StaffManagement/')}>
               <i className="icon material-icons md-stars"></i>
               <span className={styles.text}>Staff Management</span>
             </a>
-          </li> */}
+          </li>
         </ul>
       </nav>
     </aside>

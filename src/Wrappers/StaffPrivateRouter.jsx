@@ -3,8 +3,7 @@ import AuthAdmin from '../Utils/AuthAdmin';
 import { Navigate } from 'react-router-dom';
 import './Loader.scss';
 
-
-function StaffPrivateRouter({children}) {
+function StaffPrivateRouter({ children }) {
     const INITIAL_STATE = {
         isAuthenticated: false,
         isAdmin: false,
@@ -50,14 +49,10 @@ function StaffPrivateRouter({children}) {
             </div>
         );
     }
-
     if (!authState.isAdmin && !authState.is_staff) {
-        setInterval(() => {
-            return <Navigate to="/admin/" />;
-        }, 2000);
+        return <Navigate to="/admin/" />;
     }
-
     return children;
 }
 
-export default StaffPrivateRouter
+export default StaffPrivateRouter;

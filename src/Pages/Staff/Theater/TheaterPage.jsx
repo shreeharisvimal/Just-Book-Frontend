@@ -129,7 +129,6 @@ function TheaterPage() {
                   <p><strong>City:</strong> {theater.city}</p>
                   <p><strong>State:</strong> {theater.state}</p>
                   <p><strong>Description:</strong> {theater.description}</p>
-                  <p><strong>Number of Screens:</strong> {theater.no_of_screens}</p>
                   <p><strong>Theater Status:</strong> {theater.theater_status}</p>
                 </div>
                 <div className="theater-page__actions">

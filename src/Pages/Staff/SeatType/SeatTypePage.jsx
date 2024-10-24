@@ -150,7 +150,6 @@ function SeatTypePage() {
                 <li key={seatType.id} className='SeatType__item'>
                   <div className='SeatType__item-info'>
                     <h2>Seat Type :{seatType.name}</h2>
-                    <h4>Theater name : {seatType.theater.theater_name}</h4>
                     <p>Price Multiplier: {seatType.price_multi} %</p>
                   </div>
                     <button onClick={()=>HandleDelete(seatType.id)}>Delete</button>

@@ -83,18 +83,23 @@ function Screen() {
                     <strong>THEATER SCREENS COUNT:</strong> {screen.theater.no_of_screens} <br />
                     <strong>SCREEN TYPE:</strong> {screen.screen_type.name} <br />
                     <strong>EXTRA COST:</strong> {screen.screen_type.price_multi} %<br />
-                    <strong>TOTAL SEATS:</strong> {screen.total_seats}
                     <div>
-                      {screen.seats[0] ? (
-                        <button onClick={() => HandleSeatAllocationDelete(screen.seats[0].id)}>
-                          Delete Seat Allocation
-                        </button>
-                      ) : (
-                        <button onClick={() => navigate(`/admin/SelectSeating/${screen.id}`)}>
-                          Add Seat Allocation
-                        </button>
-                      )}
-                    </div>
+                    {screen.seats[0] ? (
+                      <button 
+                        onClick={() => HandleSeatAllocationDelete(screen.seats[0].id)} 
+                        className={styles.screen__seatButtonDelete}
+                      >
+                        Delete Seat Allocation
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => navigate(`/admin/SelectSeating/${screen.id}`)} 
+                        className={styles.screen__seatButtonAdd}
+                      >
+                        Add Seat Allocation
+                      </button>
+                    )}
+                  </div>
                   </span>
                   <button
                     className={styles.screen__listItem__deleteButton}

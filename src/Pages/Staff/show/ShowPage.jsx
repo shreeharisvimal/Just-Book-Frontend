@@ -85,7 +85,7 @@ function ShowPage() {
                       <td>{show.show_time}</td>
                       <td>{show.price}</td>
                       <td>{show.screen.name}</td>
-                      <td><button onClick={()=>HandleDelete(show.id)}>Delete</button></td>
+                      <td><button className="show-page__delete-button" onClick={()=>HandleDelete(show.id)}>Delete</button></td>
                     </tr>
                   ))}
                 </tbody>

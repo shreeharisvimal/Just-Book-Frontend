@@ -18,7 +18,7 @@ function Staff() {
     const [NewStaff, setNewStaff] = useState(INITIAL_STATE)
     const [staffs, setStaffs] = useState([]);
 
-    const AccessToken = (localStorage.getItem('AccessToken'));
+    const AccessToken = localStorage.getItem('AccessToken');
     
 
     const HandleSubmit = async()=>{

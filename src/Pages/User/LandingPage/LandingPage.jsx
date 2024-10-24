@@ -18,7 +18,6 @@ function LandingPage() {
         <Suspense fallback={<div>Loading data</div>}>
         <div className='Main'>
         <NavBar onSearch={handleSearch} />
-        <AsideBar/>
         <MovieCard searchQuery={searchQuery} />
         </div>
         </Suspense>
