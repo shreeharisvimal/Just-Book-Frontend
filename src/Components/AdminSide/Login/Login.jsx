@@ -79,7 +79,7 @@ function Login() {
 
   return (
     <div className="login__container">
-      <h2 className="login__title">Admin Panel Login</h2>
+      <h2 className="login__title">Admin And Staff Login</h2>
       <form onSubmit={HandleOnSubmit}>
         <div className="login__form-group">
           <label htmlFor="email" className="login__label">Email:</label>
