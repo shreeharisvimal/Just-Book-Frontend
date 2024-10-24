@@ -39,7 +39,6 @@ function Show({setShowCreate}) {
                 }
             } catch (error) {
                 toast.error("An error occurred while fetching screens data");
-                console.log("An error was found", error);
             } finally {
                 toast.dismiss();
             }

@@ -49,7 +49,7 @@ function AdminPrivateRouter({ children }) {
     }
 
     if (!authState.isAuthenticated) {
-        return <Navigate to="/login" />; // Redirect to login if not authenticated
+        return <Navigate to="/admin/" />; // Redirect to login if not authenticated
     }
 
     if (!authState.isAdmin) {

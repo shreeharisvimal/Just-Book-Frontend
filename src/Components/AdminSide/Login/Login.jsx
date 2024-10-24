@@ -21,7 +21,6 @@ function Login() {
 
   const HandleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
     let passwordLength = loginData.password ? loginData.password.trim().length : 0;
     let emailLength = loginData.email ? loginData.email.trim().length : 0;
 
@@ -30,9 +29,7 @@ function Login() {
       valueToSet = { password: loginData.password.trim(), email: loginData.email.trim() };
       try {
         const response = await axios.post('/AdminAuth/', valueToSet);
-        console.log(response.data);
         if (response.status === 200) {
-          console.log(response.data);
           if (!response.data.isAdmin && !response.data.is_staff) {
             toast.warning('You are not authorized to login.');
             navigate('/admin/');
@@ -72,7 +69,6 @@ function Login() {
         console.error('Error during login:', error.response ? error.response.data : error.message);
       }
     } else {
-      console.error('Invalid email or password length');
       toast.error('Invalid email or password length');
     }
   };
