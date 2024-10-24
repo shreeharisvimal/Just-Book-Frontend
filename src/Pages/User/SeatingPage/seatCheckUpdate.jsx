@@ -13,7 +13,7 @@ const checkHoldTime = (holdTime) => {
     }
     
     const minutesDifference = now.diff(holdMoment, 'minutes');
-    return minutesDifference > 0.5;
+    return minutesDifference > 3;
   } catch (error) {
     console.error('Error checking hold time:', error);
     return false;
