@@ -45,6 +45,7 @@ function Seating() {
   const calculatePriceWithPercentage = (percentage, price) => {
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
     const totalPrice = parseInt(price) + percentageAmount;
+    console.log('the calculated price is ihere', totalPrice)
     return Math.round(totalPrice);
   };
 
@@ -75,6 +76,7 @@ function Seating() {
     Object.keys(updatedSelectedSeats).forEach(r => {
       updatedSelectedSeats[r].forEach(s => {
         const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
+        console.log('the seat price is here', seatPrice)
         const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
         newTotalAmount += seatAmount;
       });
@@ -254,7 +256,7 @@ function Seating() {
         user: localStorage.getItem('user_id') || seatData.user,
         hold_time: seatData.status === 'available' ? now.toLocaleTimeString() : '',
       };
-      console.log(updatedSeatData)
+
       const updatedRowData = {
         ...seatAllocation[row],
         seats: {
