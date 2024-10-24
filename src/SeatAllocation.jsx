@@ -10,6 +10,7 @@ for (let row = 65; row < 75; row++) {
       name: `${rowLetter}${col}`,
       is_freeSpace: false,
       holdedseat:false,
+      hold_time: '',
       user:'',
     };
   }

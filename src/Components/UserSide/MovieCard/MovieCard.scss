@@ -1,11 +1,11 @@
 .movie-list {
   margin-top: 2rem;
-    list-style-type: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 5vw;
-  }
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 5vw;
+}
   
   .movie-item {
     background-color: #f9f9f9;
@@ -54,6 +54,6 @@
 
   .MovieFullCard{
     position: relative;
-    left: 25%;
+    left: 15%;
     width: 70%;
   }
