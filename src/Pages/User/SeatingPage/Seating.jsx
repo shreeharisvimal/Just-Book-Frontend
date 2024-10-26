@@ -58,9 +58,15 @@ function Seating() {
 
     let newTotalAmount = 0;
     Object.keys(updatedSelectedSeats).forEach(r => {
+      console.log('______________________________')
+      console.log('the rrrrrrrrrrrrr', r)
       updatedSelectedSeats[r].forEach(s => {
+        console.log('the columnssssssss', s)
         const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
+        console.log('the seat prise is here', seatPrice)
         const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
+        console.log('the seat amount is here', seatAmount)
+        console.log('______________________________')
         newTotalAmount += seatAmount;
       });
     });
