@@ -120,8 +120,8 @@ function Seating() {
         ws.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            setSeatAllocation(data.seat_data);
             const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
+            setSeatAllocation(newSeatsAfterUpdate);
             const currentTime = Date.now();
             if (
               newSeatsAfterUpdate && 
