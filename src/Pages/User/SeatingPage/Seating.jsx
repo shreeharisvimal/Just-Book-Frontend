@@ -78,7 +78,7 @@ function Seating() {
         const seatType = seatAllocation[r]?.type;
         const seatPrice = seatTypes.find(type => type.name === seatType)?.price_multi;
         if (seatPrice) {
-          const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
+          const seatAmount = calculatePriceWithPercentage(parseInt(seatPrice), parseInt(normalPrice));
           newTotalAmount += seatAmount;
         } else {
           console.warn(`No price multiplier found for seat type: ${seatType}`);
