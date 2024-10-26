@@ -30,7 +30,7 @@ const seatCheckUpdate = (seatAllocation) => {
       
       for (const seatNumber in row.seats) {
         const seat = row.seats[seatNumber];
-        if (seat.holdedseat && checkHoldTime(seat.hold_time) && seat.status !== 'Booked') {
+        if (seat.holdedseat === true && checkHoldTime(seat.hold_time) === true && seat.status !== 'Booked') {
           updatedSeats[seatNumber] = {
             ...seat,
             status: 'available',
