@@ -77,6 +77,7 @@ function Seating() {
       updatedSelectedSeats[r].forEach(s => {
         const seatType = seatAllocation[r]?.type;
         const seatPrice = seatTypes.find(type => type.name === seatType)?.price_multi;
+        console.log('seat price', seatPrice)
         if (seatPrice) {
           const seatAmount = calculatePriceWithPercentage(parseInt(seatPrice), parseInt(normalPrice));
           newTotalAmount += seatAmount;
