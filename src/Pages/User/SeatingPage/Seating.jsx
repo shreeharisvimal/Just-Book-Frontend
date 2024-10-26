@@ -75,10 +75,14 @@ function Seating() {
     let newTotalAmount = 0;
     Object.keys(updatedSelectedSeats).forEach(r => {
       updatedSelectedSeats[r].forEach(s => {
-        const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
-        console.log('the seat price is here', seatPrice)
-        const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
-        newTotalAmount += seatAmount;
+        const seatType = seatAllocation[r]?.type;
+        const seatPrice = seatTypes.find(type => type.name === seatType)?.price_multi;
+        if (seatPrice) {
+          const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
+          newTotalAmount += seatAmount;
+        } else {
+          console.warn(`No price multiplier found for seat type: ${seatType}`);
+        }
       });
     });
 
