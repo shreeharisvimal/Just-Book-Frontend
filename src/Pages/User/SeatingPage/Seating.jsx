@@ -8,12 +8,9 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import seatCheckUpdate from './seatCheckUpdate';
 
-
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 function Seating() {
-  const [wsStatus, setWsStatus] = useState('disconnected');
-  const lastUpdateRef = useRef(null);
   const { screenId, showId } = useParams();
   const [normalPrice, setNormalPrice] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -30,20 +27,7 @@ function Seating() {
   const navigate = useNavigate();
   const wsRef = useRef(null); 
 
-
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = ''; 
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
   const calculatePriceWithPercentage = (percentage, price) => {
-    console.log('the percentage', percentage, 'the price is here', price)
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
     const totalPrice = parseInt(price) + percentageAmount;
     return Math.round(totalPrice);
@@ -75,16 +59,9 @@ function Seating() {
     let newTotalAmount = 0;
     Object.keys(updatedSelectedSeats).forEach(r => {
       updatedSelectedSeats[r].forEach(s => {
-        const seatType = seatAllocation[r]?.type;
-        console.log('seat seatType', seatType)
-        const seatPrice = seatTypes.find(type => type.name === seatType)?.price_multi;
-        console.log('seat price', seatPrice)
-        if (seatPrice) {
-          const seatAmount = calculatePriceWithPercentage(parseInt(seatPrice), parseInt(normalPrice));
-          newTotalAmount += seatAmount;
-        } else {
-          console.warn(`No price multiplier found for seat type: ${seatType}`);
-        }
+        const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
+        const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
+        newTotalAmount += seatAmount;
       });
     });
 
@@ -107,77 +84,25 @@ function Seating() {
     }
   };
 
-
   useEffect(() => {
-    let reconnectTimeout;
-    const RECONNECT_DELAY = 5000;
-
-    const connectWebSocket = () => {
-      try {
-        const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
-        const ws = new WebSocket(wsUrl);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-          setWsStatus('connected');
-          console.log('WebSocket connected');
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
-            setSeatAllocation(newSeatsAfterUpdate);
-            const currentTime = Date.now();
-            if (
-              newSeatsAfterUpdate && 
-              wsRef.current && 
-              wsRef.current.readyState === WebSocket.OPEN &&
-              (!lastUpdateRef.current || currentTime - lastUpdateRef.current > 1000)
-            ) {
-              lastUpdateRef.current = currentTime;
-              wsRef.current.send(JSON.stringify({
-                action: 'seat_update',
-                data: {
-                  seat_data: newSeatsAfterUpdate
-                }
-              }));
-            }
-          } catch (error) {
-            console.error('Error processing message:', error);
-          }
-        };
-
-        ws.onclose = () => {
-          setWsStatus('disconnected');
-          console.log('WebSocket disconnected, attempting to reconnect...');
-          
-          reconnectTimeout = setTimeout(connectWebSocket, RECONNECT_DELAY);
-        };
-
-        ws.onerror = (error) => {
-          console.error('WebSocket error:', error);
-          ws.close();
-        };
-      } catch (error) {
-        console.error('Error setting up WebSocket:', error);
-        setWsStatus('error');
-      }
+    const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
+    const ws = new WebSocket(wsUrl);
+    wsRef.current = ws;
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
+      setSeatAllocation(newSeatsAfterUpdate);
     };
 
-    connectWebSocket();
+    ws.onclose = () => {
+      console.error('WebSocket closed unexpectedly');
+    };
 
     return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-        wsRef.current = null;
-      }
-      if (reconnectTimeout) {
-        clearTimeout(reconnectTimeout);
-      }
+      ws.close();
+      wsRef.current = null;
     };
   }, [showId]);
-
 
   const fetchSeats = async () => {
     try {
@@ -252,17 +177,18 @@ function Seating() {
 
 
   const updateSeatValue = useCallback((row, seat, seatName) => {
+    console.log("The 1 st is seltected", selectedSeats, 'HSDHFKJSADF', bookingSeats)
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace) {
       const now = new Date();
       const updatedSeatData = {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
-        holdedseat: !seatData.holdedseat,
-        user: localStorage.getItem('user_id') || seatData.user,
+        holdedseat:!seatData.holdedseat,
+        user:localStorage.getItem('user_id') || seatData.user,
         hold_time: seatData.status === 'available' ? now.toLocaleTimeString() : '',
       };
-
+      console.log(updatedSeatData)
       const updatedRowData = {
         ...seatAllocation[row],
         seats: {
