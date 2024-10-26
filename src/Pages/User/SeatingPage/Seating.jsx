@@ -43,9 +43,9 @@ function Seating() {
   }, []);
 
   const calculatePriceWithPercentage = (percentage, price) => {
+    console.log('the percentage', percentage, 'the price is here', price)
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
     const totalPrice = parseInt(price) + percentageAmount;
-    console.log('the calculated price is ihere', totalPrice)
     return Math.round(totalPrice);
   };
 
@@ -76,6 +76,7 @@ function Seating() {
     Object.keys(updatedSelectedSeats).forEach(r => {
       updatedSelectedSeats[r].forEach(s => {
         const seatType = seatAllocation[r]?.type;
+        console.log('seat seatType', seatType)
         const seatPrice = seatTypes.find(type => type.name === seatType)?.price_multi;
         console.log('seat price', seatPrice)
         if (seatPrice) {

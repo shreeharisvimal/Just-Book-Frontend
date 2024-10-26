@@ -1,19 +1,13 @@
 import moment from 'moment';
 
+const createHoldTime = () => moment().format('h:mm:ss A');
 const checkHoldTime = (holdTime) => {
   if (!holdTime) return false;
   
   try {
     const now = moment();
     const holdMoment = moment(holdTime, 'h:mm:ss A');
-    
-    if (!holdMoment.isValid()) {
-      console.error('Invalid hold time format:', holdTime);
-      return false;
-    }
-    
-    const minutesDifference = now.diff(holdMoment, 'minutes');
-    return minutesDifference > 3;
+    return holdMoment.isValid() && now.diff(holdMoment, 'minutes') > 3;
   } catch (error) {
     console.error('Error checking hold time:', error);
     return false;
