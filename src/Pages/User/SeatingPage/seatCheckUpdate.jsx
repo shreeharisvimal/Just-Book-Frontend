@@ -12,7 +12,7 @@ const checkHoldTime = (holdTime) => {
     holdTimeDate.setSeconds(parseInt(holdTime.slice(4, 6), 10));
 
     const timeDifference = (now - holdTimeDate) / 1000 / 60;
-    return timeDifference > 0.1; 
+    return timeDifference > 5; 
   } catch (error) {
     console.error('Error checking hold time:', error);
     return false;
@@ -29,8 +29,7 @@ const seatCheckUpdate = (seatAllocation) => {
       
       for (const seatNumber in row.seats) {
         const seat = row.seats[seatNumber];
-        console.log('checkHoldTime(seat.hold_time)', checkHoldTime(seat.hold_time), seat)
-        if (seat.holdedseat === true && checkHoldTime(seat.hold_time) === true && seat.status !== 'Booked' && seat.status === 'holdedseat') {
+        if (seat.holdedseat === true && checkHoldTime(seat.hold_time) === true && seat.status !== 'Booked') {
           updatedSeats[seatNumber] = {
             ...seat,
             status: 'available',
