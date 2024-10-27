@@ -7,8 +7,8 @@ import { set_Booking } from '../../../Redux/Booking/BookSlice';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import seatCheckUpdate from './seatCheckUpdate';
-
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
+
 
 function Seating() {
   const { showId } = useParams();
@@ -23,30 +23,12 @@ function Seating() {
   const [bookingSeats, setBookingSeats] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
-  const [componentKey, setComponentKey] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wsRef = useRef(null); 
 
-  const resetState = () => {
-    setNormalPrice(null);
-    setTotalAmount(0);
-    setFetchData(null);
-    setSeatAllocation(null);
-    setSeatTypes([]);
-    setSelectedSeats({});
-    setBookingSeats([]);
-    setIsDataFetched(false);
-  };
 
-  useEffect(() => {
-    resetState();
-  }, [componentKey]); 
-
-  const reloadComponent = () => {
-    setComponentKey(prevKey => prevKey + 1);
-  }; 
 
   const calculatePriceWithPercentage = (percentage, price) => {
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
@@ -105,6 +87,18 @@ function Seating() {
     }
   };
 
+
+  window.addEventListener("beforeunload", (event) => {
+    event.preventDefault();
+    event.returnValue = "";  
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
+      event.preventDefault(); 
+    }
+  });
+
   useEffect(() => {
     const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
     const ws = new WebSocket(wsUrl);
@@ -123,7 +117,7 @@ function Seating() {
       ws.close();
       wsRef.current = null;
     };
-  }, [showId]);
+  }, [showId,seatAllocation ]);
 
   const fetchSeats = async () => {
     try {
@@ -199,13 +193,13 @@ function Seating() {
 
   const updateSeatValue = useCallback((row, seat, seatName) => {
     const seatData = seatAllocation[row].seats[seat];
-    if (!seatData.is_freeSpace) {
+    if (!seatData.is_freeSpace && seatData.status !== 'Booked' && seatData.status !== 'booked') {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
       const timeString = `${hours}${minutes}${seconds}`;
-
+      console.log(seatData)
       const updatedSeatData = {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
@@ -250,7 +244,7 @@ function Seating() {
   }
 
   return (
-    <div key={componentKey} className='main'>
+    <div  className='main'>
       <Suspense fallback={<div>Loading Navbar...</div>}>
         <NavBar />
       </Suspense>
