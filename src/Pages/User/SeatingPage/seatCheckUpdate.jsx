@@ -1,13 +1,18 @@
-import moment from 'moment';
 
-const createHoldTime = () => moment().format('h:mm:ss A');
+
 const checkHoldTime = (holdTime) => {
   if (!holdTime) return false;
   
   try {
-    const now = moment();
-    const holdMoment = moment(holdTime, 'h:mm:ss A');
-    return holdMoment.isValid() && now.diff(holdMoment, 'minutes') > 3;
+    const now = new Date();
+    const holdTimeDate = new Date();
+
+    holdTimeDate.setHours(parseInt(holdTime.slice(0, 2), 10));
+    holdTimeDate.setMinutes(parseInt(holdTime.slice(2, 4), 10));
+    holdTimeDate.setSeconds(parseInt(holdTime.slice(4, 6), 10));
+
+    const timeDifference = (now - holdTimeDate) / 1000 / 60;
+    return timeDifference > 0.1; 
   } catch (error) {
     console.error('Error checking hold time:', error);
     return false;
@@ -24,6 +29,7 @@ const seatCheckUpdate = (seatAllocation) => {
       
       for (const seatNumber in row.seats) {
         const seat = row.seats[seatNumber];
+        console.log('checkHoldTime(seat.hold_time)', checkHoldTime(seat.hold_time), seat)
         if (seat.holdedseat === true && checkHoldTime(seat.hold_time) === true && seat.status !== 'Booked' && seat.status === 'holdedseat') {
           updatedSeats[seatNumber] = {
             ...seat,

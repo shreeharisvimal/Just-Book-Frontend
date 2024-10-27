@@ -11,7 +11,6 @@ const NavBar = lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavB
 function Seats() {
   const navi = useNavigate();
   const { screenId } = useParams();
-  console.log(screenId)
   const [seatType, setSeatTypes] = useState([]);
   const [seatAllocation, setSeatAllocation] = useState(JSON.parse(localStorage.getItem('SeatAllocation')) || null);
   const [isRefactorNeeded, setIsRefactorNeeded] = useState(false);
@@ -144,6 +143,7 @@ function Seats() {
                 <div className="seats__row-options">
                   <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
                   <select name="rowVal" value={seatAllocation[row].type} onChange={(e) => UpdateRowValue(row, e)}>
+                  <option>Select Seat Type</option>
                     {seatType.map((seat) => (
                       <option key={seat.id} value={seat.name}>{seat.name}</option>
                     ))}

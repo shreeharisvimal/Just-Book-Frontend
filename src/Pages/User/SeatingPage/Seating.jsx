@@ -23,9 +23,30 @@ function Seating() {
   const [bookingSeats, setBookingSeats] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
+  const [componentKey, setComponentKey] = useState(0);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wsRef = useRef(null); 
+
+  const resetState = () => {
+    setNormalPrice(null);
+    setTotalAmount(0);
+    setFetchData(null);
+    setSeatAllocation(null);
+    setSeatTypes([]);
+    setSelectedSeats({});
+    setBookingSeats([]);
+    setIsDataFetched(false);
+  };
+
+  useEffect(() => {
+    resetState();
+  }, [componentKey]); 
+
+  const reloadComponent = () => {
+    setComponentKey(prevKey => prevKey + 1);
+  }; 
 
   const calculatePriceWithPercentage = (percentage, price) => {
     const percentageAmount = parseInt(price) * (parseInt(percentage) / 100);
@@ -97,6 +118,7 @@ function Seating() {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
+      console.log('the new seat allocation is here', newSeatsAfterUpdate)
       setSeatAllocation(newSeatsAfterUpdate);
     };
 
@@ -183,17 +205,22 @@ function Seating() {
 
 
   const updateSeatValue = useCallback((row, seat, seatName) => {
-    console.log("The 1 st is seltected", selectedSeats, 'HSDHFKJSADF', bookingSeats)
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace) {
       const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      const timeString = `${hours}${minutes}${seconds}`;
+
       const updatedSeatData = {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
         holdedseat:!seatData.holdedseat,
         user:localStorage.getItem('user_id') || seatData.user,
-        hold_time: seatData.status === 'available' ? now.toLocaleTimeString() : '',
+        hold_time: seatData.status === 'available' ? timeString : '',
       };
+
       console.log(updatedSeatData)
       const updatedRowData = {
         ...seatAllocation[row],
@@ -231,7 +258,7 @@ function Seating() {
   }
 
   return (
-    <div className='main'>
+    <div key={componentKey} className='main'>
       <Suspense fallback={<div>Loading Navbar...</div>}>
         <NavBar />
       </Suspense>
