@@ -23,7 +23,9 @@ function Seating() {
   };
 
   const { showId } = useParams();
+  const [wsStatus, setWsStatus] = useState('disconnected');
   const [normalPrice, setNormalPrice] = useState(null);
+  const lastUpdateRef = useRef(null);
   const [totalAmount, setTotalAmount] = useState(0);
   const [fetchData, setFetchData] = useState(null);
   const [seatAllocation, setSeatAllocation] = useState(null);
@@ -113,25 +115,75 @@ function Seating() {
     }
   });
 
+
+
   useEffect(() => {
-    const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
-      setSeatAllocation(newSeatsAfterUpdate);
+    let reconnectTimeout;
+    const RECONNECT_DELAY = 5000;
+
+    const connectWebSocket = () => {
+      try {
+        const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
+
+        ws.onopen = () => {
+          setWsStatus('connected');
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            setSeatAllocation(data.seat_data);
+            const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
+            const currentTime = Date.now();
+            if (
+              newSeatsAfterUpdate && 
+              wsRef.current && 
+              wsRef.current.readyState === WebSocket.OPEN &&
+              (!lastUpdateRef.current || currentTime - lastUpdateRef.current > 1000)
+            ) {
+              lastUpdateRef.current = currentTime;
+              wsRef.current.send(JSON.stringify({
+                action: 'seat_update',
+                data: {
+                  seat_data: newSeatsAfterUpdate
+                }
+              }));
+            }
+          } catch (error) {
+            console.log('Error processing message:', error);
+          }
+        };
+
+        ws.onclose = () => {
+          setWsStatus('disconnected');
+          
+          reconnectTimeout = setTimeout(connectWebSocket, RECONNECT_DELAY);
+        };
+
+        ws.onerror = (error) => {
+          ws.close();
+        };
+      } catch (error) {
+        setWsStatus('error');
+      }
     };
 
-    ws.onclose = () => {
-      // console.error('WebSocket closed unexpectedly');
-    };
+    connectWebSocket();
 
     return () => {
-      ws.close();
-      wsRef.current = null;
+      if (wsRef.current) {
+        wsRef.current.close();
+        wsRef.current = null;
+      }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
     };
   }, [showId, seatAllocation]);
+
+
 
   const fetchSeats = async () => {
     try {
