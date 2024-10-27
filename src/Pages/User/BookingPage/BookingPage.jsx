@@ -165,7 +165,6 @@ function BookingPage() {
 
     useEffect(() => {
         FetchMovie();
-        console.log(Book_details);
     }, []);
 
     return (

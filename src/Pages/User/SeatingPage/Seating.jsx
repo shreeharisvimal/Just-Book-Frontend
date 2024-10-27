@@ -11,7 +11,7 @@ import seatCheckUpdate from './seatCheckUpdate';
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 function Seating() {
-  const { screenId, showId } = useParams();
+  const { showId } = useParams();
   const [normalPrice, setNormalPrice] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
   const [fetchData, setFetchData] = useState(null);
@@ -79,15 +79,9 @@ function Seating() {
 
     let newTotalAmount = 0;
     Object.keys(updatedSelectedSeats).forEach(r => {
-      console.log('______________________________')
-      console.log('the rrrrrrrrrrrrr', r)
       updatedSelectedSeats[r].forEach(s => {
-        console.log('the columnssssssss', s)
         const seatPrice = seatTypes.find(type => type.name === seatAllocation[r].type)?.price_multi;
-        console.log('the seat prise is here', seatPrice)
         const seatAmount = calculatePriceWithPercentage(seatPrice, normalPrice);
-        console.log('the seat amount is here', seatAmount)
-        console.log('______________________________')
         newTotalAmount += seatAmount;
       });
     });
@@ -118,12 +112,11 @@ function Seating() {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
-      console.log('the new seat allocation is here', newSeatsAfterUpdate)
       setSeatAllocation(newSeatsAfterUpdate);
     };
 
     ws.onclose = () => {
-      console.error('WebSocket closed unexpectedly');
+      // console.error('WebSocket closed unexpectedly');
     };
 
     return () => {
@@ -221,7 +214,6 @@ function Seating() {
         hold_time: seatData.status === 'available' ? timeString : '',
       };
 
-      console.log(updatedSeatData)
       const updatedRowData = {
         ...seatAllocation[row],
         seats: {

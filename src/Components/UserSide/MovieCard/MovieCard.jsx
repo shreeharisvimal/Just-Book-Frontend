@@ -42,7 +42,6 @@ function MovieCard({ searchQuery}) {
   }, [Location.city]);
 
   const filteredMovies = movies.filter((movie) => {
-    console.log("MovieCard filteredMovies searchQuery:", searchQuery); 
     if(searchQuery){
       return movie.title && movie.title.toLowerCase().includes(searchQuery.toLowerCase());
     }else{

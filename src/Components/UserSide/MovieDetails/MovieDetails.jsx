@@ -69,7 +69,6 @@ function MovieDetails() {
         try {
             const response = await MovieDetailsFetch(SavedMovieId);
             if (response.status === 200) {
-                console.log('movie details fetched', response.data);
                 setmyMovieDetails(response.data);
                 setCast(response.data.credits.cast.filter(castMember => castMember.profile_path).slice(0, 6));
                 setCrew(response.data.credits.crew.filter(crewMember => crewMember.profile_path).slice(0, 6));
