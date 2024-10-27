@@ -11,6 +11,17 @@ const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 
 function Seating() {
+
+  const generateUserId = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const milliseconds = String(now.getMilliseconds()).padStart(3, '0'); 
+
+    return `${hours}${minutes}${seconds}${milliseconds}`;
+  };
+
   const { showId } = useParams();
   const [normalPrice, setNormalPrice] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -23,10 +34,13 @@ function Seating() {
   const [bookingSeats, setBookingSeats] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
+  const [tempUserId, setUserId] = useState(()=>generateUserId())
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wsRef = useRef(null); 
+
+  
 
 
 
@@ -51,7 +65,6 @@ function Seating() {
     } else {
       updatedSelectedSeats[row] = [seat];
     }
-
     setSelectedSeats(updatedSelectedSeats);
     setBookingSeats(prev => {
       const updatedSeats = new Set(prev); 
@@ -67,6 +80,7 @@ function Seating() {
         newTotalAmount += seatAmount;
       });
     });
+
 
     if (wsRef.current) {
       wsRef.current.send(JSON.stringify({
@@ -87,11 +101,11 @@ function Seating() {
     }
   };
 
-
   window.addEventListener("beforeunload", (event) => {
+
     event.preventDefault();
-    event.returnValue = "";  
-  });
+    event.returnValue = ""; 
+});
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
@@ -117,7 +131,7 @@ function Seating() {
       ws.close();
       wsRef.current = null;
     };
-  }, [showId,seatAllocation ]);
+  }, [showId, seatAllocation]);
 
   const fetchSeats = async () => {
     try {
@@ -204,7 +218,7 @@ function Seating() {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
         holdedseat:!seatData.holdedseat,
-        user:localStorage.getItem('user_id') || seatData.user,
+        user:localStorage.getItem('user_id') || tempUserId,
         hold_time: seatData.status === 'available' ? timeString : '',
       };
 

@@ -156,7 +156,6 @@ function BookingPage() {
                 toast.error('Cannot book. Check if you are logged in.');
             }
         } catch (error) {
-            console.error('Payment initiation error:', error);
             toast.error('Payment initiation failed. Please try again later.');
         } finally {
             setLoading(false);
