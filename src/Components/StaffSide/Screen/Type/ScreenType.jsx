@@ -14,18 +14,27 @@ function ScreenType() {
         return false;
       }
     }
+
+    if (newScreenType.name.trim().length < 3) {
+      toast.warning('Screen Type Name should be at least 3 characters');
+      return false;
+    }
+
+    if (isNaN(newScreenType.price_multi) || Number(newScreenType.price_multi) <= 0) {
+      toast.warning('Price Multiplier must be a positive number');
+      return false;
+    }
+
     return true;
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (FormValidata() === false){
-        return
+      if (!FormValidata()) {
+        return;
       }
       const resp = await axios.post("theater/ScreenTypeApiCreate/", newScreenType);
-      console.log(resp)
       if (resp.status === 201) {
         setNewScreenType(INIT_STATE);
         toast.success("Screen type created successfully");
@@ -39,12 +48,11 @@ function ScreenType() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setNewScreenType({ ...newScreenType, [name]: value });
-    console.log(newScreenType)
   };
 
   return (
     <div className="screen-type-container">
-      <form className="screen-type-form" >
+      <form className="screen-type-form">
         <h2>Add Screen Type</h2>
         <input
           type="text"
