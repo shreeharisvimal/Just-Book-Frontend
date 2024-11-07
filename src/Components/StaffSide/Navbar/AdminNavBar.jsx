@@ -21,15 +21,6 @@ function AdminNavBar() {
 
   return (
     <div className={styles.adminNavBar}>
-      <div className={styles.adminNavBar__search}>
-        <input
-          className={styles.adminNavBar__search_bar}
-          type="text"
-          placeholder="Enter Movie Name or Shows"
-        />
-        <button className={styles.adminNavBar__search_button}>Search</button>
-      </div>
-
       <div className={styles.adminNavBar__authButton} onClick={handleOpen}>
         {AuthUser.first_name && AuthUser.first_name}
       </div>
