@@ -155,7 +155,7 @@ function Show({setShowCreate}) {
                 </label>
                 <label>
                     Price:
-                    <input type="number" name="price" value={FormData.price} onChange={HandleChange} required />
+                    <input type="number" name="price" value={FormData.price} min={100} onChange={HandleChange} required />
                 </label>
                 <label>
                     Screen:
