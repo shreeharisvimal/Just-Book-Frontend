@@ -41,22 +41,23 @@ $text: #fff; // White text color
     }
   }
 
-  &__auth-button {
+  &__auth_button {
     position: relative;
     left: 65rem;
 
-    &--login-or-signin {
-      padding: 0.5rem 1rem;
-      border: none;
-      background-color: transparent;
-      color: $text;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
+   
+  }
+  &--login-or-signin {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: transparent;
+    color: $text;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
 
-      &:hover {
-        color: $primary;
-      }
+    &:hover {
+      color: $primary;
     }
   }
 }

@@ -55,6 +55,14 @@ function MovieCard({ searchQuery}) {
     navigate(`MovieDetails/`);
   };
 
+  const formatReleaseDate = (releaseDate) => {
+    const date = new Date(releaseDate);
+    const day = String(date.getDate()).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -69,7 +77,7 @@ function MovieCard({ searchQuery}) {
               <div className="movie-info">
                 <h2><strong>{movie.title}</strong></h2>
                 <p><strong>Duration:</strong> 2hr</p>
-                <p><strong>Release Date:</strong> {movie.release_date}</p>
+                <p><strong>Release Date:</strong> {formatReleaseDate(movie.release_date)}</p>
                 <p><strong>Language:</strong> {LanguageUtils(movie.language)}</p>
               </div>
             </li>

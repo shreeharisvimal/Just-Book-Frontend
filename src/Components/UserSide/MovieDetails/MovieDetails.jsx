@@ -65,6 +65,14 @@ function MovieDetails() {
         navigate(`/ShowsListing/${myMovieId}/`);
     };
 
+    const formatReleaseDate = (releaseDate) => {
+        const date = new Date(releaseDate);
+        const day = String(date.getDate()).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      };
+
     const MovieFetching = async () => {
         try {
             const response = await MovieDetailsFetch(SavedMovieId);
@@ -121,7 +129,7 @@ function MovieDetails() {
                 <div className='DetailsPage__OtherDetails'>
                     <h3>
                     Duration {myMovieDetails.runtime}m
-                    Release Date {myMovieDetails.release_date}
+                    Release Date {formatReleaseDate(myMovieDetails.release_date)}
                     </h3>
                 </div>
                 {/* <button className='DetailsPage__btn' onClick={BookTicket}>Book Now</button> */}

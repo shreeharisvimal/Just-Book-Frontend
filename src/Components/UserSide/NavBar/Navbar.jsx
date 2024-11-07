@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Image from '../../../logo192.png';
 import UserAuthCard from '../UserAuthCard/UserAuthCard';
 import styles from './Navbar.module.scss';
-import './nav.css'
+import './nav.css';
 import isAuthUser from '../../../Utils/AuthUser';
 import { jwtDecode } from 'jwt-decode';
 import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
@@ -14,9 +14,11 @@ import { set_Location } from '../../../Redux/Location/Location';
 function Navbar({ onSearch }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [callAutoLocation, setAutoLocation] = useState(false);
+  const location = useLocation();
+  const [searchValue, setSearchValue] = useState('');
   const [isLoginOrSigninVisible, setIsLoginOrSigninVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [autoLocation, setAutoLocation] = useState(false);
+  
   const AuthUser = useSelector((state) => state.auth_user);
   const Location = useSelector((state) => state.location_details);
 
@@ -29,19 +31,18 @@ function Navbar({ onSearch }) {
   useEffect(() => {
     if (navigator.geolocation && !localStorage.getItem('city')) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          getCityName(latitude, longitude);
-        }
+        (position) => getCityName(position.coords.latitude, position.coords.longitude),
+        (error) => console.error('Error getting location:', error)
       );
     } else {
       setLocationFromLocalStorage();
     }
-  }, [callAutoLocation]);
+  }, [autoLocation]);
 
   const getCityName = async (latitude, longitude) => {
     const apiKey = 'a78b83f46e89488180ff7b8f3a72ff6a';
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+    
     try {
       const response = await axios.get(url);
       const data = response.data;
@@ -54,7 +55,7 @@ function Navbar({ onSearch }) {
         console.log('No address found for this location.');
       }
     } catch (error) {
-      console.log('Error fetching the address:', error);
+      console.error('Error fetching the address:', error);
     }
   };
 
@@ -64,39 +65,6 @@ function Navbar({ onSearch }) {
       dispatch(set_Location(storedCity));
     }
   };
-
-  const toggleLoginOrSignin = () => {
-    setIsLoginOrSigninVisible(!isLoginOrSigninVisible);
-  };
-
-  useEffect(() => {
-    if (AuthUser.first_name) {
-      setIsLoginOrSigninVisible(false);
-    }
-  }, [AuthUser.first_name]);
-
-  useEffect(() => {
-    const AccessToken = localStorage.getItem('AccessToken');
-    if (AccessToken) {
-      try {
-        const decodedToken = jwtDecode(AccessToken);
-        if (decodedToken.exp > Date.now() / 1000) {
-          dispatch(
-            set_Authenticate({
-              first_name: decodedToken.first_name,
-              user_cred: decodedToken.user_cred,
-              isAuth: true,
-              isAdmin: decodedToken.isAdmin,
-            })
-          );
-        } else {
-          isAuthUser();
-        }
-      } catch (error) {
-        console.error('Error decoding access token:', error);
-      }
-    }
-  }, [dispatch]);
 
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
@@ -110,47 +78,93 @@ function Navbar({ onSearch }) {
     }
   };
 
+  const toggleLoginOrSignin = () => {
+    setIsLoginOrSigninVisible(!isLoginOrSigninVisible);
+  };
+
+  useEffect(() => {
+    const AccessToken = localStorage.getItem('AccessToken');
+    if (AccessToken) {
+      try {
+        const decodedToken = jwtDecode(AccessToken);
+        if (decodedToken.exp > Date.now() / 1000) {
+          dispatch(set_Authenticate({
+            first_name: decodedToken.first_name,
+            user_cred: decodedToken.user_cred,
+            isAuth: true,
+            isAdmin: decodedToken.isAdmin,
+          }));
+        } else {
+          isAuthUser();
+        }
+      } catch (error) {
+        console.error('Error decoding access token:', error);
+      }
+    }
+  }, [dispatch]);
+
   const handleSearch = (searchQuery) => {
+    setSearchValue(searchQuery);
+    if (location.pathname !== '/') {
+      navigate('/');
+      return;
+    }
     onSearch(searchQuery);
-    setSearchQuery(searchQuery)
   };
 
   return (
     <div className={styles.navbar}>
       <div className={styles.navbar__logo}>
-        <img onClick={() => navigate('/')} className={styles.navbar__logo_img} src={Image} alt="Logo" />
-      </div>
-      <div className={styles.navbar__search}>
-        <input
-          className={styles.navbar__search_bar}
-          type="text"
-          placeholder='Enter Movie Name or Shows'
-          value={searchQuery}
-          onChange={(e) => handleSearch(e.target.value)}
+        <img
+          onClick={() => navigate('/')}
+          className={styles.navbar__logo_img}
+          src={Image}
+          alt="Logo"
         />
-        <button className={styles.navbar__search_button} onClick={handleSearch}>Search</button>
       </div>
+
+        <div className={styles.navbar__search}>
+          <input
+            className={styles.navbar__search_bar}
+            type="text"
+            placeholder="Enter Movie Name or Shows"
+            value={searchValue}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <button className={styles.navbar__search_button} onClick={() => handleSearch(searchValue)}>
+            Search
+          </button>
+        </div>
+
       <div className={styles.navbar__dropdown}>
-        <select className={styles.navbar__dropdown_select} value={Location.city || 'Please wait'} onChange={handleCityChange}>
-          <option>{Location.city}</option>
+        <select
+          className={styles.navbar__dropdown_select}
+          value={Location.city || 'Please wait'}
+          onChange={handleCityChange}
+        >
+          <option>{Location.city || 'Please wait'}</option>
           <option value="Auto Select">Auto Select</option>
           {INIT_STATE.map((city, index) => (
-            <option key={index} value={city}>{city}</option>
+            <option key={index} value={city}>
+              {city}
+            </option>
           ))}
         </select>
       </div>
+
       <div className={styles.navbar__auth}>
-                {AuthUser.first_name ? (
-                    <Link to='/profile' className='button'>
-                        {AuthUser.first_name}
-                    </Link>
-                ) : (
-                  <button class="button" data-text="Awesome" onClick={toggleLoginOrSignin}>
-                      Sign In / Sign Up
-                  </button> 
-                )}
-                {isLoginOrSigninVisible && <UserAuthCard />}
-            </div>
+        {AuthUser.first_name ? (
+          <Link to="/profile" className="button">
+            {AuthUser.first_name}
+          </Link>
+        ) : (
+          <button className="button" onClick={toggleLoginOrSignin}>
+            Sign In / Sign Up
+          </button>
+        )}
+
+        {isLoginOrSigninVisible && <UserAuthCard />}
+      </div>
     </div>
   );
 }

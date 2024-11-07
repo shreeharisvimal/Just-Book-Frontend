@@ -31,6 +31,14 @@ function Movie() {
     
   };
 
+  const formatReleaseDate = (releaseDate) => {
+    const date = new Date(releaseDate);
+    const day = String(date.getDate()).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <div className="movie-container">
       <div className="search-bar">
@@ -53,7 +61,7 @@ function Movie() {
             <div className="movie-info">
               <h2>{movie.title}</h2>
               <p>
-                <strong>Release Date:</strong> {movie.release_date}
+                <strong>Release Date:</strong> {formatReleaseDate(movie.release_date)}
               </p>
               <p>
                 <strong>Overview:</strong> {movie.overview}

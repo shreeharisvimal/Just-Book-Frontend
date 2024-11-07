@@ -111,15 +111,6 @@ function ProfileComponent() {
                             name="profile_pic"
                             onChange={handleOnChange}
                         />
-                        <div className="profileComponent__image-container">
-                            {imagePreview && (
-                                <img
-                                    className="profileComponent__image"
-                                    src={imagePreview}
-                                    alt="Profile"
-                                />
-                            )}
-                        </div>
                     </div>
                     <div className="profileComponent__form-group">
                         <label className="profileComponent__label">First Name</label>
