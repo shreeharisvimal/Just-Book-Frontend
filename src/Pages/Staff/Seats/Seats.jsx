@@ -16,31 +16,27 @@ function Seats() {
   const [isRefactorNeeded, setIsRefactorNeeded] = useState(false);
 
   useEffect(() => {
-      if (!seatAllocation) {
-        import('../../../SeatAllocation')
-          .then((module) => {
-            setSeatAllocation(module.default);
-            localStorage.setItem('SeatAllocation', JSON.stringify(module.default));
-          })
-          .catch((error) => {
-            console.error('Error loading seat allocation:', error);
-          });
-      }
-    
+    if (!seatAllocation) {
+      import('../../../SeatAllocation')
+        .then((module) => {
+          setSeatAllocation(module.default);
+          localStorage.setItem('SeatAllocation', JSON.stringify(module.default));
+        })
+        .catch((error) => {
+          console.error('Error loading seat allocation:', error);
+        });
+    }
 
     const fetchSeatTypes = async () => {
       try {
         const resp = await myaxios.get('theater/SeatTypeFetch/');
         setSeatTypes(resp.data);
-        // setSeatTypeFetched(true);
       } catch (error) {
         console.error('Error fetching seat types:', error);
       }
     };
 
-    // if (!seatAllocation && !seatTypeFetched) {
-      fetchSeatTypes();
-    // }
+    fetchSeatTypes();
   }, [seatAllocation]);
 
   useEffect(() => {
@@ -83,8 +79,7 @@ function Seats() {
 
     setSeatAllocation(updatedSeatAllocation);
     localStorage.setItem('SeatAllocation', JSON.stringify(updatedSeatAllocation));
-    setIsRefactorNeeded(true)
-
+    setIsRefactorNeeded(true);
   };
 
   const HandleRefactor = () => {
@@ -110,14 +105,29 @@ function Seats() {
     setSeatAllocation(null);
   };
 
+  const validateSeatTypes = () => {
+    let isValid = true;
+    Object.keys(seatAllocation).forEach((row) => {
+      const rowData = seatAllocation[row];
+      console.log(rowData.type)
+      if (!rowData.type || rowData.type === "None") {
+        isValid = false;
+        toast.warning(`Please select a seat type for row ${row}`);
+      }
+    });
+  
+    return isValid;
+  };
+
   const saveSeats = async () => {
+    if (!validateSeatTypes()) return; 
+
     try {
       const resp = await myaxios.post('theater/SeatAllocationCreateApi/', { screen: parseInt(screenId), seat_allocation: seatAllocation });
-      console.log('Saved seat allocation:', resp.data);
-      if(resp.status === 201){
-        toast.success('The seat have been saved succefully')
+      if (resp.status === 201) {
+        toast.success('The seats have been saved successfully');
         HandleReset();
-        navi(-1)
+        navi(-1);
       }
     } catch (error) {
       console.error('Error saving seat allocation:', error);
@@ -143,7 +153,7 @@ function Seats() {
                 <div className="seats__row-options">
                   <p className="seats__row-title">{row} - {seatAllocation[row].type}</p>
                   <select name="rowVal" value={seatAllocation[row].type} onChange={(e) => UpdateRowValue(row, e)}>
-                  <option>Select Seat Type</option>
+                    <option>Select Seat Type</option>
                     {seatType.map((seat) => (
                       <option key={seat.id} value={seat.name}>{seat.name}</option>
                     ))}
@@ -177,7 +187,7 @@ function Seats() {
         <button className='save-button' onClick={saveSeats}>Save Seat Allocation</button>
       </div>
     </Suspense>
-  ); 
+  );
 }
 
 export default Seats;
