@@ -6,7 +6,7 @@ import {jwtDecode} from 'jwt-decode';
 import './otp.scss';
 import './myOTP.css'
 
-function OtpAuth({ userdata, otpres }) {
+function OtpAuth({ userdata, otpres}) {
   const [otp, setOtp] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
@@ -35,10 +35,10 @@ function OtpAuth({ userdata, otpres }) {
             try {
               localStorage.setItem('user_cred', JSON.stringify(userdata.user_cred));
               localStorage.setItem('first_name', JSON.stringify(userdata.first_name));
-              console.log(userdata.user_id)
               localStorage.setItem('user_id', JSON.stringify(userdata.user_id));
               localStorage.setItem('AccessToken', userdata.access_token);
               const decodedToken = jwtDecode(userdata.access_token);
+              window.location.reload();
               dispatch(
                 set_Authenticate({
                   first_name: decodedToken.first_name,

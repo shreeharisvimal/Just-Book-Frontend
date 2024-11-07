@@ -14,7 +14,7 @@ function SeatTypePage() {
   const [showCreate, setShowCreate] = useState(false);
 
   const INIT_STATE = {
-    theater: null,
+    theater: theater[0]?.id || '',
     name: '',
     price_multi: '',
   };
@@ -63,6 +63,18 @@ function SeatTypePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation checks
+    if (!FormData.name.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+
+    if (!FormData.price_multi || isNaN(FormData.price_multi) || Number(FormData.price_multi) <= 0) {
+      toast.error("Please enter a valid positive number for Price Multiplier");
+      return;
+    }
+
     try {
       const response = await axios.post('/theater/SeatTypeCreateApi/', FormData);
       if (response.status === 201) {
@@ -73,25 +85,27 @@ function SeatTypePage() {
       }
     } catch (error) {
       console.error('There was an error creating the seat type!', error);
+      toast.error("Error creating seat type");
     }
   };
 
-  const HandleDelete=async(id)=>{
-    try{
+  const HandleDelete = async (id) => {
+    try {
       const response = await axios.delete(`/theater/SeatTypeDeleteApi/${id}/`);
-      if (response.status === 204){
+      if (response.status === 204) {
         toast.warning("Seat Type is deleted successfully");
         FetchSeatTypes();
       }
-    }catch(error){
+    } catch (error) {
       console.error('There was an error deleting the seat type!', error);
+      toast.error("Error deleting seat type");
     }
   };
 
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
-      <div className='SeatType__container'>
         <NavBar />
+      <div className='SeatType__container'>
         <AsideBar />
         <button className='SeatType__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? 'Close Creating' : 'Create Seat Type'}
@@ -100,21 +114,6 @@ function SeatTypePage() {
           <div className='SeatType__form-container'>
             <h1 className='SeatType__title'>Create Seat Type</h1>
             <form className='SeatType__form' onSubmit={handleSubmit}>
-              <div className='SeatType__form-group'>
-                <select
-                  name='theater'
-                  value={FormData.theater}
-                  onChange={HandleChange}
-                  required
-                >
-                  <option value="">Select A Theater</option>
-                  {theater.map((theater) => (
-                    <option key={theater.id} value={theater.id}>
-                      {theater.theater_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <div className='SeatType__form-group'>
                 <label htmlFor='name' className='SeatType__label'>Name</label>
                 <input
@@ -152,7 +151,7 @@ function SeatTypePage() {
                     <h2>Seat Type :{seatType.name}</h2>
                     <p>Price Multiplier: {seatType.price_multi} %</p>
                   </div>
-                    <button onClick={()=>HandleDelete(seatType.id)}>Delete</button>
+                  <button onClick={() => HandleDelete(seatType.id)}>Delete</button>
                 </li>
               ))}
             </ul>

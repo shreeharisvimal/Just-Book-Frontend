@@ -114,7 +114,8 @@ function TheaterPage() {
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
         </button>
-        {showTheater && <TheaterComp setShowTheater={setShowTheater} />}
+        {showTheater ? <TheaterComp setShowTheater={setShowTheater} /> : 
+        (
         <div className="theater-page__content">
           <div className="theater-page__theater-list">
             {theater.map((theater) => (
@@ -185,6 +186,7 @@ function TheaterPage() {
             </form>
           )}
         </div>
+            )}
       </div>
     </React.Suspense>
   );

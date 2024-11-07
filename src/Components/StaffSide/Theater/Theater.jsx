@@ -88,6 +88,7 @@ function Theater({setShowTheater}) {
         {errors.theater_name && <p className="error-text">{errors.theater_name}</p>}
 
         <PhoneInput
+        className='form-input'
           country={'in'}
           value={formData.phone}
           onChange={(value) => setFormData({ ...formData, phone: value })}
@@ -96,7 +97,7 @@ function Theater({setShowTheater}) {
             required: true,
           }}
           placeholder="Enter contact"
-          inputStyle={{ width: '90%', padding: '10px' }}
+          inputStyle={{ padding: '20px' }}
         />
         {errors.phone && <p className="error-text">{errors.phone}</p>}
 
@@ -110,7 +111,7 @@ function Theater({setShowTheater}) {
         />
         {errors.address && <p className="error-text">{errors.address}</p>}
         <select
-          className='form-Drop'
+          className='form-drop'
           name='city'
           value={formData.city}
           onChange={handleChange}
