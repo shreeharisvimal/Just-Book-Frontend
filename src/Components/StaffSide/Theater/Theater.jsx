@@ -73,8 +73,8 @@ function Theater({setShowTheater}) {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="form">
+    <div className="TheaterCompcontainer">
+      <form onSubmit={handleSubmit} className="TheaterCompform">
         <h2 className="form-title">Add Theater</h2>
 
         <input
