@@ -43,8 +43,8 @@ function ScreenType() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <AsideBar />
-      <div className="container">
         <NavBar />
+      <div className="container">
         <div className="container__box">
           <button 
             className="container__button" 
