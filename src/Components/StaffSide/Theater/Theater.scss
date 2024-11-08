@@ -24,22 +24,22 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   text-align: center;
 
-  &-title {
+  &__title {
     margin-bottom: 1.5rem;
     color: $primary-color;
     font-size: 1.5rem;
     font-weight: 700;
   }
 
-  &-drop {
+  &__drop {
     width: 100%;
     border: 1px solid #ddd;
     border-radius: $border-radius;
     padding: 10px;
   }
 
-  &-input,
-  &-textarea {
+  &__input,
+  &__textarea {
     width: 95%;
     padding: 10px;
     margin: 1rem 0;
@@ -48,12 +48,12 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
   }
 
-  &-textarea {
+  &__textarea {
     resize: none;
     height: 100px;
   }
 
-  &-button {
+  &__button {
     width: 100%;
     padding: $padding;
     border: none;

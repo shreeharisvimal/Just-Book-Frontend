@@ -8,84 +8,112 @@ const NavBar = lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavB
 
 function Staff() {
     const INITIAL_STATE = {
-        first_name:'',
-        last_name:'',
-        password:'',
-        phone:'',
-        email:'',
-    }
+        first_name: '',
+        last_name: '',
+        password: '',
+        phone: '',
+        email: '',
+    };
+
     const [openCreate, setopenCreate] = useState(false);
-    const [NewStaff, setNewStaff] = useState(INITIAL_STATE)
+    const [NewStaff, setNewStaff] = useState(INITIAL_STATE);
     const [staffs, setStaffs] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const AccessToken = localStorage.getItem('AccessToken');
-    
 
-    const HandleSubmit = async()=>{
-        try{    
-            const resp = await axios.post('StaffAuth/',NewStaff,{
-                headers:{
+    const validate = () => {
+        let validationErrors = {};
+
+        if (!NewStaff.first_name.trim()) validationErrors.first_name = 'First name is required';
+        if (!NewStaff.last_name.trim()) validationErrors.last_name = 'Last name is required';
+        if (!NewStaff.password.trim()) validationErrors.password = 'Password is required';
+        if (!NewStaff.phone.trim()) {
+            validationErrors.phone = 'Phone number is required';
+        } else if (!/^\d{10}$/.test(NewStaff.phone)) {
+            validationErrors.phone = 'Enter a valid 10-digit phone number';
+        }
+        if (!NewStaff.email) {
+            validationErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(NewStaff.email)) {
+            validationErrors.email = 'Enter a valid email address';
+        }
+
+        setErrors(validationErrors);
+        return Object.keys(validationErrors).length === 0;
+    };
+
+    const HandleSubmit = async () => {
+        if (!validate()) {
+            toast.error('Please fix the validation errors');
+            return;
+        }
+
+        try {
+            const resp = await axios.post('StaffAuth/', NewStaff, {
+                headers: {
                     'Authorization': `Bearer ${AccessToken}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 }
             });
-            if (resp.status === 201){
-                toast.success("New Staff Created !")
-                setNewStaff(INITIAL_STATE)
-                setopenCreate(!openCreate)
+            if (resp.status === 201) {
+                toast.success('New Staff Created!');
+                setNewStaff(INITIAL_STATE);
+                setopenCreate(!openCreate);
+                setErrors({});
             }
-        }catch(error){
-            if(error.response.status === 409){
-                
-                toast.warning(error.response.data.message)
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                toast.warning(error.response.data.message);
+            } else {
+                toast.error('Error creating staff');
             }
         }
-    }
+    };
 
     const HandleChange = (event) => {
-        const { name, value } = event.target;   
+        const { name, value } = event.target;
         setNewStaff(prevState => ({
-           ...prevState,
+            ...prevState,
             [name]: value
         }));
     };
-    
-    const fetchStaff = async()=>{
-        try{
-            const resp = await axios.get('StaffAuth/',{
-                headers:{
+
+    const fetchStaff = async () => {
+        try {
+            const resp = await axios.get('StaffAuth/', {
+                headers: {
                     'Authorization': `Bearer ${AccessToken}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 }
             });
-            console.log('staffs', staffs)
-            setStaffs(resp.data)
-        }catch(error){
-            console.log(error)
+            setStaffs(resp.data);
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
 
-    const HandleDelete= async(id)=>{
-        try{
-            const resp = await axios.delete(`StaffDelete/${id}/`, {
-                headers:{
-                    'Authorization':`Bearer ${AccessToken}`,
+    const HandleDelete = async (id) => {
+        try {
+            await axios.delete(`StaffDelete/${id}/`, {
+                headers: {
+                    'Authorization': `Bearer ${AccessToken}`,
                     'Accept': 'application/json',
-                    'Content-Type':'application/json'
+                    'Content-Type': 'application/json'
                 }
-            })
-            toast.warning("Staff deleted")
+            });
+            toast.warning('Staff deleted');
             fetchStaff();
-        }catch(error){
-            console.log(error)
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchStaff();
-    },[openCreate])
+    }, [openCreate]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -99,11 +127,56 @@ function Staff() {
                 </div>
                 {openCreate ? (
                     <div className="container__form">
-                        <input className="container__form-input" name='first_name' value={NewStaff.first_name} onChange={(event)=>HandleChange(event)} type="text" placeholder="Enter first name" />
-                        <input className="container__form-input" name='last_name' value={NewStaff.last_name} onChange={(event)=>HandleChange(event)} type="text" placeholder="Enter last name" />
-                        <input className="container__form-input"  name='password' value={NewStaff.password} onChange={(event)=>HandleChange(event)} type="password" placeholder="Enter password for user" />
-                        <input className="container__form-input" name='phone' value={NewStaff.phone} onChange={(event)=>HandleChange(event)} type="tel" placeholder="Enter phone number" />
-                        <input className="container__form-input" name='email' value={NewStaff.email} onChange={(event)=>HandleChange(event)} type="email" placeholder="Enter email" />
+                        <input
+                            className="container__form-input"
+                            name="first_name"
+                            value={NewStaff.first_name}
+                            onChange={HandleChange}
+                            type="text"
+                            placeholder="Enter first name"
+                        />
+                        {errors.first_name && <p className="error-text">{errors.first_name}</p>}
+
+                        <input
+                            className="container__form-input"
+                            name="last_name"
+                            value={NewStaff.last_name}
+                            onChange={HandleChange}
+                            type="text"
+                            placeholder="Enter last name"
+                        />
+                        {errors.last_name && <p className="error-text">{errors.last_name}</p>}
+
+                        <input
+                            className="container__form-input"
+                            name="password"
+                            value={NewStaff.password}
+                            onChange={HandleChange}
+                            type="password"
+                            placeholder="Enter password for user"
+                        />
+                        {errors.password && <p className="error-text">{errors.password}</p>}
+
+                        <input
+                            className="container__form-input"
+                            name="phone"
+                            value={NewStaff.phone}
+                            onChange={HandleChange}
+                            type="tel"
+                            placeholder="Enter phone number"
+                        />
+                        {errors.phone && <p className="error-text">{errors.phone}</p>}
+
+                        <input
+                            className="container__form-input"
+                            name="email"
+                            value={NewStaff.email}
+                            onChange={HandleChange}
+                            type="email"
+                            placeholder="Enter email"
+                        />
+                        {errors.email && <p className="error-text">{errors.email}</p>}
+
                         <button className="container__button" onClick={HandleSubmit}>Create Staff</button>
                     </div>
                 ) : (
@@ -116,7 +189,7 @@ function Staff() {
                                     <div>{staff.email}</div>
                                 </div>
                                 <div className="container__list-item-actions">
-                                    <button className="container__list-item-actions-button" onClick={()=>HandleDelete(staff.id)}>Delete</button>
+                                    <button className="container__list-item-actions-button" onClick={() => HandleDelete(staff.id)}>Delete</button>
                                 </div>
                             </div>
                         ))}

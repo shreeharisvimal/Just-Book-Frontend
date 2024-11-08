@@ -39,10 +39,10 @@ function Theater({setShowTheater}) {
     if (!formData.theater_name) formErrors.theater_name = "Theater name is required";
     if (!formData.email) formErrors.email = "Email is required";
     if (!formData.phone) formErrors.phone = "Phone number is required";
-    if (!formData.address) formErrors.latitude = "Address is required";
-    if (!formData.city) formErrors.latitude = "city is required";
-    if (!formData.state) formErrors.latitude = "state is required";
-    if (!formData.description) formErrors.longitude = "description is required";
+    if (!formData.address) formErrors.address = "Address is required"; 
+    if (!formData.city) formErrors.city = "City is required";      
+    if (!formData.state) formErrors.state = "State is required";  
+    if (!formData.description) formErrors.description = "Description is required";
     return formErrors;
   };
 
@@ -75,7 +75,7 @@ function Theater({setShowTheater}) {
   return (
     <div className="TheaterCompcontainer">
       <form onSubmit={handleSubmit} className="TheaterCompform">
-        <h2 className="form-title">Add Theater</h2>
+        <h2 className="TheaterCompform__title">Add Theater</h2>
 
         <input
           type="text"
@@ -83,12 +83,12 @@ function Theater({setShowTheater}) {
           value={formData.theater_name}
           placeholder="Theater Name"
           onChange={handleChange}
-          className="form-input"
+          className="TheaterCompform__input"
         />
         {errors.theater_name && <p className="error-text">{errors.theater_name}</p>}
 
         <PhoneInput
-        className='form-input'
+          className="TheaterCompform__input"
           country={'in'}
           value={formData.phone}
           onChange={(value) => setFormData({ ...formData, phone: value })}
@@ -105,14 +105,15 @@ function Theater({setShowTheater}) {
           type="text"
           name="address"
           value={formData.address}
-          placeholder="address"
+          placeholder="Address"
           onChange={handleChange}
-          className="form-input"
+          className="TheaterCompform__input"
         />
         {errors.address && <p className="error-text">{errors.address}</p>}
+
         <select
-          className='form-drop'
-          name='city'
+          className="TheaterCompform__drop"
+          name="city"
           value={formData.city}
           onChange={handleChange}
         >
@@ -121,16 +122,15 @@ function Theater({setShowTheater}) {
             <option key={index} value={city}>{city}</option>
           ))}
         </select>
-       
         {errors.city && <p className="error-text">{errors.city}</p>}
 
         <input
           type="text"
           name="state"
           value={formData.state}
-          placeholder="state"
+          placeholder="State"
           onChange={handleChange}
-          className="form-input"
+          className="TheaterCompform__input"
         />
         {errors.state && <p className="error-text">{errors.state}</p>}
 
@@ -139,11 +139,14 @@ function Theater({setShowTheater}) {
           value={formData.description}
           placeholder="Description"
           onChange={handleChange}
-          className="form-textarea"
+          className="TheaterCompform__textarea"
         />
-        <button type="submit" onClick={handleSubmit} className="form-button">Submit</button>
+        {errors.description && <p className="error-text">{errors.description}</p>}
+
+        <button type="submit" className="TheaterCompform__button">Submit</button>
       </form>
     </div>
+
   );
 }
 
