@@ -14,7 +14,7 @@ function SeatTypePage() {
   const [showCreate, setShowCreate] = useState(false);
 
   const INIT_STATE = {
-    theater: theater[0]?.id || '',
+    theater: null,
     name: '',
     price_multi: '',
   };
@@ -36,6 +36,7 @@ function SeatTypePage() {
       const TheaterResp = await axios.get(`theater/FetchTheaterStaff/${user.user_cred}/`);
       if (TheaterResp.status === 200) {
         setTheater(TheaterResp.data);
+        setFormData((data) => ({ ...data, theater: TheaterResp.data[0].id }));
         toast.dismiss();
       }
     } catch (error) {
