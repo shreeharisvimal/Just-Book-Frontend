@@ -1,13 +1,17 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import './Profile.scss';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from '../../../axios';
 import { useSelector } from 'react-redux';
+import { set_Authenticate } from '../../../Redux/Auth/AuthSlice';
+
 
 const Prof = lazy(() => import('./ProfileComponent'));
 const Tickets = lazy(() => import('./Tickets'));
 
 function Profile() {
+  const dispatch = useDispatch();
   const auth_user = useSelector((state) => state.auth_user);
   const navigate = useNavigate();
   const [changePage, setChangePage] = useState(true);
@@ -15,7 +19,7 @@ function Profile() {
 
   const Logout = async () => {
     if (!auth_user.isAuthenticated) {
-      navigate('/');
+      navigate('/', { replace: true });
       return;
     }
     try {
@@ -28,7 +32,15 @@ function Profile() {
       });
       localStorage.clear();
       axios.defaults.headers.common['Authorization'] = null;
-      window.location.href = '/';
+      dispatch(
+        set_Authenticate({
+          first_name: null,
+          user_cred: null,
+          isAuth: false,
+          isAdmin: false,
+        })
+      );
+      navigate('/', { replace: true });
     } catch (e) {
       console.log('logout not working', e);
     }
@@ -55,7 +67,7 @@ function Profile() {
 
   useEffect(() => {
     if (!auth_user.isAuthenticated) {
-
+      navigate('/', { replace: true });
     } else {
       FetchThisUser();
     }

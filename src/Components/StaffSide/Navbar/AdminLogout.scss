@@ -8,17 +8,18 @@ $text: #fff; // White text color
 
 .admin-logout {
   &__container {
-    position: absolute;
+    position: fixed;
     height: 100px;
     width: 10%;
     top: 3rem;
-    left: 65rem;
+    left: 80rem;
     background-color: #fff;
     border-radius: 10px;
     border: 1px solid $primary;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     padding: 20px;
     margin: 0 auto;
+    z-index:999;
   }
 
   &__button {

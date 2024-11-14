@@ -10,7 +10,8 @@ function AdminLogout() {
 
   const logout = async () => {
     if (!auth_user.isAuthenticated) {
-      navigate('/admin/');
+      navigate('/admin', { replace: true });
+      
       return;
     }
     const refresh_token = localStorage.getItem('RefreshToken');
@@ -20,9 +21,9 @@ function AdminLogout() {
       await axios.post('logout/', { refresh_token }, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      localStorage.clear();
       axios.defaults.headers.common['Authorization'] = null;
-      window.location.href = '/admin/';
+      localStorage.clear();
+      navigate('/admin', { replace: true });
     } catch (e) {
       console.log('Logout not working', e);
     }
@@ -30,7 +31,7 @@ function AdminLogout() {
 
   useEffect(() => {
     if (!auth_user.isAuthenticated) {
-      navigate('/admin');
+      navigate('/admin', { replace: true });
     }
   }, [auth_user.isAuthenticated, navigate]);
 

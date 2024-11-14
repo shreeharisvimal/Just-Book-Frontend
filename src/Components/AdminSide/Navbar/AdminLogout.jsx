@@ -13,7 +13,7 @@ const auth_user = useSelector((state) =>state.auth_user)
   const Logout =async()=>{
 
     if (!auth_user.isAuthenticated){
-      navigate('admin/')
+      navigate('/admin', { replace: true });
       return;
     }
         const refresh_token = (localStorage.getItem('RefreshToken'))
@@ -25,7 +25,8 @@ const auth_user = useSelector((state) =>state.auth_user)
             }})
              localStorage.clear();
              axios.defaults.headers.common['Authorization'] = null;
-             window.location.href = '/admin/'
+             navigate('/admin', { replace: true });
+
              } catch (e) {
                console.log('logout not working', e)
              }
@@ -33,7 +34,8 @@ const auth_user = useSelector((state) =>state.auth_user)
   }
   useEffect(() => {
     if (!auth_user.isAuthenticated) {
-      navigate('/admin');
+      navigate('/admin', { replace: true });
+
     }
   }, [auth_user.isAuthenticated, navigate]);
   return (

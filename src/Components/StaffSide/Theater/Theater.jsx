@@ -122,7 +122,7 @@ function Theater({ setShowTheater }) {
             required: true,
           }}
           placeholder="Enter contact"
-          inputStyle={{ padding: '20px', width: '100%' }}
+          inputStyle={{ padding: '10px', width: '80%' }}
           className="TheaterCompform__input"
         />
         {errors.phone && <p className="error-text">{errors.phone}</p>}

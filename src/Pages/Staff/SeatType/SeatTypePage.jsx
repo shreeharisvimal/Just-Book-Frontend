@@ -40,7 +40,10 @@ function SeatTypePage() {
       const TheaterResp = await axios.get(`theater/FetchTheaterStaff/${user.user_cred}/`);
       if (TheaterResp.status === 200) {
         setTheater(TheaterResp.data);
-        setFormData((data) => ({ ...data, theater: TheaterResp.data[0].id }));
+        const theaterId = TheaterResp.data && TheaterResp.data.length > 0 && TheaterResp.data[0].id
+        ? TheaterResp.data[0].id
+        : '0';
+        setFormData((data) => ({ ...data, theater: theaterId }));
         toast.dismiss();
       }
     } catch (error) {

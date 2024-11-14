@@ -57,6 +57,10 @@ function Login() {
               }else if(response.data.isAdmin){
                 navigate('movieManagement/');
               }
+              window.history.pushState(null, '', window.location.href);
+              window.onpopstate = () => {
+                window.history.pushState(null, '', window.location.href);
+              };
             } catch (err) {
               console.log('error in the access token', err);
             }
