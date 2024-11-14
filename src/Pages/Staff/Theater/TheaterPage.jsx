@@ -3,7 +3,10 @@ import './TheaterPage.scss';
 import axios from '../../../Admin_axios';
 import {jwtDecode} from 'jwt-decode';
 import 'react-phone-input-2/lib/style.css';
+import { toast } from 'react-toastify';
 
+
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
@@ -29,6 +32,9 @@ function TheaterPage() {
   };
   const [formData, setFormData] = useState(INIT_STATE);
   const [theaterId, setTheaterId] = useState(null);
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
 
  
 
@@ -40,22 +46,19 @@ function TheaterPage() {
       const RefreshToken = localStorage.getItem('RefreshToken');
       const decodeRefresh = jwtDecode(RefreshToken);
       email = decodeRefresh.user_cred;
-      console.log('the user email is ', email);
     } catch (error) {
       console.log('the error', error);
     }
     try {
       const resp = await axios.get(`/theater/FetchTheaterStaff/${email}/`);
-      console.log('the theater', resp.data);
       setTheater(resp.data);
     } catch (error) {
       console.error('Error fetching theaters:', error);
     }
   };
 
-  useEffect(() => {
-    fetchTheaters();
-  }, [showTheater]);
+
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,14 +83,24 @@ function TheaterPage() {
     setShowEditTheater(true);
   };
 
-  const deleteTheater = async (id) => {
+  const deleteTheater =  async (id) => {
+    toast.loading("Deleting theater...");
     try {
-      await axios.delete(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${id}/`);
-      fetchTheaters();
+      setApiLink(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${id}/`)
+      setOnOpen(true)
     } catch (error) {
       console.error('Error deleting theater:', error);
     }
   };
+
+  useEffect(() => {
+    if (onSuccess) {
+      toast.dismiss();
+      toast.success("Show deleted successfully");
+      setOnSuccess(false);
+    }
+    fetchTheaters();
+  }, [showTheater, onSuccess]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,9 +121,10 @@ function TheaterPage() {
 
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
-      <div className="theater-page__container">
         <AsideBar />
         <NavBar />
+      <div className="theater-page__container">
+       {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
         </button>

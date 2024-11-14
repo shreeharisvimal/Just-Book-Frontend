@@ -108,7 +108,7 @@ function Show({setShowCreate}) {
                     setFormData(INIT_STATE); 
                     setShowCreate(false)
                 }else if(resp.status === 226){
-                    toast.error('Show Already Exists');
+                    toast.error('Please check if seat allocation is updated or the show exits');
                 }
                 else if(resp.status === 204 || resp.data === "Create Error"){
                     toast.warning('Please create the seats first, then create the show.');

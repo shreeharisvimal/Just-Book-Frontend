@@ -4,6 +4,7 @@ import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 
@@ -12,6 +13,9 @@ function SeatTypePage() {
   const [theater, setTheater] = useState([]);
   const [seatTypes, setSeatTypes] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
 
   const INIT_STATE = {
     theater: null,
@@ -58,14 +62,18 @@ function SeatTypePage() {
   };
 
   useEffect(() => {
+    if (onSuccess) {
+      toast.dismiss();
+      toast.success("Screen Type deleted successfully");
+      setOnSuccess(false);
+    }
     FetchTheater();
     FetchSeatTypes();
-  }, [showCreate]);
+  }, [showCreate, onSuccess]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation checks
     if (!FormData.name.trim()) {
       toast.error("Name is required");
       return;
@@ -91,12 +99,10 @@ function SeatTypePage() {
   };
 
   const HandleDelete = async (id) => {
+    toast.loading("Deleting SeatType...");
     try {
-      const response = await axios.delete(`/theater/SeatTypeDeleteApi/${id}/`);
-      if (response.status === 204) {
-        toast.warning("Seat Type is deleted successfully");
-        FetchSeatTypes();
-      }
+      setApiLink(`/theater/SeatTypeDeleteApi/${id}/`)
+      setOnOpen(true)
     } catch (error) {
       console.error('There was an error deleting the seat type!', error);
       toast.error("Error deleting seat type");
@@ -106,8 +112,9 @@ function SeatTypePage() {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
         <NavBar />
-      <div className='SeatType__container'>
         <AsideBar />
+       {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+      <div className='SeatType__container'>
         <button className='SeatType__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? 'Close Creating' : 'Create Seat Type'}
         </button>

@@ -3,6 +3,7 @@ import './ScreenType.scss';
 import axios from '../../../../Admin_axios';
 import { toast } from 'react-toastify';
 
+const WarningBox = React.lazy(()=> import('../../../../Utils/WarningBox'));
 const NavBar = lazy(() => import('../../../../Components/StaffSide/Navbar/AdminNavBar'));
 const AsideBar = lazy(() => import('../../../../Components/StaffSide/AsideBar/AsideBar'));
 const ScreenTypeComp = lazy(() => import('../../../../Components/StaffSide/Screen/Type/ScreenType'));
@@ -10,6 +11,9 @@ const ScreenTypeComp = lazy(() => import('../../../../Components/StaffSide/Scree
 function ScreenType() {
   const [showCreate, setShowCreate] = useState(false);
   const [screenTypes, setScreenTypes] = useState([]);
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
 
   const fetchScreenType = async () => {
     try {
@@ -23,18 +27,19 @@ function ScreenType() {
   };
 
   useEffect(() => {
+    if (onSuccess) {
+      toast.dismiss();
+      toast.success("Screen Type deleted successfully");
+      setOnSuccess(false);
+    }
     fetchScreenType();
-  }, [showCreate]);
+  }, [showCreate, onSuccess]);
 
   const handleDelete = async (id) => {
+    toast.loading("Deleting ScreenType...");
     try {
-      const resp = await axios.delete(`theater/ScreenTypeApiDelete/${id}/`);
-      if (resp.status === 204) {
-        fetchScreenType();
-        toast.warning('The screen type was deleted successfully.');
-      } else {
-        throw new Error('Failed to delete');
-      }
+        setApiLink(`theater/ScreenTypeApiDelete/${id}/`)
+        setOnOpen(true)
     } catch (error) {
       toast.error('Failed to delete the screen type. Please try again.');
     }
@@ -44,6 +49,7 @@ function ScreenType() {
     <Suspense fallback={<div>Loading...</div>}>
       <AsideBar />
         <NavBar />
+       {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
       <div className="container">
         <div className="container__box">
           <button 

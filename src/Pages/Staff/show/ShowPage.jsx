@@ -4,6 +4,7 @@ import axios from '../../../axios';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const ShowComp = React.lazy(() => import('../../../Components/StaffSide/Show/Show'));
@@ -11,6 +12,9 @@ const ShowComp = React.lazy(() => import('../../../Components/StaffSide/Show/Sho
 function ShowPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [shows, setShows] = useState([]);
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
   const user = useSelector((state) => state.auth_user);
 
   const FetchShows = async () => {
@@ -35,26 +39,35 @@ function ShowPage() {
   const HandleDelete = async(id)=>{
     toast.loading("Deleting show...");
     try{
-      const resp = await axios.delete(`/show/showCreateApi/id/${id}/`)
-      if (resp.status === 200){
-        FetchShows();
-      }
-      toast.dismiss();
-      toast.warning("Couldn't delete the show")
+      setApiLink(`/show/showCreateApi/id/${id}/`)
+      setOnOpen(true)
     }catch(error){
       console.log(error)
     }
   }
 
+    
+
   useEffect(() => {
     FetchShows();
   }, [showCreate]);
 
+
+  useEffect(() => {
+    if (onSuccess) {
+      FetchShows();
+      toast.dismiss();
+      toast.success("Show deleted successfully");
+      setOnSuccess(false);
+    }
+  }, [onSuccess]);
+
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
-      <div className='show-page__container'>
         <AsideBar />
         <NavBar />
+      <div className='show-page__container'>
+       {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <div className='show-page__content'>
           <button className='show-page__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
             {showCreate ? 'Close Creating' : 'Create Show'}
