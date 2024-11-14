@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../Admin_axios';
 import './AdminLogout.scss';
 
+const ForgetPass = React.lazy(() => import('../../ForgetPassword/ForgetPass'));
+
 function AdminLogout() {
   const auth_user = useSelector((state) => state.auth_user);
   const navigate = useNavigate();
+  const [showChangePassword, setShowChangePassword] = useState(false)
+
 
   const logout = async () => {
     if (!auth_user.isAuthenticated) {
@@ -35,10 +39,20 @@ function AdminLogout() {
     }
   }, [auth_user.isAuthenticated, navigate]);
 
+  
+  const ChangePassword =()=>{
+    setShowChangePassword(true)
+  };
+
+
   return (
+    <React.Suspense fallback={<div>loading.....</div>}>
     <div className='admin-logout__container'>
+      <button className='admin-logout__change-password-button' onClick={ChangePassword}>Change Password</button>
       <button className='admin-logout__button' onClick={logout}>LogOut</button>
+      {showChangePassword && <ForgetPass setShowChangePassword={setShowChangePassword}/> }
     </div>
+    </React.Suspense>
   );
 }
 

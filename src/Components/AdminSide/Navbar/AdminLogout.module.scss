@@ -1,36 +1,52 @@
-$primary: #38A3A5; // Green accent color
-$text: #fff; // White text color
+$primary: #38A3A5;
+$text: #fff;
 
 * {
   margin: 0;
   padding: 0;
 }
 
-.admin_logout {
+.admin-logout {
   &__container {
-    position: absolute;
-    height: 100px;
-    width: 10%;
-    top: 3rem;
-    left: 60rem;
-    background-color: #fff; /* Light background */
-    border-radius: 10px; /* Rounded corners for a softer look */
-    border-color: #38A3A5;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); /* Subtle shadow for depth */
-    padding: 20px; /* Padding for content spacing */
-    margin: 0 auto; /* Center the container horizontally */
+    position: fixed;
+    height: auto;
+    width: 300px;
+    top: 3.5rem;
+    right: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid $primary;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    padding: 1rem;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  &__button {
-    position: relative;
-    margin-left: 1rem; // Add some space between SearchBar and button
-    top: 1.5rem;
+  &__button,
+  &__change-password-button {
+    width: 100%;
     padding: 0.5rem 1rem;
     border: none;
     background-color: $primary;
     color: $text;
-    font-size: 1rem; // Adjust font size as needed
-    border-radius: 4px; // Rounded corners
-    cursor: pointer; // Indicate clickable button
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: lighten($primary, 10%);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-logout__container {
+    width: 90%;
+    right: 5%;
+    top: 1rem;
   }
 }
