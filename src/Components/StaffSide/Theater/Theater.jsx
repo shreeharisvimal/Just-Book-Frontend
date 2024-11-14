@@ -49,13 +49,12 @@ function Theater({ setShowTheater }) {
     if (!formData.state.trim()) formErrors.state = "State is required";
     if (!formData.description.trim()) formErrors.description = "Description is required";
 
-    // Additional format validations
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       formErrors.email = "Enter a valid email";
     }
 
-    const phoneRegex = /^[0-9]{10}$/;
+    const phoneRegex = /^(?:\+?(\d{1,3})[-.\s]?)?(\d{5})[-.\s]?(\d{5})$/;
     if (formData.phone && !phoneRegex.test(formData.phone)) {
       formErrors.phone = "Enter a valid 10-digit phone number";
     }
