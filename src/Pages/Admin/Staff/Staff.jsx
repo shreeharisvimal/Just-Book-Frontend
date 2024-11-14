@@ -3,6 +3,7 @@ import './staff.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = lazy(() => import('../../../Components/AdminSide/AsideBar/AsideBar'));
 const NavBar = lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavBar'));
 
@@ -19,6 +20,9 @@ function Staff() {
     const [NewStaff, setNewStaff] = useState(INITIAL_STATE);
     const [staffs, setStaffs] = useState([]);
     const [errors, setErrors] = useState({});
+    const [apiLink, setApiLink] = useState('');
+    const [onOpen, setOnOpen] = useState('');
+    const [onSuccess, setOnSuccess] = useState(false)
 
     const AccessToken = localStorage.getItem('AccessToken');
 
@@ -96,27 +100,27 @@ function Staff() {
     };
 
     const HandleDelete = async (id) => {
+    toast.loading("Deleting staff...");
         try {
-            await axios.delete(`StaffDelete/${id}/`, {
-                headers: {
-                    'Authorization': `Bearer ${AccessToken}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            });
-            toast.warning('Staff deleted');
-            fetchStaff();
+            setApiLink(`StaffDelete/${id}/`)
+            setOnOpen(true)
         } catch (error) {
             console.log(error);
         }
     };
 
     useEffect(() => {
+        if (onSuccess) {
+            toast.dismiss();
+            toast.success("staff deleted successfully");
+            setOnSuccess(false);
+          }
         fetchStaff();
-    }, [openCreate]);
+    }, [openCreate, onSuccess]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
+            {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
             <div className="container">
                 <AsideBar />
                 <NavBar />

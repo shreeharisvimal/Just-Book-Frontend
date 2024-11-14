@@ -4,12 +4,15 @@ import axios from '../../../Admin_axios';
 import {jwtDecode} from 'jwt-decode';
 import { toast } from 'react-toastify';
 
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const NavBar = React.lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavBar'));
 const AsideBar = React.lazy(() => import('../../../Components/AdminSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
 
 function TheaterPage() {
-
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
 
   let email;
   try {
@@ -33,14 +36,20 @@ function TheaterPage() {
   };
 
   useEffect(() => {
+    if (onSuccess) {
+      toast.dismiss();
+      toast.success("Theater deleted successfully");
+      setOnSuccess(false);
+    }
     fetchTheaters();
-  }, [showTheater]);
+  }, [showTheater, onSuccess]);
 
 
   const deleteTheater = async (id) => {
+    toast.loading("Deleting staff...");
     try {
-      const resp = await axios.delete(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${id}/`);
-      fetchTheaters();
+      setApiLink(`/theater/TheaterApiRetrieveUpdateDestroyAPIView/${id}/`)
+      setOnOpen(true)
     } catch (error) {
     }
   };
@@ -59,12 +68,11 @@ function TheaterPage() {
 
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
+      {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+
       <div className="theater-page__container">
         <AsideBar />
         <NavBar />
-        {/* <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
-          {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
-        </button> */}
         {showTheater && <TheaterComp />}
         <div className="theater-page__content">
           <div className="theater-page__theater-list">

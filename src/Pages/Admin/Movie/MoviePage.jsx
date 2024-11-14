@@ -6,6 +6,7 @@ import { LanguageUtils } from '../../../Utils/LanguageUtils'
 import { toast } from 'react-toastify'
 
 
+const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(()=> import('../../../Components/AdminSide/AsideBar/AsideBar'))
 const NavBar = React.lazy(()=> import('../../../Components/AdminSide/Navbar/AdminNavBar'))
 const Movie = React.lazy(()=> import('../../../Components/AdminSide/Movie/Movie'))
@@ -15,7 +16,9 @@ const Movie = React.lazy(()=> import('../../../Components/AdminSide/Movie/Movie'
 function MoviePage() {
   const [showMovieCreate, setshowMovieCreate] = useState(false)
   const [myMovies, setmyMovies] = useState([])
-
+  const [apiLink, setApiLink] = useState('');
+  const [onOpen, setOnOpen] = useState('');
+  const [onSuccess, setOnSuccess] = useState(false)
   const fetchMovie = async()=>{
     try{
       const resp = await axios.get('movie/movieListCreateAPIView/')
@@ -25,23 +28,27 @@ function MoviePage() {
     }
   }
     useEffect(()=>{
+      if (onSuccess) {
+        toast.dismiss();
+        toast.success("Show deleted successfully");
+        setOnSuccess(false);
+      }
       fetchMovie();
-    },[showMovieCreate])
+    },[showMovieCreate, onSuccess])
 
     const deleteMovie =async(id)=>{
+    toast.loading("Deleting movie...");
       try{
-        const resp = await axios.delete(`movie/movieRetrieveDestroyAPIView/${id}/`)
-        if (resp.status === 204){
-          toast.warning('The movie is removed from justbook')
-          fetchMovie();
-
-        }
+        setApiLink(`movie/movieRetrieveDestroyAPIView/${id}/`)
+        setOnOpen(true)
       }catch(error){
 
       }
     }
   return (
 <>
+  {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+
       <div className='movie-page__container'>
         <React.Suspense fallback={<div>Loading...</div>}>
           <NavBar className='movie-page__create-movie' />
