@@ -110,6 +110,7 @@ function Theater({ setShowTheater }) {
           placeholder="Email"
           onChange={handleChange}
           className="TheaterCompform__input"
+          hidden={true}
         />
         {errors.email && <p className="error-text">{errors.email}</p>}
 
