@@ -40,7 +40,7 @@ function AdminLogout() {
   }, [auth_user.isAuthenticated, navigate]);
 
   const ChangePassword = () => {
-    setShowChangePassword(true);
+    setShowChangePassword(!showChangePassword);
   };
 
   return (

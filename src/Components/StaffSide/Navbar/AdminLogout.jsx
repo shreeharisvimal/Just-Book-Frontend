@@ -41,7 +41,7 @@ function AdminLogout() {
 
   
   const ChangePassword =()=>{
-    setShowChangePassword(true)
+    setShowChangePassword(!showChangePassword)
   };
 
 
