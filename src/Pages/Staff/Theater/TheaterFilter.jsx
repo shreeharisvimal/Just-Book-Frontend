@@ -52,6 +52,7 @@ const FilterComponent = ({ fixedlen, theater, setTheater }) => {
 	<div
 	style={{
 	  width: "95%",
+	  maxWidth: "600px",
 	  border: "1px solid #ccc",
 	  borderRadius: "10px",
 	  margin: "20px auto",

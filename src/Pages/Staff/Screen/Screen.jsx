@@ -9,6 +9,7 @@ const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const ScreenComp = React.lazy(() => import('../../../Components/StaffSide/Screen/Screen'));
+const FilterComponent = React.lazy(() => import('./ScreenFilter'));
 
 function Screen() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Screen() {
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
-
+  const [fixedlen, setFixedlen] = useState(0);
   const user = useSelector((state) => state.auth_user);
 
   const AccessToken = localStorage.getItem('AccessToken');
@@ -32,6 +33,7 @@ function Screen() {
         },
       });
       setmyScreens(resp.data);
+      setFixedlen(resp.data.length)
     } catch (error) {
       console.log('An error has occurred');
     }
@@ -72,8 +74,9 @@ function Screen() {
         <AsideBar />
       <div className={styles.screen__container}>
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+      <FilterComponent fixedlen={fixedlen} obj={myScreens} updateFunc={setmyScreens} />
         <button onClick={() => setShowCreate(!showCreate)} className={styles.screen__button}>
-          CREATE SCREEN
+          { !showCreate ?  'CREATE SCREEN' : 'CLOSE CREATING' }
         </button>
         {showCreate ? (
           <ScreenComp setShowCreate={setShowCreate}/>
@@ -86,8 +89,7 @@ function Screen() {
                   <span>
                     <strong>SCREEN NAME OR NUMBER:</strong> {screen.name.toUpperCase()} <br />
                     <strong>THEATER NAME:</strong> {screen.theater.theater_name.toUpperCase()} <br />
-                    <strong>THEATER SCREENS COUNT:</strong> {screen.theater.no_of_screens} <br />
-                    <strong>SCREEN TYPE:</strong> {screen.screen_type.name} <br />
+                    <strong>SCREEN TYPE:</strong> {screen.screen_type.name.toUpperCase()} <br />
                     <strong>EXTRA COST:</strong> {screen.screen_type.price_multi} %<br />
                     <div>
                     {screen.seats[0] ? (

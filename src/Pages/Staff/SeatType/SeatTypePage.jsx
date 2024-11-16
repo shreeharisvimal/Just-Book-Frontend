@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
+const FilterComponent = React.lazy(() => import('./SeatTypeFilter'));
 
 function SeatTypePage() {
   const user = useSelector((state) => state.auth_user);
@@ -16,6 +17,8 @@ function SeatTypePage() {
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
+const [fixedlen, setFixedlen] = useState(0);
+
 
   const INIT_STATE = {
     theater: null,
@@ -57,6 +60,7 @@ function SeatTypePage() {
       const SeatTypeResp = await axios.get(`theater/SeatTypeFetch/`);
       if (SeatTypeResp.status === 200) {
         setSeatTypes(SeatTypeResp.data);
+        setFixedlen(SeatTypeResp.data.length)
         toast.dismiss();
       }
     } catch (error) {
@@ -118,6 +122,7 @@ function SeatTypePage() {
         <AsideBar />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
       <div className='SeatType__container'>
+      <FilterComponent fixedlen={fixedlen} obj={seatTypes} updateFunc={setSeatTypes} />
         <button className='SeatType__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? 'Close Creating' : 'Create Seat Type'}
         </button>

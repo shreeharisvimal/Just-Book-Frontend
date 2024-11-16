@@ -10,6 +10,8 @@ const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
+const FilterComponent = React.lazy(() => import('./TheaterFilter'));
+
 
 function TheaterPage() {
   const CITY = [
@@ -35,11 +37,12 @@ function TheaterPage() {
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
+  const [fixedlen, setFixedlen] = useState(0);
+  const [theater, setTheater] = useState([]);
+  const [showTheater, setShowTheater] = useState(false);
 
  
 
-  const [theater, setTheater] = useState([]);
-  const [showTheater, setShowTheater] = useState(false);
 
   const fetchTheaters = async () => {
     try {
@@ -52,6 +55,8 @@ function TheaterPage() {
     try {
       const resp = await axios.get(`/theater/FetchTheaterStaff/${email}/`);
       setTheater(resp.data);
+      setFixedlen(resp.data.length)
+
     } catch (error) {
       console.error('Error fetching theaters:', error);
     }
@@ -124,6 +129,7 @@ function TheaterPage() {
         <AsideBar />
         <NavBar />
       <div className="theater-page__container">
+        <FilterComponent fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}

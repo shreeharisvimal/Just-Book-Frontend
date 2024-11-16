@@ -7,12 +7,14 @@ const WarningBox = React.lazy(()=> import('../../../../Utils/WarningBox'));
 const NavBar = lazy(() => import('../../../../Components/StaffSide/Navbar/AdminNavBar'));
 const AsideBar = lazy(() => import('../../../../Components/StaffSide/AsideBar/AsideBar'));
 const ScreenTypeComp = lazy(() => import('../../../../Components/StaffSide/Screen/Type/ScreenType'));
+const FilterComponent = React.lazy(() => import('./ScreenTypeFilter'));
 
 function ScreenType() {
   const [showCreate, setShowCreate] = useState(false);
   const [screenTypes, setScreenTypes] = useState([]);
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
+  const [fixedlen, setFixedlen] = useState(0);
   const [onSuccess, setOnSuccess] = useState(false)
 
   const fetchScreenType = async () => {
@@ -20,6 +22,7 @@ function ScreenType() {
       const resp = await axios.get('theater/ScreenTypeApiCreate/');
       if (resp.status === 200) {
         setScreenTypes(resp.data);
+        setFixedlen(resp.data.length)
       }
     } catch (error) {
       toast.error('Failed to fetch screen types. Please try again later.');
@@ -50,7 +53,9 @@ function ScreenType() {
       <AsideBar />
         <NavBar />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+
       <div className="container">
+      <FilterComponent fixedlen={fixedlen} obj={screenTypes} updateFunc={setScreenTypes} />
         <div className="container__box">
           <button 
             className="container__button" 

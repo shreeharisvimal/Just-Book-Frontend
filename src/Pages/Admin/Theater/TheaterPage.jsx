@@ -15,7 +15,7 @@ function TheaterPage() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [theater, setTheater] = useState([]);
   const [showTheater, setShowTheater] = useState(false);
-  const [fixedlen, setFixedlen] = useState(0);
+  const [fixedlen, setFixedlen] = useState(0); 
 
   const fetchTheaters = async () => {
     try {
@@ -62,7 +62,6 @@ function TheaterPage() {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess} />}
-
       <div className="theater-page__container">
         <AsideBar />
         <NavBar />

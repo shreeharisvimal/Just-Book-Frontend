@@ -53,9 +53,9 @@ function MoviePage() {
   {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
 
       <div className='movie-page__container'>
-        <React.Suspense fallback={<div>Loading...</div>}>
           <NavBar className='movie-page__create-movie' />
           <AsideBar />
+        <React.Suspense fallback={<div>Loading...</div>}>
           <FilterComponent fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />
           <button className='movie-page__create-btn' onClick={() => setshowMovieCreate(!showMovieCreate)}>
             {showMovieCreate ? 'CLOSE CREATE MOVIE' : 'CREATE MOVIE'}
