@@ -48,13 +48,26 @@ function TheaterPage() {
 
   const approveStatus = async (id) => {
     try {
-      const resp = await axios.put(`/theater/TheaterPutClassApi/${id}/`);
+      const resp = await axios.put(`/theater/TheaterPutClassApi/${id}/`, {'status' : 'APPROVED'});
       if (resp.status === 200) {
         toast.success('Theater is approved');
         fetchTheaters();
       }
     } catch (error) {
       toast.error('Failed to approve theater');
+      console.error(error);
+    }
+  };
+
+  const rejectStatus = async (id) => {
+    try {
+      const resp = await axios.put(`/theater/TheaterPutClassApi/${id}/`, {'status' : 'REJECTED'});
+      if (resp.status === 200) {
+        toast.success('Theater is rejected');
+        fetchTheaters();
+      }
+    } catch (error) {
+      toast.error('Failed to reject theater');
       console.error(error);
     }
   };
@@ -89,10 +102,23 @@ function TheaterPage() {
                       Delete
                     </button>
                     {theater.theater_status === 'PENDING' && (
-                      <button className="theater-page__approve-btn" onClick={() => approveStatus(theater.id)}>
-                        APPROVE
-                      </button>
+                      <div>
+                        <button
+                          className="theater-page__approve-btn"
+                          onClick={() => approveStatus(theater.id)}
+                        >
+                          APPROVE
+                        </button>
+
+                        <button
+                          className="theater-page__reject-btn"
+                          onClick={() => rejectStatus(theater.id)}
+                        >
+                          REJECT
+                        </button>
+                  </div>
                     )}
+
                   </div>
                 </div>
               ))}
