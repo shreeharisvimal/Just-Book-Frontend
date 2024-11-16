@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = lazy(() => import('../../../Components/AdminSide/AsideBar/AsideBar'));
 const NavBar = lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavBar'));
+const FilterComponent = lazy(()=> import('./filterComponentStaff'))
 
 function Staff() {
     const INITIAL_STATE = {
@@ -23,6 +24,7 @@ function Staff() {
     const [apiLink, setApiLink] = useState('');
     const [onOpen, setOnOpen] = useState('');
     const [onSuccess, setOnSuccess] = useState(false)
+    const [fixedlen, setFixedlen] = useState(0);
 
     const AccessToken = localStorage.getItem('AccessToken');
 
@@ -94,6 +96,7 @@ function Staff() {
                 }
             });
             setStaffs(resp.data);
+            setFixedlen(resp.data.length); 
         } catch (error) {
             console.log(error);
         }
@@ -124,6 +127,7 @@ function Staff() {
             <div className="container">
                 <AsideBar />
                 <NavBar />
+                <FilterComponent fixedlen={fixedlen} staffs={staffs} setStaffs={setStaffs}/>
                 <div className="container__header">
                     <button className="container__button" onClick={() => setopenCreate(!openCreate)}>
                         {openCreate ? 'CANCEL' : 'CREATE STAFF'}

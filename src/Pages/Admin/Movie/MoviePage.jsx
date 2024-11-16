@@ -10,7 +10,7 @@ const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(()=> import('../../../Components/AdminSide/AsideBar/AsideBar'))
 const NavBar = React.lazy(()=> import('../../../Components/AdminSide/Navbar/AdminNavBar'))
 const Movie = React.lazy(()=> import('../../../Components/AdminSide/Movie/Movie'))
-
+const FilterComponent = React.lazy(()=> import('./itemsFilter'))
 
 
 function MoviePage() {
@@ -19,10 +19,13 @@ function MoviePage() {
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
+  const [fixedlen, setFixedlen] = useState(0);
+
   const fetchMovie = async()=>{
     try{
       const resp = await axios.get('movie/movieListCreateAPIView/')
       setmyMovies(resp.data)
+      setFixedlen(resp.data.length)
     }catch(error){
       console.log('error while fetching movie', error)
     }
@@ -53,6 +56,7 @@ function MoviePage() {
         <React.Suspense fallback={<div>Loading...</div>}>
           <NavBar className='movie-page__create-movie' />
           <AsideBar />
+          <FilterComponent fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />
           <button className='movie-page__create-btn' onClick={() => setshowMovieCreate(!showMovieCreate)}>
             {showMovieCreate ? 'CLOSE CREATE MOVIE' : 'CREATE MOVIE'}
           </button>
