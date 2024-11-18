@@ -12,20 +12,20 @@ function ForgetPass({ setShowChangePassword }) {
 
   const validateForm = () => {
     const newErrors = {};
-    
+  
     if (!currentPassword) newErrors.currentPassword = 'Current password is required';
     if (!newPassword) newErrors.newPassword = 'New password is required';
     if (!confirmNewPassword) newErrors.confirmNewPassword = 'Please confirm your new password';
-    
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{5,}$/;
     if (newPassword && !passwordRegex.test(newPassword)) {
-      newErrors.newPassword = 'Password must be at least 8 characters and contain a number';
+      newErrors.newPassword = 'Password must be at least 5 characters, contain an uppercase letter, a lowercase letter, a number, and a special character';
     }
-
+  
     if (newPassword && confirmNewPassword && newPassword !== confirmNewPassword) {
       newErrors.confirmNewPassword = 'Passwords do not match';
     }
-    
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
