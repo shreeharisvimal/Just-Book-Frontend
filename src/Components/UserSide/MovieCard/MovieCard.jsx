@@ -22,7 +22,7 @@ function MovieCard({ searchQuery}) {
         const showResp = await axios.get('show/ShowFetchAll/');
         if (movieResp.status === 200 && showResp.status === 200) {
           const moviesData = movieResp.data.results;
-          const showData = showResp.data.results;
+          const showData = showResp.data;
 
           const myfilteredMovies = moviesData.filter((movie) => {
             return showData.some((show) => show.movie.id === movie.id && show.theater.city.toUpperCase() === Location.city.toUpperCase());
