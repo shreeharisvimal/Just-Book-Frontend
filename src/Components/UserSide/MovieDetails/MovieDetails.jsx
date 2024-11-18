@@ -6,7 +6,7 @@ import { imageUrl } from '../../../Tmdb';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../axios';
 import './booking.css'
@@ -97,6 +97,7 @@ function MovieDetails() {
         },3000)
     }, [SavedMovieId]);
 
+
     const settings = {
         dots: false,
         infinite: true,
@@ -104,10 +105,11 @@ function MovieDetails() {
         autoplay: true,
         autoplaySpeed: 2000,
         pauseOnHover: false,
-        centerMode: true, 
-        centerPadding: '15%', 
+        centerMode: false, 
         slidesToShow: 1, 
         slidesToScroll: 1,
+        variableWidth: false,
+        adaptiveHeight: true
     };
 
     if (showMoviedetails) {
@@ -132,7 +134,6 @@ function MovieDetails() {
                     Release Date {formatReleaseDate(myMovieDetails.release_date)}
                     </h3>
                 </div>
-                {/* <button className='DetailsPage__btn' onClick={BookTicket}>Book Now</button> */}
                 <button className="fancy" onClick={BookTicket}>
                     <span className="text">Booking Now</span>
                     <span className="top-key"></span>
