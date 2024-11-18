@@ -84,7 +84,7 @@ function Seating() {
     });
 
 
-    if (wsRef.current) {
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({
         action: 'seat_update',
         data: {

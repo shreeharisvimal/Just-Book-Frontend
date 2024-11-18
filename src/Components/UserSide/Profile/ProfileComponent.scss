@@ -55,7 +55,7 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
   }
 
   &__input {
-    width: 100%;
+    width: 90%;
     padding: 0.75rem;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -81,7 +81,7 @@ $shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); // Box sh
   &__submit {
     position: relative;
     top: -2rem;
-    width: 100%;
+    width: 95%;
     padding: 0.75rem;
     font-size: 1rem;
     font-weight: 600;

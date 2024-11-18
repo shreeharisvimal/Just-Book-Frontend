@@ -29,7 +29,7 @@ function AdminPrivateRouter({ children }) {
                 if (isMounted) {
                     setTimeout(() => {
                         setLoading(false);
-                    }, 100); 
+                    }, 200); 
                 }
             }
         };
@@ -49,11 +49,11 @@ function AdminPrivateRouter({ children }) {
     }
 
     if (!authState.isAuthenticated) {
-        return <Navigate to="/admin/" />; // Redirect to login if not authenticated
+        return <Navigate to="/admin/" />; 
     }
 
     if (!authState.isAdmin) {
-        return <Navigate to="/admin/" />; // Redirect to admin login if not admin
+        return <Navigate to="/admin/" />; 
     }
 
     return children;

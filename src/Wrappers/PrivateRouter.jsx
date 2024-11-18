@@ -17,7 +17,7 @@ function PrivateRouter({ children }) {
         setIsAuthenticated(AuthInfo.isAuthenticated);
         setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 200);
       }
     };
     fetchData();

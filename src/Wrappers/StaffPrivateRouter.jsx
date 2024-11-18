@@ -31,7 +31,7 @@ function StaffPrivateRouter({ children }) {
                 if (isMounted) {
                     setTimeout(() => {
                         setLoading(false);
-                    }, 1000);
+                    }, 200);
                 }
             }
         };
