@@ -21,7 +21,6 @@ function Screen({setShowCreate}) {
 
   const FetchTheaterScreenType = async () => {
     try {
-      toast.loading('Fetching Theaters And Screen Types');
       const TheaterResp = await axios.get(`theater/FetchTheaterStaff/${user.user_cred}/` );
       const ScreenTypeResp = await axios.get('theater/ScreenTypeApiCreate/');
       console.log(TheaterResp, ScreenTypeResp);

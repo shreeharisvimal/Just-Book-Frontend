@@ -17,7 +17,6 @@ function Show() {
     const { movieId } = useParams();
 
     const ShowFetch = async () => {
-        toast.loading("Your shows are fetching");
         try {
             const resp = await axios.get(`/show/ShowFetchWIthMovie/${movieId}/`);
             if (resp.status === 200) {

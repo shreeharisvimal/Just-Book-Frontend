@@ -27,7 +27,6 @@ function ShowPage() {
 
 
   const FetchShows = async () => {
-    toast.loading("Fetching shows...");
     try {
       setPaginationLink(`/show/showCreateApi/email/${user.user_cred}/`);
       toast.dismiss()

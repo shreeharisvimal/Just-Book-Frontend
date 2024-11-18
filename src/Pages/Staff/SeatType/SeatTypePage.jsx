@@ -43,7 +43,6 @@ function SeatTypePage() {
   };
 
   const FetchTheater = async () => {
-    toast.loading("Fetching Theaters");
     try {
       const TheaterResp = await axios.get(`theater/FetchTheaterStaff/${user.user_cred}/`);
       if (TheaterResp.status === 200) {
@@ -60,7 +59,6 @@ function SeatTypePage() {
   };
 
   const FetchSeatTypes = async () => {
-    toast.loading("Fetching Seat Types");
     try {
       setPaginationLink(`theater/SeatTypeFetch/`);
     } catch (error) {

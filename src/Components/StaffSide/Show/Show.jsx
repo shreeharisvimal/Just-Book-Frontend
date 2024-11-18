@@ -30,7 +30,6 @@ function Show({setShowCreate}) {
 
     const FetchScreens = async () => {
         if (FormData.theater) {
-            toast.loading("Fetching related data...");
             try {
                 const screens = await axios.get(`/theater/ScreenApiGetShow/${FormData.theater}/`);
                 if (screens.status === 200) {
@@ -47,7 +46,6 @@ function Show({setShowCreate}) {
     };
 
     const FetchDatas = async () => {
-        toast.loading("Fetching related data...");
         try {
             const movies = await axios.get('/movie/movieListCreateAPIView/');
             const theaters = await axios.get(`/theater/FetchTheaterStaff/${user.user_cred}/`);
