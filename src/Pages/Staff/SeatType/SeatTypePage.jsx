@@ -47,9 +47,9 @@ function SeatTypePage() {
     try {
       const TheaterResp = await axios.get(`theater/FetchTheaterStaff/${user.user_cred}/`);
       if (TheaterResp.status === 200) {
-        setTheater(TheaterResp.data);
-        const theaterId = TheaterResp.data && TheaterResp.data.length > 0 && TheaterResp.data[0].id
-        ? TheaterResp.data[0].id
+        setTheater(TheaterResp.data.results);
+        const theaterId = TheaterResp.data.results && TheaterResp.data.results.length > 0 && TheaterResp.data.results[0].id
+        ? TheaterResp.data.results[0].id
         : '0';
         setFormData((data) => ({ ...data, theater: theaterId }));
         toast.dismiss();
@@ -101,7 +101,7 @@ function SeatTypePage() {
       }
     } catch (error) {
       console.error('There was an error creating the seat type!', error);
-      toast.error("Error creating seat type");
+      toast.error("Please check theater exits before creating theater");
     }
   };
 
@@ -122,7 +122,7 @@ function SeatTypePage() {
         <AsideBar />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
       <div className='SeatType__container'>
-      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={seatTypes} updateFunc={setSeatTypes} />
+          {!showCreate &&(<FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={seatTypes} updateFunc={setSeatTypes} />)}
         <button className='SeatType__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? 'Close Creating' : 'Create Seat Type'}
         </button>
@@ -173,7 +173,7 @@ function SeatTypePage() {
             </ul>
           </div>
         )}
-        { paginationLink &&
+        { paginationLink && !showCreate &&
             <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setSeatTypes} setFixedlen={setFixedlen}/>
           }
       </div>

@@ -125,7 +125,7 @@ function Staff() {
             <div className="container">
                 <AsideBar />
                 <NavBar />
-                <FilterComponent  handleFilterReset={resetKey} fixedlen={fixedlen} staffs={staffs} setStaffs={setStaffs} />
+                {!openCreate && <FilterComponent  handleFilterReset={resetKey} fixedlen={fixedlen} staffs={staffs} setStaffs={setStaffs} />}
                 <div className="container__header">
                     <button className="container__button" onClick={() => setopenCreate(!openCreate)}>
                         {openCreate ? 'CANCEL' : 'CREATE STAFF'}
@@ -199,7 +199,7 @@ function Staff() {
                             </div>
                         ))}
                         {
-                            paginationLink &&
+                            paginationLink && !openCreate &&
                         <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setStaffs} setFixedlen={setFixedlen}/>
                         }
                     

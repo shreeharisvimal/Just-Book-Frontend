@@ -132,7 +132,7 @@ function TheaterPage() {
         <AsideBar />
         <NavBar />
       <div className="theater-page__container">
-        <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
+        {!showTheater && !showEdit && <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />}
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
@@ -210,7 +210,7 @@ function TheaterPage() {
           )}
         </div>
             )}
-        { paginationLink &&
+        { paginationLink && !showEdit &&
             <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setTheater} setFixedlen={setFixedlen}/>
         }
       </div>

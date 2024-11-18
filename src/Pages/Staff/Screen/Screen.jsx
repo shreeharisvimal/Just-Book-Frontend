@@ -69,7 +69,7 @@ function Screen() {
         <AsideBar />
       <div className={styles.screen__container}>
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
-      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={myScreens} updateFunc={setmyScreens} />
+      { !showCreate && <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={myScreens} updateFunc={setmyScreens} />}
         <button onClick={() => setShowCreate(!showCreate)} className={styles.screen__button}>
           { !showCreate ?  'CREATE SCREEN' : 'CLOSE CREATING' }
         </button>
@@ -115,7 +115,7 @@ function Screen() {
             </ul>
           </div>
         )}
-        { paginationLink &&
+        { paginationLink && !showCreate &&
                     <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setmyScreens} setFixedlen={setFixedlen}/>
                   }
       </div>

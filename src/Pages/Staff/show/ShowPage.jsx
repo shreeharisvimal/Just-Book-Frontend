@@ -69,7 +69,7 @@ function ShowPage() {
         <AsideBar />
         <NavBar />
       <div className='show-page__container'>
-      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={shows} updateFunc={setShows} />
+      {!showCreate && <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={shows} updateFunc={setShows} />}
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <div className='show-page__content'>
           <button className='show-page__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
@@ -109,7 +109,7 @@ function ShowPage() {
             </div>
           )}
         </div>
-        { paginationLink &&
+        { paginationLink && !showCreate &&
             <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setShows} setFixedlen={setFixedlen}/>
           
           }

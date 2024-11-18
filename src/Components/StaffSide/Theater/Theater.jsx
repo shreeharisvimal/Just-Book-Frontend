@@ -5,6 +5,7 @@ import 'react-phone-input-2/lib/style.css';
 import PhoneInput from 'react-phone-input-2';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import HandlePageReload from '../../../Utils/PageReloadComponent';
 
 function Theater({ setShowTheater }) {
   const CITY = [
@@ -77,6 +78,7 @@ function Theater({ setShowTheater }) {
         setFormData(INIT_STATE);
         setShowTheater(false);
         setErrors({});
+        HandlePageReload();
       } else if (res.status === 226) {
         toast.error('Theater already exists');
       } else {

@@ -59,7 +59,7 @@ function MoviePage() {
           <NavBar className='movie-page__create-movie' />
           <AsideBar />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <FilterComponent handleFilterReset={resetKey}  fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />
+         {!showMovieCreate && <FilterComponent handleFilterReset={resetKey}  fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />}
           <button className='movie-page__create-btn' onClick={() => setshowMovieCreate(!showMovieCreate)}>
             {showMovieCreate ? 'CLOSE CREATE MOVIE' : 'CREATE MOVIE'}
           </button>
@@ -80,7 +80,7 @@ function MoviePage() {
               ))}
             </ul>
           )}
-                { paginationLink &&
+                { paginationLink && !showMovieCreate &&
                     <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setmyMovies} setFixedlen={setFixedlen}/>
                   }
         </React.Suspense>

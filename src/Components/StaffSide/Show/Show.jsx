@@ -3,6 +3,7 @@ import './Show.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import HandlePageReload from '../../../Utils/PageReloadComponent';
 
 function Show({setShowCreate}) {
     const user = useSelector((state) => state.auth_user);
@@ -107,6 +108,7 @@ function Show({setShowCreate}) {
                     toast.success('Show Added Successfully');
                     setFormData(INIT_STATE); 
                     setShowCreate(false)
+                    HandlePageReload();
                 }else if(resp.status === 226){
                     toast.error('Please check if seat allocation is updated or the show exits');
                 }

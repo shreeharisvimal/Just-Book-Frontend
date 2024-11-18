@@ -85,7 +85,7 @@ function TheaterPage() {
       <div className="theater-page__container">
         <AsideBar />
         <NavBar />
-        <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
+        {!showTheater && <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />}
         {showTheater ? (
           <TheaterComp />
         ) : (
@@ -132,7 +132,7 @@ function TheaterPage() {
             </div>
           </div>
         )}
-      { paginationLink &&
+      { paginationLink && !showTheater &&
         <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setTheater} setFixedlen={setFixedlen}/>
       }
       </div>

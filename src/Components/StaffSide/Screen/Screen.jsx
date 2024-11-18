@@ -3,6 +3,7 @@ import './Screen.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import HandlePageReload from '../../../Utils/PageReloadComponent';
 
 function Screen({setShowCreate}) {
   const INIT_STATE = {
@@ -66,6 +67,7 @@ function Screen({setShowCreate}) {
         if (resp.status === 201) {
           setNewScreen(INIT_STATE);
           setShowCreate(false)
+          HandlePageReload();
           toast.success('Screen created successfully');
         }
       }

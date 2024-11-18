@@ -56,7 +56,7 @@ function ScreenType() {
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
 
       <div className="container">
-      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={screenTypes} updateFunc={setScreenTypes} />
+      {!showCreate && <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={screenTypes} updateFunc={setScreenTypes} />}
         <div className="container__box">
           <button 
             className="container__button" 
@@ -92,7 +92,7 @@ function ScreenType() {
             </div>
           )}
         </div>
-        { paginationLink &&
+        { paginationLink && !showCreate &&
           <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setScreenTypes} setFixedlen={setFixedlen}/>
         }
       </div>

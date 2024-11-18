@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './ScreenType.scss';
 import axios from '../../../../Admin_axios';
 import { toast } from 'react-toastify';
+import HandlePageReload from '../../../../Utils/PageReloadComponent';
 
 function ScreenType({onCreate}) {
   const navi = useNavigate();
@@ -41,6 +42,7 @@ function ScreenType({onCreate}) {
         setNewScreenType(INIT_STATE);
         toast.success("Screen type created successfully");
         onCreate(false)
+        HandlePageReload();
       }
     } catch (error) {
       toast.error('Error while creating Screen type');
