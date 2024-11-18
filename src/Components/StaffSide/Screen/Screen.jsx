@@ -27,8 +27,8 @@ function Screen({setShowCreate}) {
       console.log(TheaterResp, ScreenTypeResp);
       if (TheaterResp.status === 200) {
         if (ScreenTypeResp.status === 200) {
-          setScreeTypes(ScreenTypeResp.data);
-          setTheaters(TheaterResp.data);
+          setScreeTypes(ScreenTypeResp.data.results);
+          setTheaters(TheaterResp.data.results);
           toast.dismiss();
         }
       }
