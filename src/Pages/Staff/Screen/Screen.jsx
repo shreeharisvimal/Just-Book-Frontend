@@ -9,31 +9,26 @@ const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const ScreenComp = React.lazy(() => import('../../../Components/StaffSide/Screen/Screen'));
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
 const FilterComponent = React.lazy(() => import('./ScreenFilter'));
 
 function Screen() {
   const navigate = useNavigate();
+  const [paginationLink, setPaginationLink] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [myScreens, setmyScreens] = useState([]);
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
   const [fixedlen, setFixedlen] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
   const user = useSelector((state) => state.auth_user);
 
   const AccessToken = localStorage.getItem('AccessToken');
 
   const FetchScreens = async () => {
     try {
-      const resp = await axios.get(`theater/ScreenApiGet/${user.user_cred}/`, {
-        headers: {
-          'Authorization': `Bearer ${AccessToken}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      });
-      setmyScreens(resp.data);
-      setFixedlen(resp.data.length)
+      setPaginationLink(`theater/ScreenApiGet/${user.user_cred}/`)
     } catch (error) {
       console.log('An error has occurred');
     }
@@ -74,7 +69,7 @@ function Screen() {
         <AsideBar />
       <div className={styles.screen__container}>
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
-      <FilterComponent fixedlen={fixedlen} obj={myScreens} updateFunc={setmyScreens} />
+      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={myScreens} updateFunc={setmyScreens} />
         <button onClick={() => setShowCreate(!showCreate)} className={styles.screen__button}>
           { !showCreate ?  'CREATE SCREEN' : 'CLOSE CREATING' }
         </button>
@@ -120,6 +115,9 @@ function Screen() {
             </ul>
           </div>
         )}
+        { paginationLink &&
+                    <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setmyScreens} setFixedlen={setFixedlen}/>
+                  }
       </div>
     </React.Suspense>
   );

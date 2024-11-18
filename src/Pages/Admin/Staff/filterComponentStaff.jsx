@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-const FilterComponent = ({fixedlen, staffs, setStaffs }) => {
+const FilterComponent = ({handleFilterReset, fixedlen, staffs, setStaffs }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [OriginalItem, setOriginalItem] = useState([]);
+
+
+
+  const handleReset = () => {
+    setSearchTerm(""); 
+    };
+  
+    useEffect(()=>{
+      handleReset();
+    }, [handleFilterReset])
 
   useEffect(() => {
 	if (staffs.length === fixedlen){

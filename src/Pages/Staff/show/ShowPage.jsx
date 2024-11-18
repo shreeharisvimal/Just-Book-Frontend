@@ -9,6 +9,9 @@ const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 const ShowComp = React.lazy(() => import('../../../Components/StaffSide/Show/Show'));
 const FilterComponent = React.lazy(() => import('./ShowFilter'));
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
+
+
 
 function ShowPage() {
   const [showCreate, setShowCreate] = useState(false);
@@ -18,20 +21,16 @@ function ShowPage() {
   const [onSuccess, setOnSuccess] = useState(false)
   const user = useSelector((state) => state.auth_user);
   const [fixedlen, setFixedlen] = useState(0);
+  const [paginationLink, setPaginationLink] = useState('');
+  const [resetKey, setResetKey] = useState(0)
+
 
 
   const FetchShows = async () => {
     toast.loading("Fetching shows...");
     try {
-      const resp = await axios.get(`/show/showCreateApi/email/${user.user_cred}/`);
-      if (resp.status === 200) {
-        setShows(resp.data);
-        setFixedlen(resp.data.length)
-        toast.dismiss();
-      }
-      else{
-        toast.dismiss();
-      }
+      setPaginationLink(`/show/showCreateApi/email/${user.user_cred}/`);
+      toast.dismiss()
     } catch (error) {
       console.log('An error has been found', error);
       toast.dismiss();
@@ -70,7 +69,7 @@ function ShowPage() {
         <AsideBar />
         <NavBar />
       <div className='show-page__container'>
-      <FilterComponent fixedlen={fixedlen} obj={shows} updateFunc={setShows} />
+      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={shows} updateFunc={setShows} />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <div className='show-page__content'>
           <button className='show-page__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
@@ -110,6 +109,10 @@ function ShowPage() {
             </div>
           )}
         </div>
+        { paginationLink &&
+            <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setShows} setFixedlen={setFixedlen}/>
+          
+          }
       </div>
     </React.Suspense>
   );

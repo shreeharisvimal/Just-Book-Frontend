@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-const FilterComponent = ({ fixedlen, obj, updateFunc }) => {
+const FilterComponent = ({handleFilterReset, fixedlen, obj, updateFunc }) => {
   const [originalItems, setOriginalItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [rangeValue, setRangeValue] = useState(100);
+
+
+  const handleReset = () => {
+    setSearchTerm(""); 
+    setRangeValue(100);
+    };
+  
+    useEffect(()=>{
+      handleReset();
+    }, [handleFilterReset])
 
   useEffect(() => {
     if (obj?.length === fixedlen) {

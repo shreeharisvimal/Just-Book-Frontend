@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './TheaterPage.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import HandlePageReload from '../../../Utils/PageReloadComponent'
+
 
 const WarningBox = React.lazy(() => import('../../../Utils/WarningBox'));
 const NavBar = React.lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavBar'));
 const AsideBar = React.lazy(() => import('../../../Components/AdminSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
 const FilterComponent = React.lazy(() => import('./TheaterFilter'));
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
+
 
 function TheaterPage() {
   const [apiLink, setApiLink] = useState('');
@@ -16,12 +20,15 @@ function TheaterPage() {
   const [theater, setTheater] = useState([]);
   const [showTheater, setShowTheater] = useState(false);
   const [fixedlen, setFixedlen] = useState(0); 
+  const [paginationLink, setPaginationLink] = useState('');
+  const [resetKey, setResetKey] = useState(0);
+
 
   const fetchTheaters = async () => {
     try {
-      const resp = await axios.get('/theater/TheaterApiListCreateAPIView/');
-      setTheater(resp.data);
-      setFixedlen(resp.data.length); 
+
+      setPaginationLink('/theater/TheaterApiListCreateAPIView/');
+
     } catch (error) {
       toast.error('Failed to fetch theaters.');
     }
@@ -51,7 +58,7 @@ function TheaterPage() {
       const resp = await axios.put(`/theater/TheaterPutClassApi/${id}/`, {'status' : 'APPROVED'});
       if (resp.status === 200) {
         toast.success('Theater is approved');
-        fetchTheaters();
+        HandlePageReload();
       }
     } catch (error) {
       toast.error('Failed to approve theater');
@@ -64,7 +71,7 @@ function TheaterPage() {
       const resp = await axios.put(`/theater/TheaterPutClassApi/${id}/`, {'status' : 'REJECTED'});
       if (resp.status === 200) {
         toast.success('Theater is rejected');
-        fetchTheaters();
+        HandlePageReload();
       }
     } catch (error) {
       toast.error('Failed to reject theater');
@@ -78,7 +85,7 @@ function TheaterPage() {
       <div className="theater-page__container">
         <AsideBar />
         <NavBar />
-        <FilterComponent fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
+        <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
         {showTheater ? (
           <TheaterComp />
         ) : (
@@ -125,6 +132,9 @@ function TheaterPage() {
             </div>
           </div>
         )}
+      { paginationLink &&
+        <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setTheater} setFixedlen={setFixedlen}/>
+      }
       </div>
     </React.Suspense>
   );

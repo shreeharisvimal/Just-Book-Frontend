@@ -8,22 +8,23 @@ const NavBar = lazy(() => import('../../../../Components/StaffSide/Navbar/AdminN
 const AsideBar = lazy(() => import('../../../../Components/StaffSide/AsideBar/AsideBar'));
 const ScreenTypeComp = lazy(() => import('../../../../Components/StaffSide/Screen/Type/ScreenType'));
 const FilterComponent = React.lazy(() => import('./ScreenTypeFilter'));
+const Pagination = React.lazy(() => import('../../../../Utils/PaginationComponent'));
+
 
 function ScreenType() {
+  const [paginationLink, setPaginationLink] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [screenTypes, setScreenTypes] = useState([]);
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [fixedlen, setFixedlen] = useState(0);
   const [onSuccess, setOnSuccess] = useState(false)
+  const [resetKey, setResetKey] = useState(0)
 
+  
   const fetchScreenType = async () => {
     try {
-      const resp = await axios.get('theater/ScreenTypeApiCreate/');
-      if (resp.status === 200) {
-        setScreenTypes(resp.data);
-        setFixedlen(resp.data.length)
-      }
+      setPaginationLink('theater/ScreenTypeApiCreate/');
     } catch (error) {
       toast.error('Failed to fetch screen types. Please try again later.');
     }
@@ -55,7 +56,7 @@ function ScreenType() {
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
 
       <div className="container">
-      <FilterComponent fixedlen={fixedlen} obj={screenTypes} updateFunc={setScreenTypes} />
+      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={screenTypes} updateFunc={setScreenTypes} />
         <div className="container__box">
           <button 
             className="container__button" 
@@ -64,7 +65,7 @@ function ScreenType() {
             {showCreate ? 'CLOSE' : 'CREATE SCREEN TYPE'}
           </button>
           {showCreate ? (
-            <ScreenTypeComp onCreate={() => setShowCreate(false)} />
+            <ScreenTypeComp onCreate={setShowCreate} />
           ) : (
             <div>
               <h2 className="container__title">Existing Screen Types</h2>
@@ -91,6 +92,9 @@ function ScreenType() {
             </div>
           )}
         </div>
+        { paginationLink &&
+          <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setScreenTypes} setFixedlen={setFixedlen}/>
+        }
       </div>
     </Suspense>
   );

@@ -11,6 +11,9 @@ const AsideBar = React.lazy(()=> import('../../../Components/AdminSide/AsideBar/
 const NavBar = React.lazy(()=> import('../../../Components/AdminSide/Navbar/AdminNavBar'))
 const Movie = React.lazy(()=> import('../../../Components/AdminSide/Movie/Movie'))
 const FilterComponent = React.lazy(()=> import('./itemsFilter'))
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
+
+
 
 
 function MoviePage() {
@@ -20,12 +23,12 @@ function MoviePage() {
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
   const [fixedlen, setFixedlen] = useState(0);
-
+  const [resetKey, setResetKey] = useState(0);
+  const [paginationLink, setPaginationLink] = useState('');
+  
   const fetchMovie = async()=>{
     try{
-      const resp = await axios.get('movie/movieListCreateAPIView/')
-      setmyMovies(resp.data)
-      setFixedlen(resp.data.length)
+      setPaginationLink('movie/movieListCreateAPIView/')
     }catch(error){
       console.log('error while fetching movie', error)
     }
@@ -56,7 +59,7 @@ function MoviePage() {
           <NavBar className='movie-page__create-movie' />
           <AsideBar />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <FilterComponent fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />
+          <FilterComponent handleFilterReset={resetKey}  fixedlen={fixedlen} myMovies={myMovies} setmyMovies={setmyMovies} />
           <button className='movie-page__create-btn' onClick={() => setshowMovieCreate(!showMovieCreate)}>
             {showMovieCreate ? 'CLOSE CREATE MOVIE' : 'CREATE MOVIE'}
           </button>
@@ -77,6 +80,9 @@ function MoviePage() {
               ))}
             </ul>
           )}
+                { paginationLink &&
+                    <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setmyMovies} setFixedlen={setFixedlen}/>
+                  }
         </React.Suspense>
       </div>
     </>

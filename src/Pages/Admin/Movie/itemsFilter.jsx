@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const FilterComponent = ({fixedlen, myMovies, setmyMovies }) => {
+const FilterComponent = ({handleFilterReset, fixedlen, myMovies, setmyMovies }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [originalMovies, setOriginalMovies] = useState([]);
 
@@ -9,6 +9,14 @@ const FilterComponent = ({fixedlen, myMovies, setmyMovies }) => {
       setOriginalMovies(myMovies);
     }
   }, [myMovies]);
+
+  const handleReset = () => {
+    setSearchTerm(""); 
+    };
+  
+    useEffect(()=>{
+      handleReset();
+    }, [handleFilterReset])
 
   const handleSearchChange = (e) => {
     const value = e.target.value;

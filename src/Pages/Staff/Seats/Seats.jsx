@@ -30,7 +30,7 @@ function Seats() {
     const fetchSeatTypes = async () => {
       try {
         const resp = await myaxios.get('theater/SeatTypeFetch/');
-        setSeatTypes(resp.data);
+        setSeatTypes(resp.data.results);
       } catch (error) {
         console.error('Error fetching seat types:', error);
       }
@@ -127,7 +127,10 @@ function Seats() {
       if (resp.status === 201) {
         toast.success('The seats have been saved successfully');
         HandleReset();
-        navi(-1);
+        if (window.history.length > 1) {
+          navi(-1);
+        }
+        
       }
     } catch (error) {
       console.error('Error saving seat allocation:', error);

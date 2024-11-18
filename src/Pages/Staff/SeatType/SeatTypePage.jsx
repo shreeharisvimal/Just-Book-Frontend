@@ -3,13 +3,17 @@ import './SeatType.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import HandlePageReload from '../../../Utils/PageReloadComponent'
+
 
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
 const FilterComponent = React.lazy(() => import('./SeatTypeFilter'));
 
 function SeatTypePage() {
+  const [paginationLink, setPaginationLink] = useState('');
   const user = useSelector((state) => state.auth_user);
   const [theater, setTheater] = useState([]);
   const [seatTypes, setSeatTypes] = useState([]);
@@ -17,7 +21,8 @@ function SeatTypePage() {
   const [apiLink, setApiLink] = useState('');
   const [onOpen, setOnOpen] = useState('');
   const [onSuccess, setOnSuccess] = useState(false)
-const [fixedlen, setFixedlen] = useState(0);
+  const [fixedlen, setFixedlen] = useState(0);
+  const [resetKey, setResetKey] = useState(0)
 
 
   const INIT_STATE = {
@@ -57,12 +62,7 @@ const [fixedlen, setFixedlen] = useState(0);
   const FetchSeatTypes = async () => {
     toast.loading("Fetching Seat Types");
     try {
-      const SeatTypeResp = await axios.get(`theater/SeatTypeFetch/`);
-      if (SeatTypeResp.status === 200) {
-        setSeatTypes(SeatTypeResp.data);
-        setFixedlen(SeatTypeResp.data.length)
-        toast.dismiss();
-      }
+      setPaginationLink(`theater/SeatTypeFetch/`);
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +97,7 @@ const [fixedlen, setFixedlen] = useState(0);
         toast.success("Seat Type is created successfully");
         setFormData(INIT_STATE);
         setShowCreate(false)
-        FetchSeatTypes();
+        HandlePageReload();
       }
     } catch (error) {
       console.error('There was an error creating the seat type!', error);
@@ -122,7 +122,7 @@ const [fixedlen, setFixedlen] = useState(0);
         <AsideBar />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
       <div className='SeatType__container'>
-      <FilterComponent fixedlen={fixedlen} obj={seatTypes} updateFunc={setSeatTypes} />
+      <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} obj={seatTypes} updateFunc={setSeatTypes} />
         <button className='SeatType__toggle-btn' onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? 'Close Creating' : 'Create Seat Type'}
         </button>
@@ -173,6 +173,9 @@ const [fixedlen, setFixedlen] = useState(0);
             </ul>
           </div>
         )}
+        { paginationLink &&
+            <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setSeatTypes} setFixedlen={setFixedlen}/>
+          }
       </div>
     </React.Suspense>
   );

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ScreenType.scss';
 import axios from '../../../../Admin_axios';
 import { toast } from 'react-toastify';
 
-function ScreenType() {
+function ScreenType({onCreate}) {
+  const navi = useNavigate();
   const INIT_STATE = { name: '', price_multi: '' };
   const [newScreenType, setNewScreenType] = useState(INIT_STATE);
 
@@ -38,6 +40,7 @@ function ScreenType() {
       if (resp.status === 201) {
         setNewScreenType(INIT_STATE);
         toast.success("Screen type created successfully");
+        onCreate(false)
       }
     } catch (error) {
       toast.error('Error while creating Screen type');

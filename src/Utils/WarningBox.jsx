@@ -2,6 +2,7 @@ import React from 'react';
 import axios from '../Admin_axios';
 import { toast } from 'react-toastify';
 import './WarningBox.scss';
+import HandlePageReload from '../Utils/PageReloadComponent';
 
 
 function WarningBox({ apiLink, setOnOpen, setOnSuccess }) {
@@ -11,6 +12,7 @@ function WarningBox({ apiLink, setOnOpen, setOnSuccess }) {
       setOnSuccess(true); 	
       setOnOpen(false);   
       toast.dismiss();
+      HandlePageReload();
     } catch (error) {
       setOnSuccess(false);
       console.error("Failed to delete item:", error);

@@ -52,7 +52,7 @@ function Show({setShowCreate}) {
             const theaters = await axios.get(`/theater/FetchTheaterStaff/${user.user_cred}/`);
 
             if (movies.status === 200 && theaters.status === 200) {
-                setMovies(movies.data);
+                setMovies(movies.data.results);
                 setTheaters(theaters.data);
             } else {
                 toast.error("Failed to fetch data");

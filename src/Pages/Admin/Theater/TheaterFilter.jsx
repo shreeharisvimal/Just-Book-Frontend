@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-const FilterComponent = ({ fixedlen, theater, setTheater }) => {
+const FilterComponent = ({handleFilterReset, fixedlen, theater, setTheater }) => {
   const [originalItems, setOriginalItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("ALL");
+
+
+  const handleReset = () => {
+	setSearchTerm(""); 
+	setSelectedStatus("ALL")
+	};
+      
+	useEffect(()=>{
+	  handleReset();
+	}, [handleFilterReset])
+
 
   useEffect(() => {
     if (theater.length === fixedlen) {

@@ -2,11 +2,14 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './staff.scss';
 import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import HandlePageReload from '../../../Utils/PageReloadComponent'
 
-const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
+const WarningBox = React.lazy(() => import('../../../Utils/WarningBox'));
 const AsideBar = lazy(() => import('../../../Components/AdminSide/AsideBar/AsideBar'));
 const NavBar = lazy(() => import('../../../Components/AdminSide/Navbar/AdminNavBar'));
-const FilterComponent = lazy(()=> import('./filterComponentStaff'))
+const FilterComponent = lazy(() => import('./filterComponentStaff'));
+const Pagination = lazy(() => import('../../../Utils/PaginationComponent'));
+
 
 function Staff() {
     const INITIAL_STATE = {
@@ -23,10 +26,12 @@ function Staff() {
     const [errors, setErrors] = useState({});
     const [apiLink, setApiLink] = useState('');
     const [onOpen, setOnOpen] = useState('');
-    const [onSuccess, setOnSuccess] = useState(false)
+    const [onSuccess, setOnSuccess] = useState(false);
+    const [resetKey, setResetKey] = useState(0);
     const [fixedlen, setFixedlen] = useState(0);
-
+    const [paginationLink, setPaginationLink] = useState('');
     const AccessToken = localStorage.getItem('AccessToken');
+
 
     const validate = () => {
         let validationErrors = {};
@@ -61,13 +66,14 @@ function Staff() {
                     'Authorization': `Bearer ${AccessToken}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                }
+                },
             });
             if (resp.status === 201) {
                 toast.success('New Staff Created!');
                 setNewStaff(INITIAL_STATE);
                 setopenCreate(!openCreate);
                 setErrors({});
+                HandlePageReload();
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -80,33 +86,25 @@ function Staff() {
 
     const HandleChange = (event) => {
         const { name, value } = event.target;
-        setNewStaff(prevState => ({
+        setNewStaff((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
         }));
     };
 
     const fetchStaff = async () => {
         try {
-            const resp = await axios.get('StaffAuth/', {
-                headers: {
-                    'Authorization': `Bearer ${AccessToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                }
-            });
-            setStaffs(resp.data);
-            setFixedlen(resp.data.length); 
+            setPaginationLink('StaffAuth/');
         } catch (error) {
             console.log(error);
         }
     };
 
     const HandleDelete = async (id) => {
-    toast.loading("Deleting staff...");
+        toast.loading('Deleting staff...');
         try {
-            setApiLink(`StaffDelete/${id}/`)
-            setOnOpen(true)
+            setApiLink(`StaffDelete/${id}/`);
+            setOnOpen(true);
         } catch (error) {
             console.log(error);
         }
@@ -115,19 +113,19 @@ function Staff() {
     useEffect(() => {
         if (onSuccess) {
             toast.dismiss();
-            toast.success("staff deleted successfully");
+            toast.success('Staff deleted successfully');
             setOnSuccess(false);
-          }
+        }
         fetchStaff();
     }, [openCreate, onSuccess]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
+            {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess} />}
             <div className="container">
                 <AsideBar />
                 <NavBar />
-                <FilterComponent fixedlen={fixedlen} staffs={staffs} setStaffs={setStaffs}/>
+                <FilterComponent  handleFilterReset={resetKey} fixedlen={fixedlen} staffs={staffs} setStaffs={setStaffs} />
                 <div className="container__header">
                     <button className="container__button" onClick={() => setopenCreate(!openCreate)}>
                         {openCreate ? 'CANCEL' : 'CREATE STAFF'}
@@ -161,7 +159,7 @@ function Staff() {
                             value={NewStaff.password}
                             onChange={HandleChange}
                             type="password"
-                            placeholder="Enter password for user"
+                            placeholder="Enter password"
                         />
                         {errors.password && <p className="error-text">{errors.password}</p>}
 
@@ -193,14 +191,18 @@ function Staff() {
                             <div key={index} className="container__list-item">
                                 <div className="container__list-item-details">
                                     <div className="container__list-item-details-name">{staff.first_name} {staff.last_name}</div>
-                                    <div>{staff.phone}</div>
-                                    <div>{staff.email}</div>
+                                    <div className="container__list-item-details-email">{staff.email}</div>
                                 </div>
-                                <div className="container__list-item-actions">
-                                    <button className="container__list-item-actions-button" onClick={() => HandleDelete(staff.id)}>Delete</button>
-                                </div>
+                                <button className="container__list-item-delete" onClick={() => HandleDelete(staff.id)}>
+                                    Delete
+                                </button>
                             </div>
                         ))}
+                        {
+                            paginationLink &&
+                        <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)} apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setStaffs} setFixedlen={setFixedlen}/>
+                        }
+                    
                     </div>
                 )}
             </div>

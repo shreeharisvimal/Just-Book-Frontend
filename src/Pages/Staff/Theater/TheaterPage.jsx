@@ -4,6 +4,7 @@ import axios from '../../../Admin_axios';
 import {jwtDecode} from 'jwt-decode';
 import 'react-phone-input-2/lib/style.css';
 import { toast } from 'react-toastify';
+import HandlePageReload from '../../../Utils/PageReloadComponent'
 
 
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
@@ -11,6 +12,7 @@ const NavBar = React.lazy(() => import('../../../Components/StaffSide/Navbar/Adm
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const TheaterComp = React.lazy(() => import('../../../Components/StaffSide/Theater/Theater'));
 const FilterComponent = React.lazy(() => import('./TheaterFilter'));
+const Pagination = React.lazy(() => import('../../../Utils/PaginationComponent'));
 
 
 function TheaterPage() {
@@ -22,6 +24,8 @@ function TheaterPage() {
   const [showEdit, setShowEditTheater] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
+  const [resetKey, setResetKey] = useState(0)
+
   let email;
   const INIT_STATE = {
     theater_name: '',
@@ -40,6 +44,7 @@ function TheaterPage() {
   const [fixedlen, setFixedlen] = useState(0);
   const [theater, setTheater] = useState([]);
   const [showTheater, setShowTheater] = useState(false);
+  const [paginationLink, setPaginationLink] = useState('');
 
  
 
@@ -53,10 +58,7 @@ function TheaterPage() {
       console.log('the error', error);
     }
     try {
-      const resp = await axios.get(`/theater/FetchTheaterStaff/${email}/`);
-      setTheater(resp.data);
-      setFixedlen(resp.data.length)
-
+      setPaginationLink(`/theater/FetchTheaterStaff/${email}/`);
     } catch (error) {
       console.error('Error fetching theaters:', error);
     }
@@ -119,6 +121,7 @@ function TheaterPage() {
       fetchTheaters();
       setShowEditTheater(false);
       setFormData(INIT_STATE);
+      HandlePageReload();
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -129,7 +132,7 @@ function TheaterPage() {
         <AsideBar />
         <NavBar />
       <div className="theater-page__container">
-        <FilterComponent fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
+        <FilterComponent handleFilterReset={resetKey} fixedlen={fixedlen} theater={theater} setTheater={setTheater} />
        {onOpen && <WarningBox apiLink={apiLink} setOnOpen={setOnOpen} setOnSuccess={setOnSuccess}/> }
         <button onClick={() => setShowTheater(!showTheater)} className="theater-page__create-btn">
           {showTheater ? 'CLOSE CREATE THEATER' : 'CREATE THEATER'}
@@ -202,11 +205,14 @@ function TheaterPage() {
                 className="form-textarea"
               />
               <button type="submit" onClick={handleSubmit} className="form-button">Submit</button>
-      <button type="submit" onClick={()=>setShowEditTheater(false)} className="form-button">Cancel</button>
-            </form>
+          <button type="submit" onClick={()=>setShowEditTheater(false)} className="form-button">Cancel</button>
+              </form>
           )}
         </div>
             )}
+        { paginationLink &&
+            <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setTheater} setFixedlen={setFixedlen}/>
+        }
       </div>
     </React.Suspense>
   );
