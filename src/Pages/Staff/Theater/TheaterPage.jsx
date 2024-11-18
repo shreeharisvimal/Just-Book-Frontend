@@ -210,7 +210,7 @@ function TheaterPage() {
           )}
         </div>
             )}
-        { paginationLink && !showEdit &&
+        { paginationLink && !showEdit && !showTheater &&
             <Pagination setHandleFilterReset={() => setResetKey(prev => prev + 1)}  apiLink={paginationLink} setApiLink={setPaginationLink} stateUpdateFunction={setTheater} setFixedlen={setFixedlen}/>
         }
       </div>
