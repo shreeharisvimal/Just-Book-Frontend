@@ -29,7 +29,7 @@ function AdminPrivateRouter({ children }) {
                 if (isMounted) {
                     setTimeout(() => {
                         setLoading(false);
-                    }, 2000); // Reduced timeout for faster loading
+                    }, 100); 
                 }
             }
         };
