@@ -196,7 +196,7 @@ function Seating() {
         const showData = showResp.data[0];
         setFetchData(showData);
         setSeatAllocation(showData.seatAllocation);
-        setSeatTypes(seatTypeResp.data);
+        setSeatTypes(seatTypeResp.data.results);
         const val = calculatePriceWithPercentage(showData.screen.screen_type.price_multi, showData.price);
         setNormalPrice(val);
         setIsDataFetched(true);
