@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import isAuthUser from '../../../Utils/AuthUser';
 import axios from '../../../axios';
 import './Seating.scss';
 import './seating.css';
@@ -42,7 +43,6 @@ function Seating() {
   const navigate = useNavigate();
   const wsRef = useRef(null); 
 
-  
 
 
 
@@ -53,6 +53,12 @@ function Seating() {
   };
 
   const handleSelecting = useCallback((row, seat, seatName ,updatedSeatAllocation) => {
+
+    if (!localStorage.getItem('user_id')){
+      toast.warning("Please login To Select Seats");
+      return;
+    }
+
     const updatedSelectedSeats = { ...selectedSeats };
 
     if (updatedSelectedSeats[row]) {
@@ -258,6 +264,12 @@ function Seating() {
 
 
   const updateSeatValue = useCallback((row, seat, seatName) => {
+
+    if (!localStorage.getItem('user_id')){
+      toast.warning("Please login To Select Seats");
+      return;
+    }
+    
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace && seatData.status !== 'Booked' && seatData.status !== 'booked') {
       const now = new Date();
