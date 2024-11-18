@@ -54,7 +54,7 @@ function Show({setShowCreate}) {
 
             if (movies.status === 200 && theaters.status === 200) {
                 setMovies(movies.data.results);
-                setTheaters(theaters.data);
+                setTheaters(theaters.data.results);
             } else {
                 toast.error("Failed to fetch data");
             }
