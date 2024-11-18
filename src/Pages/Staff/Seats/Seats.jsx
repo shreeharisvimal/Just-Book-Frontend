@@ -29,8 +29,8 @@ function Seats() {
 
     const fetchSeatTypes = async () => {
       try {
-        const resp = await myaxios.get('theater/SeatTypeFetch/');
-        setSeatTypes(resp.data.results);
+        const resp = await myaxios.get('theater/SeatTypeFetch/ForSeating/');
+        setSeatTypes(resp.data);
       } catch (error) {
         console.error('Error fetching seat types:', error);
       }
