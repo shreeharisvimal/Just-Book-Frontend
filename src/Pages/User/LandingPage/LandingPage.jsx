@@ -1,8 +1,7 @@
-import React, {lazy, Suspense, useState} from 'react'
 import './LandingPage.scss'
+import React, {lazy, Suspense, useState} from 'react'
 const NavBar = lazy(()=> import('../../../Components/UserSide/NavBar/Navbar'))
 const MovieCard = lazy(()=> import('../../../Components/UserSide/MovieCard/MovieCard'))
-const AsideBar = lazy(()=> import('../UserAsideBar/AsideBar'))
 
 function LandingPage() {
 

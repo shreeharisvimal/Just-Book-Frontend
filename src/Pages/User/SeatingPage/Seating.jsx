@@ -1,13 +1,13 @@
-import React, { useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import isAuthUser from '../../../Utils/AuthUser';
-import axios from '../../../axios';
-import './Seating.scss';
 import './seating.css';
-import { set_Booking } from '../../../Redux/Booking/BookSlice';
-import { useDispatch } from 'react-redux';
+import './Seating.scss';
+import axios from '../../../axios';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import seatCheckUpdate from './seatCheckUpdate';
+import { useNavigate, useParams } from 'react-router-dom';
+import { set_Booking } from '../../../Redux/Booking/BookSlice';
+import React, { useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
+
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
 
@@ -269,7 +269,7 @@ function Seating() {
       toast.warning("Please login To Select Seats");
       return;
     }
-    
+
     const seatData = seatAllocation[row].seats[seat];
     if (!seatData.is_freeSpace && seatData.status !== 'Booked' && seatData.status !== 'booked') {
       const now = new Date();

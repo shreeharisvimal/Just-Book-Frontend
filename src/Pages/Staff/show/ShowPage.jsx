@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import './ShowPage.scss';
-import axios from '../../../axios';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import './ForgetPass.scss';
+import React, { useState } from 'react';
 import axios from '../../Admin_axios';
 import { toast } from 'react-toastify';
 

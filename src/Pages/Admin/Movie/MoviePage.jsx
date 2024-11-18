@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
 import './MoviePage.scss'
-import axios from '../../../Admin_axios'
-import { imageUrl } from '../../../Tmdb'
-import { LanguageUtils } from '../../../Utils/LanguageUtils'
 import { toast } from 'react-toastify'
+import { imageUrl } from '../../../Tmdb'
+import React, {useEffect, useState} from 'react'
+import { LanguageUtils } from '../../../Utils/LanguageUtils'
 
 
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));

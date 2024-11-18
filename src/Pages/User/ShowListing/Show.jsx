@@ -1,11 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { LanguageUtils } from '../../../Utils/LanguageUtils';
-import axios from '../../../axios';
-import './Show.scss';
 import './show.css';
+import './Show.scss';
+import axios from '../../../axios';
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { LanguageUtils } from '../../../Utils/LanguageUtils';
+import { useNavigate, useParams } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
 
@@ -42,7 +42,6 @@ function Show() {
         }
     }, [movieId, City]);
 
-    // Group shows by theater
     const groupedShowsByTheater = shows.reduce((acc, show) => {
         const theaterName = show.theater.theater_name;
         if (!acc[theaterName]) {
@@ -94,7 +93,6 @@ function Show() {
                         </div>
                         <div className="show__content">
                             <div className="show__dates">
-                                {/* Render unique dates as buttons */}
                                 {uniqueDates.map((date, index) => {
                                     const { day, month, datemy } = getDayAndMonth(date);
                                     return (

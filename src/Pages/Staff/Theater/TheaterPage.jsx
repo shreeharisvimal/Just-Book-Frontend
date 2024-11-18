@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import './TheaterPage.scss';
-import axios from '../../../Admin_axios';
-import {jwtDecode} from 'jwt-decode';
-import 'react-phone-input-2/lib/style.css';
 import { toast } from 'react-toastify';
+import {jwtDecode} from 'jwt-decode';
+import axios from '../../../Admin_axios';
+import 'react-phone-input-2/lib/style.css';
+import React, { useEffect, useState } from 'react';
 import HandlePageReload from '../../../Utils/PageReloadComponent'
 
 

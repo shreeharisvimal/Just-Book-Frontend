@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import myaxios from '../../../Admin_axios';
 import './Seats.scss';
-import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import myaxios from '../../../Admin_axios';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
+
 
 const AsideBar = lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
 const NavBar = lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));

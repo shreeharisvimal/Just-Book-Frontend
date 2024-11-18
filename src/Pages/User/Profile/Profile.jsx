@@ -1,5 +1,5 @@
-import React from 'react'
 import './Profile.scss'
+import React from 'react'
 import { Link } from 'react-router-dom';
 
 const NavBar = React.lazy(()=> import('../../../Components/UserSide/NavBar/Navbar'))

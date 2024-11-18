@@ -1,7 +1,6 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
 import './ScreenType.scss';
-import axios from '../../../../Admin_axios';
 import { toast } from 'react-toastify';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 
 const WarningBox = React.lazy(()=> import('../../../../Utils/WarningBox'));
 const NavBar = lazy(() => import('../../../../Components/StaffSide/Navbar/AdminNavBar'));

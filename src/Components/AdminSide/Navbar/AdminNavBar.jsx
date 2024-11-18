@@ -1,6 +1,6 @@
 import React, {useState } from 'react'
-import styles from './AdminNavBar.module.scss'
 import { useSelector } from 'react-redux'
+import styles from './AdminNavBar.module.scss'
 
 const Logout = React.lazy(()=> import('./AdminLogout'))
 

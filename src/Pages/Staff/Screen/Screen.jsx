@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styles from './Screen.module.scss';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
 const WarningBox = React.lazy(()=> import('../../../Utils/WarningBox'));
 const AsideBar = React.lazy(() => import('../../../Components/StaffSide/AsideBar/AsideBar'));
@@ -24,7 +23,6 @@ function Screen() {
   const [resetKey, setResetKey] = useState(0);
   const user = useSelector((state) => state.auth_user);
 
-  const AccessToken = localStorage.getItem('AccessToken');
 
   const FetchScreens = async () => {
     try {

@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './AsideBar.module.scss'; // Import the CSS module
 import Image from '../../../logo192.png';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
+import styles from './AsideBar.module.scss'; 
+import { useLocation, useNavigate } from 'react-router-dom'; 
 
 function AsideBar() {
   const location = useLocation();
@@ -19,7 +19,6 @@ function AsideBar() {
   return (
     <aside className={styles.asideBar__navbarAside} id="offcanvas_aside">
       <div className={styles.asideBar__asideTop}>
-        {/* Logo and Minimize Button */}
         <a href="index.html" className={styles.asideBar__brandWrap}>
           <img src={Image} className={styles.logo} alt="JustBook Dashboard" />
           <strong className={styles.Justbook}>JUSTBOOK</strong>
@@ -32,7 +31,6 @@ function AsideBar() {
       </div>
 
       <nav className={styles.asideBar__nav}>
-        {/* Main Menu Section */}
         <ul className={styles.asideBar__menuAside}>
           <li className={`${styles.menuItem} ${ getLastSegment() === 'movieManagement' ? styles.active : ''}`}>
             <a className={styles.menuLink} onClick={() => handleClick('movieManagement/')}>
@@ -41,7 +39,6 @@ function AsideBar() {
               <i className={`material-icons ${styles.dropdownIcon} md-expand_less`}></i>
             </a>
           </li>
-          {/* Other Menu Items */}
           <li className={`${styles.menuItem} ${ getLastSegment() === 'admintheaterManagement' ? styles.active : ''}`}>
             <a className={styles.menuLink} onClick={() => handleClick('admintheaterManagement/')}>
               <i className="icon material-icons md-comment"></i>

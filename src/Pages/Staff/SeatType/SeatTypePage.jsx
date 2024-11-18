@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import './SeatType.scss';
-import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import axios from '../../../Admin_axios';
 import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import HandlePageReload from '../../../Utils/PageReloadComponent'
 
 

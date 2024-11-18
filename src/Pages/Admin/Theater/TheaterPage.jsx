@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import './TheaterPage.scss';
-import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import axios from '../../../Admin_axios';
+import React, { useEffect, useState } from 'react';
 import HandlePageReload from '../../../Utils/PageReloadComponent'
 
 

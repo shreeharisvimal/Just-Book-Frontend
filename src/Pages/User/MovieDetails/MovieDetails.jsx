@@ -1,8 +1,8 @@
 import React from 'react';
 import './MovieDetails.scss';
 
-const MovieDetailsComp = React.lazy(()=> import('../../../Components/UserSide/MovieDetails/MovieDetails'));
 const NavBar = React.lazy(()=> import('../../../Components/UserSide/NavBar/Navbar'))
+const MovieDetailsComp = React.lazy(()=> import('../../../Components/UserSide/MovieDetails/MovieDetails'));
 
 
 function MovieDetails() {

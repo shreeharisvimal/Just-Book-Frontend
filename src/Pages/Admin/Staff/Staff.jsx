@@ -1,7 +1,7 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './staff.scss';
-import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import axios from '../../../Admin_axios';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import HandlePageReload from '../../../Utils/PageReloadComponent'
 
 const WarningBox = React.lazy(() => import('../../../Utils/WarningBox'));

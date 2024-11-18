@@ -1,9 +1,10 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
 import './VerifyPage.scss';
-import { imageUrl } from '../../../Tmdb';
-import { useParams } from 'react-router-dom';
-import axios from '../../../Admin_axios';
 import { toast } from 'react-toastify';
+import { imageUrl } from '../../../Tmdb';
+import axios from '../../../Admin_axios';
+import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+
 
 const NavBar = lazy(() => import('../../../Components/StaffSide/Navbar/AdminNavBar'));
 
