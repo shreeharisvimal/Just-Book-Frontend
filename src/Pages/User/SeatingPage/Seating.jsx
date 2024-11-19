@@ -257,14 +257,14 @@ function Seating() {
 
 
   const getSeatClass = useCallback((seatData) => {
-    if (seatData.status === 'booked') return 'seats__row-seats__seat--booked';
+    if (seatData.status === 'booked' || seatData.status === 'Booked') return 'seats__row-seats__seat--booked';
     if (seatData.is_freeSpace) return 'seats__row-seats__seat--free-space';
     if (seatData.holdedseat) {
       if (Array.isArray(bookingSeats) && bookingSeats.includes(seatData.name)) {
         return 'seats__row-seats__seat--selected';
       }
       if (seatData.user === localStorage.getItem('user_id') && localStorage.getItem('user_id')) {
-        return 'seats__row-seats__seat--available';
+        return 'seats__row-seats__seat--holdedseat';
       }
       if (seatData.user && localStorage.getItem('user_id') !== seatData.user) {
         return 'seats__row-seats__seat--holdedseat';
