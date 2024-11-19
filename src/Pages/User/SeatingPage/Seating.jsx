@@ -1,34 +1,51 @@
 import './seating.css';
 import './Seating.scss';
 import axios from '../../../axios';
+import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import seatCheckUpdate from './seatCheckUpdate';
 import { useNavigate, useParams } from 'react-router-dom';
 import { set_Booking } from '../../../Redux/Booking/BookSlice';
-import React, { useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
+import React, { useEffect, useState, lazy, Suspense, useCallback, useRef, useMemo } from 'react';
 
 const NavBar = lazy(() => import('../../../Components/UserSide/NavBar/Navbar'));
+
+const MAX_SEATS = 10;
+const RECONNECT_DELAY = 5000;
+const DEBOUNCE_DELAY = 300;
+
+class SeatingErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('Seating Error:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-boundary">
+          <h2>Something went wrong. Please refresh the page.</h2>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 
 function Seating() {
 
-  const generateUserId = () => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const milliseconds = String(now.getMilliseconds()).padStart(3, '0'); 
-
-    return `${hours}${minutes}${seconds}${milliseconds}`;
-  };
-
+  const reconnectTimeoutRef = useRef(null);
   const { showId } = useParams();
   const [wsStatus, setWsStatus] = useState('disconnected');
   const [normalPrice, setNormalPrice] = useState(null);
-  const lastUpdateRef = useRef(null);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [fetchData, setFetchData] = useState(null);
   const [seatAllocation, setSeatAllocation] = useState(null);
   const [seatTypes, setSeatTypes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +54,6 @@ function Seating() {
   const [bookingSeats, setBookingSeats] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
-  const [tempUserId, setUserId] = useState(()=>generateUserId())
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -90,15 +106,7 @@ function Seating() {
     });
 
 
-    // if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-    //   wsRef.current.send(JSON.stringify({
-    //     action: 'seat_update',
-    //     data: {
-    //       seat_data: updatedSeatAllocation
-    //     }
-    //   }));
-    // }
-    if (wsRef.current) {
+    if (wsRef.current && wsRef.current.readyState) {
       wsRef.current.send(JSON.stringify({
         action: 'seat_update',
         data: {
@@ -106,6 +114,8 @@ function Seating() {
         }
       }));
     }
+
+    debouncedSeatUpdate(updatedSeatAllocation);
 
     setTotalAmount(Math.round(newTotalAmount));
     handleShowBook(newTotalAmount);
@@ -131,73 +141,70 @@ function Seating() {
 
 
 
-  useEffect(() => {
-    let reconnectTimeout;
-    const RECONNECT_DELAY = 5000;
+  const connectWebSocket = useCallback(() => {
+    try {
+      const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
-    const connectWebSocket = () => {
-      try {
-        const wsUrl = `${process.env.REACT_APP_BACKEND_URL}ws/seats/${showId}/`;
-        const ws = new WebSocket(wsUrl);
-        wsRef.current = ws;
+      ws.onopen = () => {
+        setWsStatus('connected');
+        console.log('WebSocket connected');
+      };
 
-        ws.onopen = () => {
-          setWsStatus('connected');
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            setSeatAllocation(data.seat_data);
-            const newSeatsAfterUpdate = seatCheckUpdate(data.seat_data);
-            const currentTime = Date.now();
-            if (
-              newSeatsAfterUpdate && 
-              wsRef.current && 
-              wsRef.current.readyState === WebSocket.OPEN &&
-              (!lastUpdateRef.current || currentTime - lastUpdateRef.current > 1000)
-            ) {
-              lastUpdateRef.current = currentTime;
-              wsRef.current.send(JSON.stringify({
-                action: 'seat_update',
-                data: {
-                  seat_data: newSeatsAfterUpdate
-                }
-              }));
-            }
-          } catch (error) {
-            console.log('Error processing message:', error);
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.error) {
+            toast.error(data.error);
+            return;
           }
-        };
+          if (data.seat_data) {
+            setSeatAllocation(seatCheckUpdate(data.seat_data));
+          }
+        } catch (error) {
+          console.error('WebSocket message error:', error);
+        }
+      };
 
-        ws.onclose = () => {
-          setWsStatus('disconnected');
-          
-          reconnectTimeout = setTimeout(connectWebSocket, RECONNECT_DELAY);
-        };
+      ws.onclose = () => {
+        setWsStatus('disconnected');
+        reconnectTimeoutRef.current = setTimeout(connectWebSocket, RECONNECT_DELAY);
+      };
 
-        ws.onerror = (error) => {
-          ws.close();
-        };
-      } catch (error) {
-        setWsStatus('error');
-      }
-    };
+      ws.onerror = () => {
+        ws.close();
+      };
+    } catch (error) {
+      setWsStatus('error');
+      console.error('WebSocket connection error:', error);
+    }
+  }, [showId]);
 
+  useEffect(() => {
     connectWebSocket();
 
     return () => {
       if (wsRef.current) {
         wsRef.current.close();
-        wsRef.current = null;
       }
-      if (reconnectTimeout) {
-        clearTimeout(reconnectTimeout);
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
       }
     };
-  }, [showId, seatAllocation]);
+  }, [connectWebSocket]);
 
-
+  const debouncedSeatUpdate = useMemo(
+    () => debounce((updatedSeatAllocation) => {
+      if (wsRef.current?.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          action: 'seat_update',
+          data: { seat_data: updatedSeatAllocation }
+        }));
+      }
+    }, DEBOUNCE_DELAY),
+    []
+  );
 
   const fetchSeats = async () => {
     try {
@@ -208,7 +215,6 @@ function Seating() {
 
       if (showResp.status === 200 && seatTypeResp.status === 200) {
         const showData = showResp.data[0];
-        setFetchData(showData);
         setSeatAllocation(showData.seatAllocation);
         setSeatTypes(seatTypeResp.data.results);
         const val = calculatePriceWithPercentage(showData.screen.screen_type.price_multi, showData.price);
@@ -271,6 +277,7 @@ function Seating() {
   }, [bookingSeats]);
 
 
+
   const updateSeatValue = useCallback((row, seat, seatName) => {
 
     if (!localStorage.getItem('user_id')){
@@ -290,7 +297,7 @@ function Seating() {
         ...seatData,
         status: seatData.status === 'selected' ? 'available' : 'selected',
         holdedseat:!seatData.holdedseat,
-        user:localStorage.getItem('user_id') || tempUserId,
+        user:localStorage.getItem('user_id'),
         hold_time: seatData.status === 'available' ? timeString : '',
       };
 
@@ -312,7 +319,7 @@ function Seating() {
         count += selectedSeats[r].length;
       });
 
-      if (count < 10 || (count === 10 && selectedSeats[row]?.includes(seat))) {
+      if (count < MAX_SEATS || (count === MAX_SEATS && selectedSeats[row]?.includes(seat))) {
         setSeatAllocation(updatedSeatAllocation);
         handleSelecting(row, seat, seatName, updatedSeatAllocation);
       } else {
@@ -330,6 +337,8 @@ function Seating() {
   }
 
   return (
+    <SeatingErrorBoundary>
+
     <div  className='main'>
       <Suspense fallback={<div>Loading Navbar...</div>}>
         <NavBar />
@@ -373,13 +382,17 @@ function Seating() {
                   const isBooked = seatClass === 'seats__row-seats__seat--booked';
 
                   return (
-                    <button
-                      onClick={!isBooked ? () => updateSeatValue(row, seat, seatData.name) : undefined}
-                      key={seat}
-                      className={`seats__row-seats__seat ${seatClass}`}
+                    <span
+                    key={seat}
+                    className={`seats__row-seats__seat ${seatClass}`}
+                    onClick={() => {
+                      if (!isBooked) {
+                        updateSeatValue(row, seat, seatData.name);
+                      }
+                    }}
                     >
                       {seatData.name}
-                    </button>
+                    </span>
                   );
                 })}
               </div>
@@ -390,6 +403,7 @@ function Seating() {
         )}
       </div>
     </div>
+    </SeatingErrorBoundary>
   );
 }
 
