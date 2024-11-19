@@ -90,7 +90,15 @@ function Seating() {
     });
 
 
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+    // if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+    //   wsRef.current.send(JSON.stringify({
+    //     action: 'seat_update',
+    //     data: {
+    //       seat_data: updatedSeatAllocation
+    //     }
+    //   }));
+    // }
+    if (wsRef.current) {
       wsRef.current.send(JSON.stringify({
         action: 'seat_update',
         data: {
